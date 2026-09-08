@@ -1,0 +1,19 @@
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.shadow-custom {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-height: 25vh;
+    overflow-y: scroll;
+    
+}
+
+.border-bottom {
+    border-bottom: 1px solid rgb(211, 211, 211);
+}

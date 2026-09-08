@@ -1,0 +1,22 @@
+.tbl-overflow-x-auto {
+  overflow-y: auto; /* Hide both scrollbars initially */
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.tbl-overflow-x-auto::-webkit-scrollbar {
+  width:0px;
+  height: 10px; /* Height of the horizontal scrollbar */
+}
+
+.tbl-overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.tbl-overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #888; /* Thumb color */
+  border-radius: 5px; /* Make scrollbar thumb cylindrical */
+}
+
+.tbl-overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Thumb color on hover */
+}

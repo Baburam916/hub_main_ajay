@@ -1,0 +1,211 @@
+.scooter {
+  position: relative;
+  z-index: 1;
+  max-width: 330px;
+}
+
+.roundedBox input {
+  border-radius: 10px !important;
+}
+
+.scooteranimate {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  height: 221px;
+  overflow: hidden;
+}
+
+.tyre {
+  position: absolute;
+  left: 149px;
+  top: 128px;
+}
+
+.scooteranimate figure {
+  position: relative;
+  z-index: 1;
+}
+
+.tyre2 {
+  position: absolute;
+  right: -9px;
+  bottom: -14px;
+}
+
+#homer {
+  top: 0;
+  display: block;
+  height: auto;
+  animation: run 5s infinite linear;
+  animation-name: run;
+  max-width: 370px;
+  z-index: 2;
+  position: absolute;
+}
+
+.scooterBox {
+  clip-path: polygon(
+    99.99% 52.77%,
+    99.9% 58.82%,
+    99.67% 65.84%,
+    99.28% 75.89%,
+    96.75% 99.99%,
+    48.94% 94.6%,
+    -2.32% 93.29%,
+    -2.17% 10.74%,
+    99.4% 23.57%,
+    100.14% 45.14%
+  );
+}
+
+.wheel {
+  -webkit-animation: spin 5s linear infinite;
+  /* Safari browser */
+  animation: spin 5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.scooteranimate {
+  background: url(/src/assets/images/login/bgscooter.png);
+  overflow: hidden;
+  animation: background-scroll 50s linear infinite;
+  background-repeat: repeat-x;
+  background-position: -100px -75px;
+}
+
+@keyframes background-scroll {
+  from {
+    background-position-x: 500%;
+  }
+}
+
+.ekartline {
+  position: absolute;
+  left: 159px;
+  top: 41px;
+  z-index: 1;
+}
+
+.ekartline img {
+  max-width: 26px;
+}
+
+@keyframes run {
+  0% {
+    left: -50%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+@-webkit-keyframes run {
+  0% {
+    left: -50%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+@media (min-width: 3840px) and (max-width: 5200px) {
+  .scooterBox {
+    clip-path: polygon(
+      100.15% 52.51%,
+      100.11% 58.3%,
+      100.04% 65.33%,
+      100.05% 76.85%,
+      99.71% 103.09%,
+      48.94% 94.6%,
+      -2.32% 93.29%,
+      -2.17% 10.74%,
+      99.99% 18.65%,
+      100.14% 45.14%
+    );
+  }
+}
+
+@media (min-width: 1901px) and (max-width: 2570px) {
+  .scooterBox {
+    clip-path: polygon(
+      99.99% 52.77%,
+      99.9% 58.82%,
+      99.67% 65.84%,
+      99.41% 75.56%,
+      97.73% 99.99%,
+      48.94% 94.6%,
+      -2.32% 93.29%,
+      -2.17% 10.74%,
+      99.4% 23.57%,
+      100.14% 45.14%
+    );
+  }
+}
+
+@media (min-width: 1439px) and (max-width: 1900px) {
+  .scooterBox {
+    clip-path: polygon(
+      99.99% 52.77%,
+      99.9% 58.82%,
+      99.67% 65.84%,
+      99.73% 75.56%,
+      98.69% 99.99%,
+      48.94% 94.6%,
+      -2.32% 93.29%,
+      -2.17% 10.74%,
+      99.4% 23.57%,
+      100.14% 45.14%
+    );
+  }
+}
+
+@media (min-width: 1279px) and (max-width: 1300px) {
+  .scooterBox {
+    clip-path: polygon(
+      99.99% 52.77%,
+      99.9% 58.82%,
+      99.67% 65.84%,
+      99.73% 75.56%,
+      98.69% 99.99%,
+      48.94% 94.6%,
+      -2.32% 93.29%,
+      -2.17% 10.74%,
+      99.4% 23.57%,
+      100.14% 45.14%
+    );
+  }
+}
+
+@media (max-width: 1023px) {
+  .scooterBox {
+    clip-path: none !important;
+  }
+
+  .scooteranimate {
+    height: 150px;
+    background-position: 0px -9px;
+    background-size: cover;
+  }
+}

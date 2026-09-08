@@ -1,0 +1,61 @@
+
+/**** START Shipment scan *****/
+.animationBox {
+	top: 26px;
+	display: block;
+	height: auto;
+	animation: runn 4s infinite linear;
+	animation-name: runn;
+	width: 40px;
+	z-index: 2;
+	position: absolute;
+}
+
+@keyframes runn {
+   0% {
+  right: -26%;
+  top: 1px;
+
+}
+
+  60% {
+filter: hue-rotate(53deg) brightness(.8);
+ 
+
+}
+100% {
+filter: hue-rotate(53deg) brightness(.8);
+  right: 110%;
+  top: 7px;
+
+}
+
+
+	
+}
+
+
+.scanBoxInput::before {
+	content: '';
+	z-index: 0;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(0deg);
+	position: absolute;
+	width: 99999px;
+	height: 99999px;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-image: conic-gradient(rgba(0,0,0,0), #ffc20a, rgba(255, 228, 11, 0) 25%) !important;
+	animation: rotate 4s linear infinite;
+}
+.labelMargin label {
+	margin: 0px;
+}
+.airbillTbale tr:hover td {
+	background: #fffdf4;
+}
+/**** END Shipment scan *****/
+
+
