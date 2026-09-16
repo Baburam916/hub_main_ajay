@@ -4,6 +4,9 @@ import { useAlert } from "../../../ContextProvider/AlertContext";
 import Button from "../../../base-components/Button";
 import Table from "../../../components/Table";
 import { Courier_stock_list } from "../../../AllServices/services";
+
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -13,6 +16,7 @@ import {
   PackageX,
   Search,
   X,
+  User,Boxes ,
 } from "lucide-react";
 import CommonPagination from "../../../components/Pagination";
 import { useDebounce } from "../../../components/Search";
@@ -87,39 +91,61 @@ const index = () => {
     };
   });
 
+
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
     <>
-      <div
+    <div className="w-full mt-2 mb-4">
+      {/* <div
         className={`w-full ${
           showCourierStockForm ? "max-w-xl" : "max-w-8xl"
         } mx-auto mt-4 px-4 sm:px-6 py-4 bg-white rounded-xl shadow-lg`}
       >
-        <div className="w-full flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-          <div className="flex items-center gap-3">
+        </div> */}
+        <div>
+
+ <div className="w-full mt-2 mb-4" data-aos="fade-up">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+         
+        
+        
+
+
+      <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+             <div className="block lg:flex items-center justify-between w-full">
+          <div className="flex items-center gap-2 mb-2 lg:mb-0">
             {courierStockList.length > 0 && showCourierStockForm && (
               <div
-                className="p-2 cursor-pointer rounded-full hover:bg-slate-100 shadow-sm"
+                className="p-2 w-[32px] h-[32px] cursor-pointer bg-[#777779] rounded-full  shadow-sm"
                 onClick={() => setShowCourierStockForm(false)}
               >
-                <ArrowLeft className="w-5 h-4" />
+                <ArrowLeft className="w-5 h-4 text-white" />
               </div>
             )}
-            <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-mustard bg-opacity-10 text-mustard">
-              <Package className="w-5 h-5" />
-            </div>
+            <i className=" w-[30px] h-[30px]  rounded-lg flex items-center justify-center bg-mustard">
+              <Boxes   className="w-[17px]  text-[#fff] " />
+            </i>
             <div>
-              <h1 className="font-bold text-lg text-slate-800 leading-tight">
-                Courier Stock List
+              <h1 className="text-[16px] font-medium">
+                Courier Stock List  
               </h1>
-              <p className="text-xs text-slate-400 hidden sm:block">
+              <p className="text-xs text-[#9c6d00] hidden sm:block">
                 Manage and track your courier stock inventory
               </p>
             </div>
           </div>
+
           {!showCourierStockForm && (
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
               <Button
-                className="flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-xl bg-mustard text-white hover:bg-opacity-90 w-full sm:w-auto"
+                className="border-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-md bg-mustard text-white hover:bg-opacity-90 w-full sm:w-auto"
                 onClick={() => setShowCourierStockForm(true)}
               >
                 <PackagePlus className="w-4 h-4" />
@@ -128,7 +154,7 @@ const index = () => {
               <div className="relative flex justify-between items-center">
                 <FormInput
                   placeholder="Search..."
-                  className="w-full pr-8 pt-1.5 pb-1.5 rounded-xl"
+                  className="w-full pr-8 pt-1.5 pb-1.5 rounded-md border-none"
                   value={manifestSearch}
                   onChange={(e) => {
                     setManifestSearch(e.target.value.toUpperCase());
@@ -151,8 +177,14 @@ const index = () => {
             </div>
           )}
         </div>
+</div>
 
-        <hr className="mt-3" />
+
+  <div className="p-2  lg:p-6">
+
+
+
+
 
         {showCourierStockForm ? (
           <CourierForm
@@ -164,7 +196,7 @@ const index = () => {
           <>
             {courierStockList.length > 0 ? (
               <>
-                <div className="mt-3 rounded-xl overflow-hidden border border-slate-100">
+                <div className="w-full">
                   <Table columns={columns} row={row} heightTable="66vh" />
                 </div>
                 <CommonPagination
@@ -182,6 +214,12 @@ const index = () => {
           </>
         )}
       </div>
+</div>
+</div>
+        </div>
+      </div>
+
+
     </>
   );
 };

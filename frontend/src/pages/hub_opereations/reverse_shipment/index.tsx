@@ -10,11 +10,12 @@ import Button from "../../../base-components/Button";
 import { ReverseShipmentData } from "../../../DataTypes/dataTypes";
 import LoadingIcon from "../../../base-components/LoadingIcon";
 import { useDebounce } from "../../../components/Search";
+import { ClipboardCheck, User } from "lucide-react";
 
 export default function Index() {
   const { showAlert } = useAlert();
   const [reversedShipmentList, setReversedShipmentList] = useState<Array<any>>(
-    []
+    [],
   );
   const [airwaybillNo, setAirwaybillNo] = useState<any>(null);
   const [spinner, setSpinner] = useState<boolean>(false);
@@ -44,7 +45,7 @@ export default function Index() {
         hub_id,
         debouncedSearchTerm,
         20,
-        page - 1
+        page - 1,
       );
       if (response.status == 200) {
         setReversedShipmentList(response.data.data);
@@ -68,7 +69,7 @@ export default function Index() {
     try {
       response = await Reverse_shipment(
         { hub_id, emp_id },
-        reverseShipmentData
+        reverseShipmentData,
       );
       if (response.status == 201) {
         showAlert(response.data.message, "success");
@@ -88,52 +89,80 @@ export default function Index() {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-        <h1 className="font-bold text-lg">Shipment Reverse</h1>
-        <hr />
-        <div className="mt-4 sm:flex">
-          <FormLabel className="sm:flex items-center text-500 ">
-            Airwaybill No :
-          </FormLabel>
-          <FormInput
-            className="sm:w-60 sm:ml-5"
-            value={airwaybillNo}
-            onChange={(e) => setAirwaybillNo(e.target.value.toUpperCase())}
-          />
-        </div>
-        <div className="mt-4 sm:flex">
-          <FormCheck className="gap-4">
-            <FormCheck.Label htmlFor="rto">
-              is this a R.T.O Shipment ? :
-            </FormCheck.Label>
-            <FormCheck.Input
-              id="rto"
-              type="checkbox"
-              value={rto}
-              onChange={(e) => setRto(e.target.checked ? 1 : 0)}
-              checked={rto == 1}
-            />
-          </FormCheck>
-        </div>
-        <div className="mt-4 sm:flex">
-          <FormLabel className="sm:flex items-center text-500 ">
-            Remarks :
-          </FormLabel>
-          <FormInput
-            className="sm:w-60 sm:ml-5"
-            value={remark}
-            onChange={(e) => setRemark(e.target.value)}
-          />
-        </div>
-        <div className="mt-3 flex w-full items-center justify-end">
-          <Button
-            disabled={spinner}
-            className="bg-mustard border-none py-2 px-4 text-white rounded-xl"
-            onClick={() => reverseShipment()}
-          >
-            Reverse Shipment{" "}
-            {spinner && <LoadingIcon icon="puff" className="ml-2" />}
-          </Button>
+      <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nwrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <ClipboardCheck className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium"> Shipment Reverse</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-2  lg:p-6">
+            <div className="grid grid-cols-12 gap-2 ">
+              <div className="col-span-12 lg:col-span-12">
+                <div className="align-left w-[260px] flex justify-start bg-[#f6f6f6] rounded-md py-2 px-3 border border-[#eee]">
+                  <FormCheck className="gap-4">
+                    <FormCheck.Label
+                      htmlFor="rto"
+                      className="font-bold text-[15px]"
+                    >
+                      is this a R.T.O Shipment ? :
+                    </FormCheck.Label>
+
+                    <FormCheck.Input
+                      id="rto"
+                      type="checkbox"
+                      value={rto}
+                      onChange={(e) => setRto(e.target.checked ? 1 : 0)}
+                      checked={rto == 1}
+                      className="w-[20px] h-[20px]"
+                    />
+                  </FormCheck>
+                </div>
+              </div>
+
+              <div className="col-span-12 lg:col-span-3">
+                <FormLabel className="sm:flex items-center text-500 !mb-0 ">
+                  Airwaybill No :
+                </FormLabel>
+                <FormInput
+                  className="w-full"
+                  value={airwaybillNo}
+                  onChange={(e) =>
+                    setAirwaybillNo(e.target.value.toUpperCase())
+                  }
+                />
+              </div>
+
+              <div className="col-span-12 lg:col-span-7">
+                <FormLabel className="sm:flex items-center text-500 !mb-0">
+                  Remarks :
+                </FormLabel>
+                <FormInput
+                  className="w-full"
+                  value={remark}
+                  onChange={(e) => setRemark(e.target.value)}
+                />
+              </div>
+              <div className="col-span-12 lg:col-span-2">
+                <Button
+                  disabled={spinner}
+                  className="bg-mustard py-2 px-4 mt-[10px] lg:mt-[20px] h-[38px] text-white rounded-md border-none w-full"
+                  onClick={() => reverseShipment()}
+                >
+                  Reverse Shipment{" "}
+                  {spinner && <LoadingIcon icon="puff" className="ml-2" />}
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <ReversedShipmentsList

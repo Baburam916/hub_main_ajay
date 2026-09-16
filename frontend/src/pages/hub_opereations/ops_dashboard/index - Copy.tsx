@@ -4,6 +4,7 @@ import hubdashbg from "../../../assets/images/hubdashbg.gif";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+
 import {
   ThumbsDown,
   Clock8,
@@ -26,8 +27,6 @@ import {
   Plus,
   PlusCircle,
   Hand,
-  FileText,
-  CalendarDays,
 } from "lucide-react";
 import { FormInput, FormLabel } from "../../../base-components/Form";
 import Button from "../../../base-components/Button";
@@ -222,63 +221,19 @@ const index = () => {
     }
   };
 
-  // on scroll animatil this useffect load a card after one sec delay when you scroll
 
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
-
-  useEffect(() => {
-    const items = document.querySelectorAll<HTMLElement>(
-      ".job-reveal:not(.job-reveal-visible)",
-    );
-    if (!items.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) =>
-              Number((a.target as HTMLElement).dataset.revealIndex) -
-              Number((b.target as HTMLElement).dataset.revealIndex),
-          )
-          .forEach((entry, i) => {
-            const el = entry.target as HTMLElement;
-            el.style.transitionDelay = `${i * 300}ms`;
-            el.classList.remove("opacity-0", "translate-y-6");
-            el.classList.add(
-              "opacity-100",
-              "translate-y-0",
-              "job-reveal-visible",
-            );
-            const onEnd = (e: TransitionEvent) => {
-              if (e.propertyName === "transform") {
-                el.classList.remove("translate-y-0");
-                el.removeEventListener("transitionend", onEnd);
-              }
-            };
-            el.addEventListener("transitionend", onEnd);
-            observer.unobserve(entry.target);
-          });
-      },
-      { threshold: 0.1 },
-    );
-
-    items.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [initiatedJobs]);
+useEffect(() => {
+  AOS.init({
+    duration: 1000,
+    once: true,
+  });
+}, []);
 
   useEffect(() => {
     Get_country().then((res) => setCountryData(res?.data?.data));
     Get_franchise().then((res) => setFranchiseeData(res?.data?.data));
     loadCountData();
   }, []);
-
-  // end
 
   useEffect(() => {
     getJobData();
@@ -310,7 +265,7 @@ const index = () => {
           <UserCog className="w-5 stroke-2.5" />
           <ChevronDown className="w-4 stroke-2.5 mt-1" />
         </Menu.Button>
-        <Menu.Items className="w-48" placement="left-start">
+        <Menu.Items className="w-48" placement="right-start">
           <Menu.Item
             onClick={() => {
               setOpen(true);
@@ -330,9 +285,6 @@ const index = () => {
           ?.franchisee_name || "-",
       country_name: countryData?.find(
         (con) => con?.country_id == item?.destination_country,
-      )?.country_name,
-      org_country_name: countryData?.find(
-        (con) => con?.country_id == item?.org_country_id,
       )?.country_name,
       created_date: formatDateWithoutTime(item?.created_date),
       weight:
@@ -619,7 +571,7 @@ const index = () => {
                     </div>
                   ) : optionId == "Destination" ? (
                     <div className="col-span-12 lg:col-span-3">
-                      <FormLabel className="inline-block text-left w-full mb-[3px] text-[14px] text-[#4c4c4c]">
+                  <FormLabel className="inline-block text-left w-full mb-[3px] text-[14px] text-[#4c4c4c]">
                         Destination
                       </FormLabel>
                       <CommonSearchableAll
@@ -637,7 +589,7 @@ const index = () => {
                     </div>
                   ) : (
                     <div className="col-span-12 lg:col-span-2">
-                      <FormLabel className="inline-block text-left w-full mb-[3px] text-[14px] text-[#4c4c4c]">
+                  <FormLabel className="inline-block text-left w-full mb-[3px] text-[14px] text-[#4c4c4c]">
                         Chargeable Weight
                       </FormLabel>
                       <FormInput
@@ -670,18 +622,16 @@ const index = () => {
                           refresh: !pre?.refresh,
                         }));
                       }}
-                      className="bg-mustard text-white px-2 py-2  rounded-md border-none h-[38px] w-full"
+                     className="bg-mustard text-white px-2 py-2  rounded-md border-none h-[38px] w-full"
                     >
-                      {/* <Search className="w-[16px] h-[16px] mr-2" /> Search */}
-                      Search
+                      {/* <Search className="w-[16px] h-[16px] mr-2" /> Search */}Search
                     </Button>
                     <Button
                       onClick={handleReset}
                       disabled={checkisEmpty(inputs) ? true : false}
-                      className="bg-red-400 text-white px-2 py-2 rounded-md  border-none h-[38px] w-full"
+                     className="bg-red-400 text-white px-2 py-2 rounded-md  border-none h-[38px] w-full"
                     >
-                      {/* <RefreshCcw className="w-[16px] h-[16px] mr-2" /> Reset */}
-                      Reset
+                      {/* <RefreshCcw className="w-[16px] h-[16px] mr-2" /> Reset */}Reset
                     </Button>
                   </div>
                 </div>
@@ -743,8 +693,7 @@ const index = () => {
                     </div>
                   ) : (
                     <>
-                      {/* Old table UI - commented out in favor of card UI below, functionality unchanged */}
-                      {/* <div className={`overflow-x-auto`}>
+                      <div className={`overflow-x-auto`}>
                         <Table
                           minHeightTable="94%"
                           className="h-[100vh]"
@@ -754,79 +703,7 @@ const index = () => {
                           currentPage={Number(datatoget?.page4)}
                           ops={1}
                         />
-                      </div> */}
-
-                      <div className="w-full">
-                        {rows?.map((item: any, index: number) => (
-                          <div
-                            key={item?.job_id ?? index}
-                            data-reveal-index={index}
-                            className=" relative job-reveal w-full border rounded-lg mb-3 group bg-[#fff] border-[#fff1d3] even:bg-[#fff] even:border-[#eaf1f6] hover:bg-[#fff] hover:border-[#E6E6E6] opacity-0 translate-y-6 transition-all duration-700 ease-out"
-                          >
-                            <div className="justify-between border-[#fff1d3] border-b w-full block lg:flex pt-[5px] pb-[3px] px-2 items-center bg-[#fffbf2] group-even:bg-[#f6faff] rounded-t-lg group-even:border-[#eaf1f6] group-hover:bg-[#F8F8F8] group-hover:border-[#E6E6E6]">
-                              <div className="flex relative mb-2 lg:mb-0">
-                                <figure className="bg-[#FFF0CE] group-even:bg-[#E8F2FF] rounded-full p-[2px] w-[30px] h-[30px] justify-between flex items-center group-hover:bg-[#e3e3e3]">
-                                  <FileText className="w-[18px] h-[18px] text-[#B68F34] group-even:text-[#5A81B4] m-auto group-hover:text-[#303030]" />
-                                </figure>
-                                <aside className="ml-2 leading-[14px] flex gap-1 items-center">
-                                  <h2 className="text-[#202020] text-[14px] font-medium uppercase leading-[14px]">
-                                    WEIGHT :<span> {item?.weight}</span>
-                                  </h2>
-                                </aside>
-                              </div>
-                              <div className="flex gap-2 items-center">
-                                <div className="text-left lg:text-right leading-[16px]">
-                                  <p className="text-[14px] text-[#555555] flex items-center">
-                                    <CalendarDays className="w-[16px] h-[16px] mr-1" />{" "}
-                                    {item?.created_date}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="px-3 pt-3 pb-2">
-                              <div className="grid grid-cols-12 gap-2">
-                                <div className="col-span-12 lg:col-span-8">
-                                  <div className="w-full">
-                                    <div className="w-full font-medium text-[14px]">
-                                      Franchisee : {item?.franchisee_name}
-                                    </div>
-                                    <div className="w-full block lg:flex gap-x-5 mt-1">
-                                      {item?.org_country_id != null && (
-                                        <div className="leading-[16px] mb-2 lg:mb-0">
-                                          <small className="text-[11px] text-[#797979] flex items-center">
-                                            <i className="w-[5px] h-[5px] bg-green-500 group-even:bg-[#6EA8E0] rounded-full mr-1 inline-block group-hover:bg-[#a0a0a0]"></i>
-                                            ORIGIN
-                                          </small>
-                                          <p className="text-[14px] text-[#303030]">
-                                            {item?.org_country_name}
-                                          </p>
-                                        </div>
-                                      )}
-                                      <div className="leading-[16px]">
-                                        <small className="text-[11px] text-[#797979] flex items-center">
-                                          <i className="w-[5px] h-[5px] bg-[#efb847] group-even:bg-[#6EA8E0] rounded-full mr-1 inline-block group-hover:bg-[#a0a0a0]"></i>
-                                          DESTINATION
-                                        </small>
-                                        <p className="text-[14px] text-[#303030]">
-                                          {item?.country_name}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-span-12 lg:col-span-4">
-                                  <div className="flex relative gap-2 justify-end">
-                                    <div className="flex justify-center items-center">
-                                      {item?.action}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
                       </div>
-
                       <CommonPagination
                         onPageChange={(e) => handlePageChange(e, 4)}
                         page={Number(datatoget?.page4)}
@@ -881,16 +758,6 @@ const index = () => {
           button[data-headlessui-state="open"] {
             border-color: #f0b646;
             color: #f0b646;
-          }
-          @keyframes cardReveal {
-            from {
-              opacity: 0;
-              transform: translateY(24px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
           }
         `}
       </style>

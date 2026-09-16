@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Truck } from "lucide-react";
+import { Briefcase, Truck, User } from "lucide-react";
 import {
   FormInput,
   FormLabel,
@@ -53,8 +53,9 @@ const CreateJob = () => {
   }, []);
   const description = (
     <>
+    
       <div className="w-full h-auto overflow-y-auto text-left ">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8  p-2 rounded-lg ">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3  p-2 rounded-lg ">
           <div>
             <FormLabel htmlFor="regular-form-1">Description</FormLabel>
             <FormInput
@@ -288,7 +289,7 @@ const CreateJob = () => {
     <>
       <Button
         type="button"
-        className="bg-mustard border-none py-2 px-4 text-white rounded-xl"
+        className="bg-mustard border-none py-2 px-4 text-white rounded-md"
         onClick={isEditDimension ? handleEdit : handleCreate}
       >
         {isEditDimension ? "UPDATE" : "SAVE"}
@@ -373,20 +374,36 @@ const CreateJob = () => {
     handleChange(data.id, "inside_sales");
   }
   return (
+   <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Briefcase className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+               Initiate Job 
+                  </h4>
+                </div>
+              </div>
+
+      
+            </div>
+          </div>
+
+   <div className="p-2  lg:p-6">
+
+
     <form>
       {/* START  Scenario 1    When shipment comes booked by customer */}
 
-      <div className="grid grid-cols-12  p-2  lg:p-6 box gap-x-3  mb-6">
-        <div className=" col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 mb-4 ">
-          <div className="text-lg flex">
-            <i className="bg-yellow-50 w-[29px] h-[29px] rounded-full  border border-yellow-200  flex justify-center item-center center">
-              <Truck className="w-[20px] text-yellow-300 " />
-            </i>
-            <h2 className="ml-2 uppercase font-bold">Initiate Job </h2>
-          </div>
-        </div>
+      <div className="grid grid-cols-12 gap-2 lg:gap-3 ">
+     
 
-        <div className=" jobGroup col-span-6 lg:col-span-3 md:col-span-4 sm:col-span-6 mb-3 ">
+        <div className=" col-span-12 lg:col-span-4 ">
           <FormLabel htmlFor="vertical-form-1" className="mb-1">
             Customer Name <i className="text-red-500">*</i>
           </FormLabel>
@@ -417,7 +434,7 @@ const CreateJob = () => {
             ))}
           </TomSelect> */}
         </div>
-        <div className=" jobGroup col-span-6 lg:col-span-3 md:col-span-4 sm:col-span-6 mb-3 ">
+              <div className=" col-span-12 lg:col-span-8 ">
           <FormLabel htmlFor="vertical-form-1" className="mb-1">
             Job Type <i className="text-red-500">*</i>
           </FormLabel>
@@ -436,7 +453,7 @@ const CreateJob = () => {
           </FormSelect>
         </div>
 
-        <div className=" jobGroup col-span-6 lg:col-span-3 md:col-span-4 sm:col-span-6 mb-3 ">
+            <div className=" col-span-12 lg:col-span-4 ">
           <FormLabel htmlFor="vertical-form-1" className="mb-1">
             Destination Country <i className="text-red-500">*</i>
           </FormLabel>
@@ -454,7 +471,7 @@ const CreateJob = () => {
           </TomSelect>
         </div>
 
-        <div className=" jobGroup col-span-6 lg:col-span-3 md:col-span-4 sm:col-span-6 mb-3 ">
+             <div className=" col-span-12 lg:col-span-4 ">
           <FormLabel htmlFor="vertical-form-1" className="mb-1">
             Shipper name <i className="text-red-500">*</i>
           </FormLabel>
@@ -468,7 +485,7 @@ const CreateJob = () => {
             }
           />
         </div>
-        <div className=" jobGroup col-span-6 lg:col-span-3 md:col-span-4 sm:col-span-6 mb-3 ">
+                 <div className=" col-span-12 lg:col-span-4 ">
           <FormLabel htmlFor="vertical-form-1" className="mb-1">
             Inside Sales <i className="text-red-500">*</i>
           </FormLabel>
@@ -499,9 +516,10 @@ const CreateJob = () => {
             ))}
           </TomSelect> */}
         </div>
-        <div className="col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 my-3 mb-3">
-          <FormLabel htmlFor="vertical-form-1" className="mb-1">
-            {" "}
+               <div className=" col-span-12 lg:col-span-12 ">
+                    <div className="w-full shipmentAccount bg-[#F8FBFE] border border-[#D4E6F8] rounded-lg py-3 px-4   block mt-2">
+                     <FormLabel htmlFor="vertical-form-1" className="!mb-0 font-bold">
+     
             Shipment Dimensions <i className="text-red-500">*</i>
           </FormLabel>
           {dimensionData?.length > 0 ? (
@@ -567,7 +585,7 @@ const CreateJob = () => {
               <Button
                 variant="primary"
                 type="button"
-                className=" p-2 bg-mustard border-none"
+                className=" mt-2 px-7 py-2 bg-mustard border-none"
                 onClick={() => {
                   setOpenModal(true);
                   setIsEditDimension(false);
@@ -585,12 +603,12 @@ const CreateJob = () => {
             description={description}
             footer={footer}
           />
-        </div>
-
-        <div className="mt-3">
+        </div>  </div> 
+ <div className=" col-span-12 lg:col-span-12 ">
+        <div className="mt-1 flex justify-end w-full">
           <Button
             type="button"
-            className=" p-2 bg-mustard text-white"
+            className=" px-4 py-2 border-none bg-mustard text-white"
             disabled={spinner}
             onClick={createJob}
           >
@@ -601,9 +619,12 @@ const CreateJob = () => {
           </Button>
         </div>
       </div>
-
+</div>
       {/* END  Scenario 1    When shipment comes booked by customer */}
     </form>
+    </div>
+     </div>
+     </div>
   );
 };
 

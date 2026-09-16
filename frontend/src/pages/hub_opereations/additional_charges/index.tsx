@@ -15,6 +15,7 @@ import { AdditionalChargeData } from "../../../DataTypes/dataTypes";
 import LoadingIcon from "../../../base-components/LoadingIcon";
 import Table from "../../../components/Table";
 import { formatDate, indianFormat } from "../../../utils";
+import { CheckCircle, User } from "lucide-react";
 
 const index = () => {
   const { showAlert } = useAlert();
@@ -207,14 +208,32 @@ const index = () => {
 
   return (
     <>
-      <div className="w-full max-w-8xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
-        <div className="w-full flex justify-between">
-          <h1 className="font-bold text-lg">Additional Charges</h1>
-        </div>
-        <hr className="my-2" />
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-end">
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+  <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <CheckCircle  className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+               Additional Charges
+                  </h4>
+                </div>
+              </div>
+
+      
+            </div>
+          </div>
+
+
+      <div className="p-2  lg:p-6">
+        <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-3 items-end">
           <div>
-            <FormLabel className={`flex items-center text-500`}>
+                   <FormLabel className={`flex items-center text-500 !mb-0`}>
               Airwaybill No.
             </FormLabel>
             <FormInput
@@ -224,7 +243,7 @@ const index = () => {
           </div>
 
           <div>
-            <FormLabel className={`flex items-center text-500`}>
+                    <FormLabel className={`flex items-center text-500 !mb-0`}>
               Selling Amount
             </FormLabel>
             <FormInput
@@ -233,7 +252,7 @@ const index = () => {
             />
           </div>
           <div>
-            <FormLabel className={`flex items-center text-500`}>
+                      <FormLabel className={`flex items-center text-500 !mb-0`}>
               Buying Amount
             </FormLabel>
             <FormInput
@@ -242,7 +261,7 @@ const index = () => {
             />
           </div>
           <div>
-            <FormLabel className={`flex items-center text-500`}>
+                   <FormLabel className={`flex items-center text-500 !mb-0`}>
               Charge Head
             </FormLabel>
             <FormSelect
@@ -272,7 +291,7 @@ const index = () => {
           </div>
           {chargeHead == 55 && (
             <div>
-              <FormLabel className={`flex items-center text-500`}>
+                       <FormLabel className={`flex items-center text-500 !mb-0`}>
                 Remarks
               </FormLabel>
               <FormInput
@@ -283,7 +302,7 @@ const index = () => {
             </div>
           )}
           <div>
-            <FormLabel className={`flex items-center text-500`}>
+                  <FormLabel className={`flex items-center text-500 !mb-0`}>
               Invoice Number
             </FormLabel>
             <FormInput
@@ -292,7 +311,7 @@ const index = () => {
             />
           </div>
           <div>
-            <FormLabel className={`flex items-center text-500`}>
+            <FormLabel className={`flex items-center text-500 !mb-0`}>
               Invoice Date
             </FormLabel>
             <FormInput
@@ -305,16 +324,42 @@ const index = () => {
             <Button
               disabled={spinner}
               onClick={submitAdditionalCharges}
-              className="mt-4 h-8 bg-mustard border-none py-1 px-4 mr-2 text-white rounded-xl mb-1"
+              className="mt-[9px] lg:mt-[21px] relative lg:top-[4px] h-[38px] bg-mustard border-none py-1 px-4 mr-2 text-white rounded-md mb-1"
             >
               Add Charges{" "}
               {spinner && <LoadingIcon icon="puff" className="ml-2" />}
             </Button>
           </div>
         </div>
-      </div>
-      <div className="w-full max-w-8xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-        <h1 className="font-bold text-lg">Pending Additional Charges </h1>
+</div>
+      </div></div>
+
+
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+          <div className=" w-full py-3  px-3 border-b border-white commonGradientGray  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <CheckCircle  className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                 Pending Additional Charges 
+                  </h4>
+                </div>
+              </div>
+
+      
+            </div>
+          </div>
+
+          <div className="p-2  lg:p-6">
+            
+
+      <div className="w-full">
+  
         {additionalchargeslist?.length > 0 ? (
           <div className="overflow-x-auto">
             <Table heightTable="35vh" columns={columns} row={row} />
@@ -325,6 +370,26 @@ const index = () => {
           <p className="mt-4 text-gray-400 text-center">No Data Found!</p>
         )}
       </div>
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      
+
+
+
+
+
+
+
+
+
     </>
   );
 };

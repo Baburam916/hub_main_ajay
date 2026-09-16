@@ -14,7 +14,7 @@ import { convertJSONtoCSV } from "../../../utils";
 import { useDebounce } from "../../../components/Search";
 
 import IsLoading from "../../../components/Isloading/isLoading";
-import { Download } from "lucide-react";
+import { Download, FileText, User } from "lucide-react";
 import LoadingButtonCommon from "../../../components/loadingButtonCommon/loadingButttonCommon";
 import { tranfereddata } from "../../../components/booking_summary_table/TransformKey";
 import { common_get, common_put } from "../../../AllServices/services";
@@ -317,24 +317,38 @@ const handlecancel=()=>{
     });
   return (
     <>
-      <div>
-        {/* <BackButton/> */}
-        <div className="flex justify-between mt-5 mb-2 p-2 bg-white shadow-lg rounded-md">
-          {" "}
-          <div>
-            <h2 className="text-xl mt-1 font-bold text-primary ">
-              CHANGE HAWB/MAWB REQUESTS
-            </h2>
-          </div>
+
+
+
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <FileText className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                   CHANGE HAWB/MAWB REQUESTS
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                
+
           <div>
             {data?.length >= 1 ? (
               <Button
-                className="text-white  p-2 mr-1"
+                className="text-white  px-3  py-2 border-none "
                 disabled={downloaddata}
                 variant="success"
                 onClick={() => handledownload()}
               >
-                <Download />
+                <Download className="w-[16px] h-[16px] mr-2" />
                 {downloaddata ? (
                   <LoadingButtonCommon text="Downloading" />
                 ) : (
@@ -345,7 +359,23 @@ const handlecancel=()=>{
               ""
             )}
           </div>
-        </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div className="p-2  lg:p-6">
+
+
+
+
+
+
+
+
+
+
+       
         {/* <div className="bg-white shadow-lg rounded-md">
           <div className="grid grid-cols-3 gap-4  mt-5 mb-2 p-2 w-[70%] m-auto">
             {" "}
@@ -404,7 +434,7 @@ admin/franchisee-settings"
             </div>
           </div>
         </div> */}
-        <div className=" w-full overflow-auto shadow-lg rounded-md">
+        <div className=" w-full overflow-auto ">
           {loading ? (
             <IsLoading />
           ) : (
@@ -431,6 +461,8 @@ admin/franchisee-settings"
           )}
         </div>
       </div>
+     </div>
+        </div>
       {open && (
         <Modal
           open={open}

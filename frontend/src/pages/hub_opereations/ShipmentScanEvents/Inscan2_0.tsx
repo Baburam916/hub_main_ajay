@@ -43,6 +43,7 @@ import {
   ShortShipmentData,
 } from "../../../DataTypes/dataTypes";
 import { AnyAsyncThunk } from "@reduxjs/toolkit/dist/matchers";
+import { User } from "lucide-react";
 
 const Inscan2_0 = () => {
   const [buttonModalPreview, setButtonModalPreview] = useState<boolean>(false);
@@ -265,11 +266,39 @@ const Inscan2_0 = () => {
 
   return (
     <>
-      <div className="mt-3  w-full py-8  px-5 bg-white rounded-lg shadow-lg">
-        <div className="w-full lg:w-[810px] xl:w-[900px] m-auto ">
-          <div>
-            <h1 className="text-sm sm:text-xl font-bold mb-2">Direct Inscan</h1>
+   <div className=" mt-2 mb-4 	  w-full xl:w-[100%]  2xl:w-[70%]  m-auto">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+
+
+
+	
+          <div className=" w-full py-3  px-3 border-b border-white commonGradientGray  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-none flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <User className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                  Direct Inscan
+                  </h4>
+                </div>
+              </div>
+
+
+            </div>
           </div>
+
+
+
+
+
+
+        
+          <div className="p-2  lg:p-6">
+        
           {showSection ? (
             <>
               {manifestno && (
@@ -509,7 +538,7 @@ before:w-[6px] before:h-[1px] before:bg-gray-400 before:absolute before:right-[-
           ) : (
             " "
           )}
-          <div className="w-full scan bg-[#FFFAEE] border border-[#EEE3C9] rounded-lg py-3 px-3 md:py-6 md:px-8 mt-5">
+          <div className="w-full scan bg-[#FFFAEE] border border-[#EEE3C9] rounded-lg py-3 px-3 md:py-6 md:px-8">
             <h2 className="text-lg font-bold mb-2">Airwaybill No.</h2>
             <div className="scanBox md:flex block">
               <div className="scanBoxInput relative p-[1px] overflow-hidden w-full  rounded-[10px]">
@@ -537,7 +566,7 @@ before:w-[6px] before:h-[1px] before:bg-gray-400 before:absolute before:right-[-
 
               <div className="scanBoxbutton relative flex md:ml-5 mt-3 md:mt-0">
                 <Button
-                  className="btnAnimation overflow-hidden  duration-200  inline-flex items-center justify-center cursor-pointer  bg-yellow-300 text-white  text-xl py-2 px-7 rounded-lg hover:bg-yellow-250 transition uppercase"
+                  className="border-none btnAnimation overflow-hidden  duration-200  inline-flex items-center justify-center cursor-pointer  bg-mustard text-white  text-xl py-2 px-7 rounded-lg hover:bg-yellow-250 transition uppercase"
                   disabled={!value}
                   onClick={() => {
                     directInscan();
@@ -547,7 +576,7 @@ before:w-[6px] before:h-[1px] before:bg-gray-400 before:absolute before:right-[-
                   {spinner && <LoadingIcon icon="puff" className="ml-2" />}
                 </Button>
                 <Button
-                  className="btnAnimation overflow-hidden  duration-200  inline-flex items-center justify-center cursor-pointer  bg-yellow-300 text-white text-xl py-2 px-7 rounded-lg hover:bg-yellow-250 transition uppercase ml-2"
+                  className="border-none  btnAnimation overflow-hidden  duration-200  inline-flex items-center justify-center cursor-pointer  bg-mustard text-white text-xl py-2 px-7 rounded-lg hover:bg-yellow-250 transition uppercase ml-2"
                   onClick={() => {
                     if (!value) {
                       showAlert("Airwaybill No is required!", "warning");
@@ -670,6 +699,7 @@ before:w-[6px] before:h-[1px] before:bg-gray-400 before:absolute before:right-[-
           )}
         </div>
       </div>
+            </div>
       <Modal
         open={openModal}
         size="md"

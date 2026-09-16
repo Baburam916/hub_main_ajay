@@ -90,7 +90,8 @@ const bag_segregation = (data: any) => {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
+      <div className="w-full">
+    
         {!showPendingList ? (
           <Button
             className="bg-mustard border-none py-2 px-4 text-white"
@@ -101,22 +102,31 @@ const bag_segregation = (data: any) => {
             {spinner && <LoadingIcon icon="puff" className="ml-2" />}
           </Button>
         ) : (
+
+          
           <>
-            <div className="flex items-center">
+              <div className="w-full border border-[#E6E6E6] rounded-[15px] shadow-[0_0px_5px_#edf5ff] mb-4 bg-white">
+           
+           <div className="bookleftTittle rounded-tl-[15px] rounded-tr-[15px] border-b border-[#E6E6E6] px-[12px] py-[10px]  bg-[#F8F8F8] ">
+            <div className="flex items-center justify-between">
+             <div className="flex items-center">
               <div
-                className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+                className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]"
                 onClick={() => setShowPendingList(false)}
               >
-                <ArrowLeft className="w-5 h-4" />
+                <ArrowLeft className="w-4 h-4 text-white" />
               </div>
-              <div className="flex justify-between items-center w-full">
-                <h1 className="text-base text-gray-500 font-bold">
+         <h1 className="text-base text-gray-500 font-bold">
                   Pending Inscan List
                 </h1>
+</div>
+
+              <div className="flex justify-between items-center ">
+               
                 <div className="relative flex justify-between items-center">
                   <FormInput
                     placeholder="Search..."
-                    className="pr-8 pt-1 pb-1 rounded-xl"
+                    className="pr-8 pt-1 pb-1 rounded-md h-[37px]"
                     value={manifestSearch}
                     onChange={(e) => {
                       setManifestSearch(e.target.value);
@@ -124,10 +134,12 @@ const bag_segregation = (data: any) => {
                       setPage(1);
                     }}
                   />
-                  <Search className="absolute right-1 w-5 h-5" />
+                  <Search className="absolute right-2 w-4 h-4" />
                 </div>
               </div>
             </div>
+   </div>
+    <div className="p-2  lg:p-6">
             {getPendingList?.length > 0 ? (
               <>
                 <Table columns={columns} row={row} heightTable="42.5vh" />
@@ -140,9 +152,12 @@ const bag_segregation = (data: any) => {
             ) : (
               <p className="text-gray-400 text-center">No Data Found!</p>
             )}
+           </div>
+                </div>
           </>
         )}
       </div>
+  
     </>
   );
 };

@@ -12,7 +12,8 @@ import { ReleaseShipmentData } from "../../../DataTypes/dataTypes";
 import LoadingIcon from "../../../base-components/LoadingIcon";
 import CommonPagination from "../../../components/Pagination";
 import { useDebounce } from "../../../components/Search";
-import { Search } from "lucide-react";
+import { Search, Truck } from "lucide-react";
+import { User } from "lucide-react";
 
 const index = () => {
   const { showAlert } = useAlert();
@@ -113,8 +114,30 @@ const index = () => {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 py-3 px-6 bg-white rounded-lg shadow-lg">
-        <h1 className="font-bold text-lg mb-4">Release Shipment</h1>
+   <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+    <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nwrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Truck className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                   Release Shipment
+                  </h4>
+                </div>
+              </div>
+
+    
+            </div>
+          </div>
+
+
+       <div className="p-2  lg:p-6">
+    
         <div className="sm:flex">
           <div className="sm:w-[19%] sm:mr-2 mb-2 sm:mb-0">
             <FormSelect
@@ -143,21 +166,42 @@ const index = () => {
           <Button
             onClick={() => releaseShipments()}
             disabled={spinner}
-            className="p-2 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
+            className="border-none px-3 py-2 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
           >
             Release Shipment{" "}
             {spinner && <LoadingIcon icon="puff" className="ml-2" />}
           </Button>
         </div>
+</div>
       </div>
+        </div>
 
-      <div className="w-full max-w-6xl mx-auto mt-4 py-4 px-6 bg-white rounded-lg shadow-lg">
-        <div className="flex justify-between">
-          <h1 className="font-400 text-md">Held up shipment list</h1>
-          <div className="relative flex justify-between items-center">
+      <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+ <div className=" w-full py-3  px-3 border-b border-white commonGradientGray  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nwrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Truck className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                Held up shipment list
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center w-full lg:w-auto">
+
+
+    
+        
+          <div className="relative flex justify-between items-center w-full lg:w-auto">
             <FormInput
               placeholder="Search..."
-              className="pr-8 pt-1 pb-1 rounded-xl"
+              className="pr-8 pt-1 pb-1 rounded-md h-[35px] w-full lg:w-auto"
               value={manifestSearch}
               onChange={(e) => {
                 setManifestSearch(e.target.value.toUpperCase());
@@ -165,9 +209,18 @@ const index = () => {
                 setPage(1);
               }}
             />
-            <Search className="absolute right-1 w-5 h-5" />
+            <Search className="absolute right-2 w-4 h-4" />
           </div>
-        </div>
+      
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+    <div className="p-2  lg:p-6">
 
         {heldUpShipments.length > 0 ? (
           <>
@@ -183,6 +236,8 @@ const index = () => {
             <p className="text-gray-400 text-center">No Data Found!</p>
           </>
         )}
+      </div>
+      </div>
       </div>
     </>
   );

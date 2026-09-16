@@ -6,7 +6,7 @@ import {
 } from "../../../base-components/Form";
 import Button from "../../../base-components/Button";
 import TomSelect from "../../../base-components/TomSelect";
-import { File, Search, Trash2, Upload } from "lucide-react";
+import { Calendar, File, Search, Trash2, Upload } from "lucide-react";
 import Table from "../../../components/Table";
 import {
   Get_kyc_document,
@@ -46,7 +46,7 @@ const index = () => {
   const [selectApprovalType, setSelectApprovalType] = useState<Array<any>>([]);
   const [selectShipmentType, setSelectShipmentType] = useState<Array<any>>([]);
   const [kycOrganizationList, setKycOrganizationList] = useState<Array<any>>(
-    []
+    [],
   );
   const [file1, setFile1] = useState<any>(null);
   const [file2, setFile2] = useState<any>(null);
@@ -145,7 +145,7 @@ const index = () => {
         inscanOutscanReport,
         debouncedSearchTerm,
         20,
-        page - 1
+        page - 1,
       );
 
       if (response.status == 200) {
@@ -176,7 +176,7 @@ const index = () => {
       // console.log("response",response?.data?.data?.result)
       if (response?.status == 200 || []) {
         const matchedElement = response?.data?.data?.result?.filter((elem) =>
-          elem?.airwaybilno?.includes(debouncedFull)
+          elem?.airwaybilno?.includes(debouncedFull),
         );
 
         if (matchedElement && matchedElement.length > 0) {
@@ -212,7 +212,7 @@ const index = () => {
 
   const updateInscanOutscan = async (
     shipperId: Number,
-    approveStatus: Number
+    approveStatus: Number,
   ) => {
     const data = {
       shipper_id: shipperId,
@@ -233,7 +233,7 @@ const index = () => {
   const deleteInscanOutscanDoc = async (
     shipperId: Number,
     pickupId: Number,
-    docType: Number
+    docType: Number,
   ) => {
     const data = {
       shipper_id: shipperId,
@@ -309,7 +309,7 @@ const index = () => {
             response?.data?.message_v1
               ? response?.data?.message_v1
               : response?.data?.message,
-            response?.data?.message_v1 ? "warning" : "success"
+            response?.data?.message_v1 ? "warning" : "success",
           );
           if (searchToggle == 1) {
             searchAirwayFull();
@@ -709,7 +709,7 @@ const index = () => {
         // setPrintCsv([])
         convertJSONtoCSV(
           formatData(res?.data?.data?.result),
-          "inscan_outscan.csv"
+          "inscan_outscan.csv",
         );
       } else if (res?.status == 204) {
         setPrintCsv([]);
@@ -725,90 +725,117 @@ const index = () => {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-        <div className="sm:flex justify-between items-center mb-4">
-          <h1 className="font-bold text-lg mb-2">Inscanned VS Outscanned</h1>
-          <div className="flex items-center">
-            <div className="relative flex justify-between items-center">
-              <FormInput
-                placeholder="Search Airwaybill"
-                className="pr-8 pt-1 pb-1 rounded-xl"
-                value={fullAirwaybillSearch}
-                onChange={(e) => {
-                  setFullAirwaybillSearch(e.target.value.toUpperCase());
-                  // searchAirwayFull()
-                  // manifestInward();
-                }}
-              />
-              <Search className="absolute right-1 w-5 h-5" />
+      <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Calendar className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    Inscanned VS Outscanned
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center w-full lg:w-auto">
+             
+                  <div className="relative flex justify-between items-center w-full lg:w-auto">
+                    <FormInput
+                      placeholder="Search Airwaybill"
+                      className="p-2 rounded-md h-[35px] w-full lg:w-auto"
+                      value={fullAirwaybillSearch}
+                      onChange={(e) => {
+                        setFullAirwaybillSearch(e.target.value.toUpperCase());
+                        // searchAirwayFull()
+                        // manifestInward();
+                      }}
+                    />
+                    <Search className="absolute right-2 w-4 h-4 text-[#ccc]" />
+                
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <hr />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mt-3">
-          <div>
-            <FormLabel htmlFor="regular-form-1">From Date</FormLabel>
-            <FormInput
-              id="regular-form-1"
-              type="date"
-              value={fromDate}
-              onChange={(e: any) => setFromDate(e.target.value)}
-              placeholder="Search..."
-            />
-          </div>
-          <div>
-            <FormLabel htmlFor="regular-form-1">To Date</FormLabel>
-            <FormInput
-              id="regular-form-1"
-              type="date"
-              value={toDate}
-              onChange={(e: any) => setToDate(e.target.value)}
-              placeholder="Search..."
-            />
-          </div>
-          <div>
-            <FormLabel htmlFor="regular-form-1">Shipment Type</FormLabel>
-            <TomSelect
-              value={selectShipmentType}
-              onChange={(e) => {
-                setSelectShipmentType(e);
-              }}
-              className="w-full"
-              multiple
-            >
-              <option value="1">Non Document</option>
-              <option value="2">Document</option>
-            </TomSelect>
-          </div>
 
-          <div>
-            <FormLabel htmlFor="regular-form-1">Approval Type</FormLabel>
-            <TomSelect
-              value={selectApprovalType}
-              onChange={(e) => {
-                setSelectApprovalType(e);
-              }}
-              className="w-full"
-              multiple
-            >
-              <option value="0">Unapproved</option>
-              <option value="1">Approved</option>
-            </TomSelect>
-          </div>
-          <div className="flex mt-6 ml-4">
-            <Button
-              disabled={spinner || !fromDate || !toDate}
-              onClick={() => {
-                // setPage(1)
-                onSubmit();
-              }}
-              className="mt-1 py-2 px-4 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
-            >
-              Search {spinner && <LoadingIcon icon="puff" className="ml-2" />}
-            </Button>
-          </div>
-        </div>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-3">
+          <div className="w-full p-2 lg:p-3 border-b border-gray-200 bg-[#f1f1f1]">
+            <div className="grid grid-cols-12 gap-2 lg:gap-3">
+              <div className="col-span-6 lg:col-span-2">
+                <FormLabel htmlFor="regular-form-1" className="!mb-0">
+                  From Date
+                </FormLabel>
+                <FormInput
+                  id="regular-form-1"
+                  type="date"
+                  value={fromDate}
+                  onChange={(e: any) => setFromDate(e.target.value)}
+                  placeholder="Search..."
+                />
+              </div>
+              <div className="col-span-6 lg:col-span-2">
+                <FormLabel htmlFor="regular-form-1" className="!mb-0">
+                  To Date
+                </FormLabel>
+                <FormInput
+                  id="regular-form-1"
+                  type="date"
+                  value={toDate}
+                  onChange={(e: any) => setToDate(e.target.value)}
+                  placeholder="Search..."
+                />
+              </div>
+              <div className="col-span-12 lg:col-span-3">
+                <FormLabel htmlFor="regular-form-1" className="!mb-0">
+                  Shipment Type
+                </FormLabel>
+                <TomSelect
+                  value={selectShipmentType}
+                  onChange={(e) => {
+                    setSelectShipmentType(e);
+                  }}
+                  className="w-full bg-white"
+                  multiple
+                >
+                  <option value="1">Non Document</option>
+                  <option value="2">Document</option>
+                </TomSelect>
+              </div>
+
+              <div className="col-span-12 lg:col-span-3">
+                <FormLabel htmlFor="regular-form-1" className="!mb-0">
+                  Approval Type
+                </FormLabel>
+                <TomSelect
+                  value={selectApprovalType}
+                  onChange={(e) => {
+                    setSelectApprovalType(e);
+                  }}
+                  className="w-full bg-white"
+                  multiple
+                >
+                  <option value="0">Unapproved</option>
+                  <option value="1">Approved</option>
+                </TomSelect>
+              </div>
+              <div className="col-span-12 lg:col-span-2">
+                <div className="flex mt-[20px]">
+                  <Button
+                    disabled={spinner || !fromDate || !toDate}
+                    onClick={() => {
+                      // setPage(1)
+                      onSubmit();
+                    }}
+                    className="border-none py-2 px-4 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
+                  >
+                    Search{" "}
+                    {spinner && <LoadingIcon icon="puff" className="ml-2" />}
+                  </Button>
+                </div>
+              </div>
+            </div>
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-3">
           <div>
             <FormLabel htmlFor="regular-form-1">Approval Type</FormLabel>
             <TomSelect
@@ -836,59 +863,67 @@ const index = () => {
           
           </div>
         </div> */}
-      </div>
+          </div>
 
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-        <div className="relative flex justify-end items-center w-100">
-          {toggleSearch && (
-            <>
-              <div className="mr-2 ">
-                <Button
-                  variant="outline-secondary"
-                  className="w-full sm:w-auto pt-1 pb-1 pl-2 pr-2 rounded-xl"
-                  disabled={csvSpinner}
-                  onClick={() => {
-                    csvDataForPrint();
-                  }}
-                >
-                  <Lucide icon="FileText" className="w-4 h-4 mr-2" />
-                  Export
-                  {csvSpinner && <LoadingIcon icon="puff" className="ml-2" />}
-                </Button>
+          <div className="p-2  lg:p-6">
+            <div className="w-full">
+              <div className="relative flex justify-end items-center w-100">
+                {toggleSearch && (
+                  <>
+                    <div className="mr-2 ">
+                      <Button
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto pt-1 pb-1 pl-2 pr-2 rounded-xl"
+                        disabled={csvSpinner}
+                        onClick={() => {
+                          csvDataForPrint();
+                        }}
+                      >
+                        <Lucide icon="FileText" className="w-4 h-4 mr-2" />
+                        Export
+                        {csvSpinner && (
+                          <LoadingIcon icon="puff" className="ml-2" />
+                        )}
+                      </Button>
+                    </div>
+                    <FormInput
+                      placeholder="Search..."
+                      className="w-[30%] pr-8 pt-1 pb-1 rounded-xl"
+                      value={manifestSearch}
+                      onChange={(e) => {
+                        setManifestSearch(e.target.value);
+
+                        setPage(1);
+                      }}
+                    />
+                    <Search className="absolute right-1 w-5 h-5" />
+                  </>
+                )}
               </div>
-              <FormInput
-                placeholder="Search..."
-                className="w-[30%] pr-8 pt-1 pb-1 rounded-xl"
-                value={manifestSearch}
-                onChange={(e) => {
-                  setManifestSearch(e.target.value);
-
-                  setPage(1);
-                }}
-              />
-              <Search className="absolute right-1 w-5 h-5" />
-            </>
-          )}
+              {tableData?.length > 0 ? (
+                <>
+                  <Table
+                    columns={columns}
+                    row={row}
+                    heightTable="32vh"
+                    currentPage={page || 0}
+                  />
+                  <CommonPagination
+                    totalpages={totalpages}
+                    onPageChange={handlePagechange}
+                    page={page}
+                  />
+                </>
+              ) : (
+                <>
+                  <p className="text-gray-400 text-center mt-4">
+                    No Data Found!
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-        {tableData?.length > 0 ? (
-          <>
-            <Table
-              columns={columns}
-              row={row}
-              heightTable="32vh"
-              currentPage={page || 0}
-            />
-            <CommonPagination
-              totalpages={totalpages}
-              onPageChange={handlePagechange}
-              page={page}
-            />
-          </>
-        ) : (
-          <>
-            <p className="text-gray-400 text-center mt-4">No Data Found!</p>
-          </>
-        )}
       </div>
 
       <Modal

@@ -1,4 +1,4 @@
-import { Download, Search } from "lucide-react";
+import { Download, Ruler, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import Lucide from "../../../base-components/Lucide";
@@ -29,6 +29,7 @@ import LoadingIcon from "../../../base-components/LoadingIcon";
 import { unparse } from "papaparse";
 import IsLoading from "../../../components/Isloading/isLoading";
 import { useNavigate } from "react-router-dom";
+import { User } from "lucide-react";
 
 export default function WeightDimensionList(data: any) {
   const {
@@ -326,9 +327,9 @@ export default function WeightDimensionList(data: any) {
   );
   const description1 = (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-3">
-        <div>
-          <FormLabel htmlFor="regular-form-1">
+      <div className="grid grid-cols-12 gap-3 mt-3">
+        <div className="col-span-12 lg:col-span-12">
+          <FormLabel htmlFor="regular-form-1"  className="!mb-0">
             <strong>From Date</strong>
           </FormLabel>
           <FormInput
@@ -340,8 +341,8 @@ export default function WeightDimensionList(data: any) {
             placeholder="Search..."
           />
         </div>
-        <div>
-          <FormLabel htmlFor="regular-form-1">
+            <div className="col-span-12 lg:col-span-6">
+          <FormLabel htmlFor="regular-form-1"  className="!mb-0">
             <strong>To Date</strong>
           </FormLabel>
           <FormInput
@@ -354,8 +355,8 @@ export default function WeightDimensionList(data: any) {
             placeholder="Search..."
           />
         </div>
-        <div>
-          <FormLabel htmlFor="regular-form-1">
+           <div className="col-span-12 lg:col-span-6">
+          <FormLabel htmlFor="regular-form-1" className="!mb-0">
             <strong>Shipment Type</strong>
           </FormLabel>
           <FormSelect
@@ -372,12 +373,12 @@ export default function WeightDimensionList(data: any) {
           </FormSelect>
         </div>
       </div>
-      <div className="text-end">
+       <div className="col-span-12 lg:col-span-12">
         <Button
           disabled={spinner}
           //  onClick={()=> handleDateExport()
           onClick={() => csvDataForPrint()}
-          className="mt-2 w-100 ml-0 p-[9px] bg-green-500 border-none text-white rounded-xl"
+          className="mt-2 w-100 ml-0 p-[9px] bg-mustard border-none text-white rounded-md"
         >
           Export CSV {spinner && <LoadingIcon icon="puff" className="ml-2" />}
         </Button>
@@ -646,13 +647,26 @@ export default function WeightDimensionList(data: any) {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 py-4 px-6 bg-white rounded-lg shadow-lg sm:flex justify-between items-center">
-        <h1 className="font-bold text-lg">Weight Dimension</h1>
+     <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
 
-        {/* <div className="flex items-center">
-          <Download className="ml-6 w-5 h-5 cursor-pointer" />
-        </div> */}
-        <div className="lg:flex md:flex justify-end ">
+   <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div className="w-full lg:w-auto">
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Ruler className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                 Weight Dimension
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center w-full lg:w-auto">
+                     <div className="flex-wrap lg:flex-nowrap flex gap-2  lg:justify-end w-full lg:w-auto ">
           <FormCheck>
             <FormCheck.Input
               checked={isemirates}
@@ -674,12 +688,12 @@ export default function WeightDimensionList(data: any) {
             onClick={() => {
               setOpenModal1(true);
             }}
-            className="mt-2 mb-2 sm:mt-0 sm:mb-0 mr-2 bg-green-500 border-none py-1 px-4 sm:ml-8 text-white rounded-xl"
+            className="mt-2 mb-2 sm:mt-0 sm:mb-0 mr-2 bg-green-500 border-none py-1 px-4 sm:ml-2 text-white rounded-md"
           >
             Download CSV
           </Button>
-          <div className="flex items-center mr-2">
-            <FormLabel htmlFor="records-per-page" className="mr-2 mb-0 whitespace-nowrap">
+          <div className="flex items-center ">
+            <FormLabel htmlFor="records-per-page" className="mb-0 whitespace-nowrap mr-1">
               Show
             </FormLabel>
             <FormSelect
@@ -694,21 +708,37 @@ export default function WeightDimensionList(data: any) {
               <option value={100}>100</option>
             </FormSelect>
           </div>
-          <div className=" relative flex justify-between items-center">
+          <div className=" relative flex justify-between items-center w-full lg:w-auto">
             <FormInput
               placeholder="Search..."
-              className="pr-8 pt-1 pb-1 rounded-xl"
+              className="pr-8 pt-1 pb-1 rounded-md h-[36px]  w-full lg:w-auto"
               value={manifestSearch}
               onChange={(e) => {
                 setManifestSearch(e.target.value.toUpperCase());
                 setPage(1);
               }}
             />
-            <Search className="absolute right-1 w-5 h-5" />
+            <Search className="absolute right-2 w-4 h-4" />
           </div>
         </div>
+
+              </div>
+            
+
+
+
+
+</div>
+
+
+    
+
+        {/* <div className="flex items-center">
+          <Download className="ml-6 w-5 h-5 cursor-pointer" />
+        </div> */}
+   
       </div>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
+<div className="p-2  lg:p-6 w-full">
         {getList?.length > 0 && !loading ? (
           <>
             <Table
@@ -743,6 +773,10 @@ export default function WeightDimensionList(data: any) {
         )}
       </div>
 
+          </div>
+
+
+</div>
       <Modal1
         open={openModal1}
         title=""

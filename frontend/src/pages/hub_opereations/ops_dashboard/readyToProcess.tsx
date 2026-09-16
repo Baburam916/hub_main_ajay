@@ -12,6 +12,9 @@ import {
   Upload,
   Minus,
   Plus,
+  CalendarDays,
+  User,
+  Box,
 } from "lucide-react";
 import {
   FormCheck,
@@ -153,7 +156,7 @@ const PortalMenu = ({
           >
             {children}
           </div>,
-          document.body
+          document.body,
         )}
     </div>
   );
@@ -180,7 +183,7 @@ const intarrcharges = {
   inr_amount: 0,
   currency: "24",
   sac_code: "",
-  ex_rate: 1
+  ex_rate: 1,
 };
 const intarrcharges2 = {
   enquiry_id: "",
@@ -231,8 +234,8 @@ const intexchangedataSell = [
     ex_rate: "",
   },
 ];
-const fun1 = (value: any) => { };
-const funtoempty = () => { };
+const fun1 = (value: any) => {};
+const funtoempty = () => {};
 const ReadyToProcess = ({
   countryData,
   franchiseeData,
@@ -292,7 +295,7 @@ const ReadyToProcess = ({
   const [bookSpinner, setBookSpinner] = useState(false);
   const [selfSpinner, setSelfSpinner] = useState(false);
   const [jobTypeList, setJobTypeList] = useState([]);
-  const [vendorData, setVendorData] = useState([])
+  const [vendorData, setVendorData] = useState([]);
   const [jobData, setJobData] = useState({
     franchisee_id: "",
     job_id: "",
@@ -327,7 +330,8 @@ const ReadyToProcess = ({
     { ...intarrcharges2, weight: editData?.weight },
   ]);
   const [exchangedata, setExchangedata] = useState<any>(intexchangedata);
-  const [exchangedataSell, setExchangedataSell] = useState<any>(intexchangedataSell);
+  const [exchangedataSell, setExchangedataSell] =
+    useState<any>(intexchangedataSell);
   const [exchangeSellLocked, setExchangeSellLocked] = useState(false);
   const [importBookingType, setImportBookingType] = useState<any>(null);
   const uploadSingleFile = useRef<HTMLInputElement | null>(null);
@@ -395,7 +399,7 @@ const ReadyToProcess = ({
                 (+item?.breadth || 0) *
                 (+item?.height || 0) *
                 (+item?.quantity || 0)) /
-              courier_data[0]?.denom_fac,
+                courier_data[0]?.denom_fac,
               +item?.weight || 0,
             ),
           0,
@@ -412,7 +416,7 @@ const ReadyToProcess = ({
               (+item?.breadth || 0) *
               (+item?.height || 0) *
               (+item?.quantity || 0)) /
-            courier_data[0]?.denom_fac,
+              courier_data[0]?.denom_fac,
           0,
         );
         chargeable_weight = Math.max(gross_w, vol_w);
@@ -499,11 +503,21 @@ const ReadyToProcess = ({
       if (item?.charge_id == 163 || item?.charge_id == 162) {
         return total;
       } else {
-        const chargeInfo = forwhat === "sell"
-          ? chargesList?.find((c: any) => c.ref_sell_id == item?.charge_id)
-          : chargesList?.find((c: any) => c.charge_id == item?.charge_id);
-        const igstRate = parseFloat(chargeInfo?.tax_breakup?.igst || "18") / 100;
-        return total + Number(item[key] || 0) * (editGstStatus == 4 || (forwhat === "sell" && importBookingType == 3) || cargoOverseas?.is_overseas ? 0 : igstRate);
+        const chargeInfo =
+          forwhat === "sell"
+            ? chargesList?.find((c: any) => c.ref_sell_id == item?.charge_id)
+            : chargesList?.find((c: any) => c.charge_id == item?.charge_id);
+        const igstRate =
+          parseFloat(chargeInfo?.tax_breakup?.igst || "18") / 100;
+        return (
+          total +
+          Number(item[key] || 0) *
+            (editGstStatus == 4 ||
+            (forwhat === "sell" && importBookingType == 3) ||
+            cargoOverseas?.is_overseas
+              ? 0
+              : igstRate)
+        );
       }
     }, 0);
 
@@ -853,8 +867,10 @@ const ReadyToProcess = ({
     Status_code_list().then((res) => setStatusList(res?.data?.data));
     Get_customer_type().then((res) => setAlltypedata(res?.data?.data));
     Get_Job_Type().then((res) => setJobTypeList(res?.data?.data));
-    Get_vendor().then((res) => setVendorData(res?.data?.data || []))
-    Get_Aramex_Product().then((res) => setAramexProductList(res?.data?.data || []))
+    Get_vendor().then((res) => setVendorData(res?.data?.data || []));
+    Get_Aramex_Product().then((res) =>
+      setAramexProductList(res?.data?.data || []),
+    );
   }, []);
 
   useEffect(() => {
@@ -917,7 +933,10 @@ const ReadyToProcess = ({
   useEffect(() => {
     const commodityId = modalData?.commodity;
     if (commodityId) {
-      if (String(commoditySearchBooking?.commodity_id ?? "") !== String(commodityId)) {
+      if (
+        String(commoditySearchBooking?.commodity_id ?? "") !==
+        String(commodityId)
+      ) {
         common_get(`/admin/commodity-type/${commodityId}`).then((res) => {
           if (res?.status === 200) {
             const commodityData = Array.isArray(res?.data?.data)
@@ -1161,19 +1180,19 @@ const ReadyToProcess = ({
     const Status = (
       <>
         {item?.booking_status == 1 ? (
-          <p className=" text-green-500 text-base ">Pricing Approved</p>
+          <p className=" text-green-500 text-[13px] ">Pricing Approved</p>
         ) : item?.booking_status == 8 ? (
-          <p className=" text-mustard text-base ">CC Pending</p>
+          <p className=" text-mustard text-[13px] ">CC Pending</p>
         ) : item?.booking_status == 9 ? (
-          <p className=" text-green-500 text-base ">CC Approved</p>
+          <p className=" text-green-500 text-[13px]  ">CC Approved</p>
         ) : item?.booking_status == 10 ? (
-          <p className=" text-red-500 text-base ">CC Rejected</p>
+          <p className=" text-red-500 text-[13px]  ">CC Rejected</p>
         ) : item?.booking_status == 14 ? (
-          <p className=" text-red-500 text-base ">Insufficient Balance</p>
+          <p className=" text-red-500 text-[13px]  ">Insufficient Balance</p>
         ) : item?.booking_status == 15 && item?.is_checklist == 1 ? (
-          <p className=" text-green-500 text-base ">Checklist Done</p>
+          <p className=" text-green-500 text-[13px]  ">Checklist Done</p>
         ) : item?.booking_status == 15 && item?.is_checklist == 0 ? (
-          <p className=" text-mustard text-base ">Checklist Pending</p>
+          <p className=" text-mustard text-[13px]  ">Checklist Pending</p>
         ) : (
           "N.A."
         )}
@@ -1234,12 +1253,53 @@ const ReadyToProcess = ({
 
   const confirmDescription = (
     <>
-      <div className=" flex justify-between gap-4 mb-2">
-        <div className=" bg-gray-200 rounded p-2 max-w-1/2 overflow-hidden truncate">
+
+<div className="flex-wrap lg:flex-nowrap flex gap-2 mb-3">
+<div className="bg-[#fff3dc] rounded-lg p-[7px] flex w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <FileText className="w-[35px]  text-[#ba9650] " />
+    </figure>
+    <aside className="md:border-l md:border-[#fbe9c7] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">ENQUIRY No.</p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer"> {confirmData?.booking_no} </span>
+           
+        </h4>
+    </aside>
+</div>
+
+<div className="bg-[#f2f7ff] rounded-lg p-[7px] flex  w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <User className="w-[30px]  text-[#4478cb] " />
+    </figure>
+    <aside className="md:border-l md:border-[#d8e7ff] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">FRANCHISEE </p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">{
+            franchiseeData?.find(
+              (item: any) => item?.franchisee_id == confirmData?.franchisee_id,
+            )?.franchisee_name
+          } </span>
+           
+        </h4>
+    </aside>
+</div>
+
+
+</div>
+
+
+
+
+
+
+{/* 
+      <div className="  justify-between gap-4 mb-2 border border-[#ffe7b1]   bg-gradient-to-r from-[#FFF9EB] via-[#FDFDFD] to-[#FDFDFD] rounded-lg">
+        <div className="border-b border-[#ffe7b1] px-2 py-[5px]">
           <b>ENQUIRY No: </b>
           {confirmData?.booking_no}
         </div>
-        <div className=" bg-gray-200 rounded p-2 overflow-hidden truncate max-w-1/2">
+        <div className=" px-2 py-[5px]">
           <b>FRANCHISEE : </b>
           {
             franchiseeData?.find(
@@ -1247,8 +1307,8 @@ const ReadyToProcess = ({
             )?.franchisee_name
           }
         </div>
-      </div>
-      <div className="text-center">
+      </div> */}
+      <div className="text-center text-[18px] font-bold mt-4">
         {confirmData?.forWhat == 1 ? (
           "Are you sure you want to Generate Proforma Invoice ?"
         ) : confirmData?.forWhat == 2 ? (
@@ -1405,7 +1465,7 @@ const ReadyToProcess = ({
       {confirmData?.forWhat != 3 && (
         <div className="flex justify-end gap-4">
           <Button
-            className="px-4 py-1 rounded-lg bg-green-400 text-white hover:bg-green-500 ml-2"
+            className="px-4 py-1 rounded-lg bg-mustard text-white hover:bg-gray-500 border-none"
             onClick={() => {
               setConfirmSpinner(true);
               if (confirmData?.forWhat == 1) {
@@ -1436,7 +1496,7 @@ const ReadyToProcess = ({
             )}
           </Button>
           <Button
-            className="px-4 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 ml-2"
+            className="px-4 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 border-none"
             onClick={() => setConfirm(false)}
             disabled={confirmSpinner}
           >
@@ -1449,6 +1509,107 @@ const ReadyToProcess = ({
 
   const description = (
     <>
+
+
+
+
+
+
+
+
+<div className="flex-wrap lg:flex-nowrap flex gap-2 mb-3">
+<div className="bg-[#fff3dc] rounded-lg p-[7px] flex w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <FileText className="w-[35px]  text-[#ba9650] " />
+    </figure>
+    <aside className="md:border-l md:border-[#fbe9c7] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">ENQUIRY No.</p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">         {modalData?.booking_no} </span>
+           
+        </h4>
+    </aside>
+</div>
+
+<div className="bg-[#f2f7ff] rounded-lg p-[7px] flex  w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <User className="w-[30px]  text-[#4478cb] " />
+    </figure>
+    <aside className="md:border-l md:border-[#d8e7ff] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">ACL </p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">
+         ₹  {indianFormat(
+            franchiseeData?.find(
+              (item: any) => item?.franchisee_id == modalData?.franchisee_id,
+            )?.available_credit_limit_show || 0,
+          )}</span>
+           
+        </h4>
+    </aside>
+</div>
+
+
+
+
+<div className="bg-[#eafffa] rounded-lg p-[7px] flex  w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <User className="w-[30px]  text-[#18a080] " />
+    </figure>
+    <aside className="md:border-l md:border-[#b7ffee] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">Total Sell </p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">
+        ₹  {indianFormat(
+            franchiseeData?.find(
+              (item: any) => item?.franchisee_id == modalData?.franchisee_id,
+            )?.is_overseas == 1
+              ? Number(modalData?.spot_price)
+              : Number(modalData?.spot_price) * 1.18,
+          )}</span>
+           
+        </h4>
+    </aside>
+</div>
+
+
+<div className="bg-[#faf5ff] rounded-lg p-[7px] flex  w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <User className="w-[30px]  text-[#9c51e7] " />
+    </figure>
+    <aside className="md:border-l md:border-[#ecd9ff] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">Total Outstanding  </p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">
+       
+          
+            {outstandingSpinner ? (
+            <div className="flex items-center justify-center">
+              <Spinner className="h-2 w-4 stroke-2.5" />
+            </div>
+          ) : (
+            <>
+     
+             ₹ {indianFormat(
+                Number(outstandingData?.billed || 0) +
+                  Number(outstandingData?.unbilled || 0),
+              )}
+            </>
+          )}
+          
+          </span>
+           
+        </h4>
+    </aside>
+</div>
+
+
+</div>
+
+
+
+
+{/* 
       <div className=" flex justify-between gap-4  mb-2">
         <div className=" bg-gray-200 rounded p-2">
           <b>ENQUIRY No: </b>
@@ -1482,12 +1643,14 @@ const ReadyToProcess = ({
               <b>Total Outstanding : </b>₹
               {indianFormat(
                 Number(outstandingData?.billed || 0) +
-                Number(outstandingData?.unbilled || 0),
+                  Number(outstandingData?.unbilled || 0),
               )}
             </>
           )}
         </div>
-      </div>
+      </div> */}
+
+      
       <div className="col-span-12 h-[370px] overflow-auto ">
         <div className="box">
           <div className="space-y-4 px-2 py-1">
@@ -1495,7 +1658,7 @@ const ReadyToProcess = ({
               <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-0 justify-between w-full">
                 <div
                   className="box w-full border-2 border-gray-200 px-4 py-2  font-medium cursor-pointer text-sm flex flex-col md:flex-row justify-between gap-4 rounded-lg bg-white h-auto"
-                // onClick={() => setShowChangeVendor(false)}
+                  // onClick={() => setShowChangeVendor(false)}
                 >
                   <div>
                     <div className="flex gap-2">
@@ -1505,7 +1668,7 @@ const ReadyToProcess = ({
                     </div>
 
                     <div className="flex gap-2 ">
-                      <div className="text-center p-1 border-2 mx-auto h-14 w-10 rounded">
+                      <div className="text-center p-1 border-2  h-14 w-10 rounded">
                         <img
                           src={`https://flagsapi.com/${modalData?.origin_country_code}/flat/32.png`}
                           alt="origin-flag"
@@ -1514,7 +1677,7 @@ const ReadyToProcess = ({
                           ({modalData?.origin_country_code || "IN"})
                         </span>
                       </div>
-                      <div className="mx-auto p-1 pt-2 h-14 min-w-28 border-2 rounded flex flex-col  justify-center">
+                      <div className="p-1 pt-2 h-14 min-w-28 border-2 rounded flex flex-col  justify-center w-full">
                         <h1 className="font-medium text-sm md:text-lg">
                           (
                           {countryData?.find(
@@ -1592,13 +1755,14 @@ const ReadyToProcess = ({
                     </div>
 
                     <div className="flex gap-2 ">
-                      <div className="text-center p-1 border-2 mx-auto h-14 w-10 rounded">
+                      <div className="text-center p-1 border-2  h-14 w-10 rounded ">
                         <img
-                          src={`https://flagsapi.com/${countryData?.find(
-                            (ele) =>
-                              ele?.country_id == modalData?.dest_country_id,
-                          )?.country_code
-                            }/flat/32.png`}
+                          src={`https://flagsapi.com/${
+                            countryData?.find(
+                              (ele) =>
+                                ele?.country_id == modalData?.dest_country_id,
+                            )?.country_code
+                          }/flat/32.png`}
                           alt="destination-flag"
                         />
                         <span className="text-sm">
@@ -1611,7 +1775,7 @@ const ReadyToProcess = ({
                         </span>
                       </div>
                       <div
-                        className={`mx-auto p-1 pt-2 min-w-28 h-14 border-2 rounded flex flex-col  justify-center text-wrap `}
+                        className={`w-full p-1 pt-2 min-w-28 h-14 border-2 rounded flex flex-col  justify-center text-wrap `}
                       >
                         <h1 className="font-medium text-sm md:text-lg">
                           (
@@ -1747,12 +1911,12 @@ const ReadyToProcess = ({
                     type="text"
                     disabled
                     value={modalData?.chargeable_weight || modalData?.weight}
-                  // onChange={(e) => {
-                  //   setEditData((prev: any) => ({
-                  //     ...prev,
-                  //     weight: e.target.value.replace(/[^0-9.]/g, ""),
-                  //   }));
-                  // }}
+                    // onChange={(e) => {
+                    //   setEditData((prev: any) => ({
+                    //     ...prev,
+                    //     weight: e.target.value.replace(/[^0-9.]/g, ""),
+                    //   }));
+                    // }}
                   />
                   <FormInput
                     // className={`w-full ${
@@ -1762,23 +1926,23 @@ const ReadyToProcess = ({
                     type="text"
                     disabled
                     value={modalData?.gross_weight || modalData?.weight}
-                  // onChange={(e) => {
-                  //   setEditData((prev: any) => ({
-                  //     ...prev,
-                  //     weight: e.target.value.replace(/[^0-9.]/g, ""),
-                  //   }));
-                  // }}
+                    // onChange={(e) => {
+                    //   setEditData((prev: any) => ({
+                    //     ...prev,
+                    //     weight: e.target.value.replace(/[^0-9.]/g, ""),
+                    //   }));
+                    // }}
                   />
 
                   <FormSelect
                     disabled
                     value={modalData?.weight_unit}
-                  // onChange={(e) => {
-                  //   setSpotData((prev: any) => ({
-                  //     ...prev,
-                  //     weight_unit: e.target.value,
-                  //   }));
-                  // }}
+                    // onChange={(e) => {
+                    //   setSpotData((prev: any) => ({
+                    //     ...prev,
+                    //     weight_unit: e.target.value,
+                    //   }));
+                    // }}
                   >
                     {weightUnit &&
                       weightUnit?.map((data: any, index: any) => (
@@ -1838,16 +2002,18 @@ const ReadyToProcess = ({
                 <FormLabel>CREDIT LIMIT</FormLabel>
                 <FormInput
                   placeholder="CREDIT LIMIT"
-                  value={indianFormat(Number(modalData?.credit_limit || 0)) || 0}
+                  value={
+                    indianFormat(Number(modalData?.credit_limit || 0)) || 0
+                  }
                   disabled
                 />
               </div>
               {(modalData?.shipment_type == 4 ||
                 modalData?.shipment_type == 5 ||
                 modalData?.shipment_type == 8) && (
-                  <div className="col-span-3">
-                    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-2 items-center">
-                      {/* <div>
+                <div className="col-span-3">
+                  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-2 items-center">
+                    {/* <div>
                       <FormLabel
                         htmlFor="destination-country"
                         className="text-base text-slate-500"
@@ -1865,159 +2031,159 @@ const ReadyToProcess = ({
                           ))}
                       </FormSelect>
                     </div> */}
-                      <div>
-                        <FormLabel
-                          htmlFor="clearence-type"
-                          className="text-base text-slate-500"
-                        >
-                          CLEARANCE TYPE <span className="text-red-400">*</span>
-                        </FormLabel>
+                    <div>
+                      <FormLabel
+                        htmlFor="clearence-type"
+                        className="text-base text-slate-500"
+                      >
+                        CLEARANCE TYPE <span className="text-red-400">*</span>
+                      </FormLabel>
 
-                        <FormSelect value={modalData?.clearence_type} disabled>
-                          <option value="">Select Clearance Type</option>
-                          {clearanceType &&
-                            clearanceType?.map((ele, index) => (
-                              <option key={index} value={ele.id}>
-                                {ele.name}
-                              </option>
-                            ))}
-                        </FormSelect>
+                      <FormSelect value={modalData?.clearence_type} disabled>
+                        <option value="">Select Clearance Type</option>
+                        {clearanceType &&
+                          clearanceType?.map((ele, index) => (
+                            <option key={index} value={ele.id}>
+                              {ele.name}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    <div>
+                      <FormLabel
+                        htmlFor="incoterm"
+                        className="text-base text-slate-500"
+                      >
+                        INCOTERM <span className="text-red-400">*</span>
+                      </FormLabel>
+
+                      <FormSelect
+                        id="incoterm"
+                        value={modalData?.incoterm}
+                        disabled
+                      >
+                        <option value="">Select Incoterm</option>
+                        {incoterm &&
+                          incoterm?.map((ele, index) => (
+                            <option key={index} value={ele?.id}>
+                              {ele?.name}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    {modalData?.jobData?.consignee_details?.mode == 2 ? (
+                      <div className="flex items-center gap-5  mx-4 mt-4">
+                        <FormLabel
+                          htmlFor="mode_value"
+                          className="mt-6 flex whitespace-nowrap"
+                        >
+                          MODE <span className="text-red-400">*</span>
+                        </FormLabel>
+                        <div className="flex flex-row gap-5 mt-4">
+                          <FormCheck className="mr-2">
+                            <FormCheck.Input
+                              id="mode_value_1"
+                              type="radio"
+                              checked={
+                                modalData?.jobData?.consignee_details
+                                  ?.mode_value == "LCL"
+                              }
+                              disabled
+                              name="mode_value"
+                            />
+                            <FormCheck.Label htmlFor="mode_value_1">
+                              {"LCL"}
+                            </FormCheck.Label>
+                          </FormCheck>
+                          <FormCheck className="mt-2 mr-2 sm:mt-0">
+                            <FormCheck.Input
+                              // value={switchLogs}
+                              id="mode_value_2"
+                              type="radio"
+                              checked={
+                                modalData?.jobData?.consignee_details
+                                  ?.mode_value == "FCL"
+                              }
+                              disabled
+                              name="mode_value"
+                            />
+                            <FormCheck.Label htmlFor="mode_value_2">
+                              FCL
+                            </FormCheck.Label>
+                          </FormCheck>
+                        </div>
                       </div>
+                    ) : modalData?.jobData?.consignee_details?.mode == 3 ? (
+                      <div className="flex items-center gap-5  mx-4 mt-4">
+                        <FormLabel
+                          htmlFor="mode_value"
+                          className="mt-6 flex whitespace-nowrap"
+                        >
+                          MODE <span className="text-red-400">*</span>
+                        </FormLabel>
+                        <div className="flex flex-row gap-5 mt-4">
+                          <FormCheck className="mr-2">
+                            <FormCheck.Input
+                              // value={spotData?.mode_value}
+                              id="mode_value_4"
+                              type="radio"
+                              checked={
+                                modalData?.jobData?.consignee_details
+                                  ?.mode_value == "LTL"
+                              }
+                              disabled
+                              name="mode_value"
+                            />
+                            <FormCheck.Label htmlFor="mode_value_4">
+                              {"LTL"}
+                            </FormCheck.Label>
+                          </FormCheck>
+                          <FormCheck className="mt-2 mr-2 sm:mt-0">
+                            <FormCheck.Input
+                              // value={switchLogs}
+                              id="mode_value_5"
+                              type="radio"
+                              checked={
+                                modalData?.jobData?.consignee_details
+                                  ?.mode_value == "FTL"
+                              }
+                              disabled
+                              name="mode_value"
+                            />
+                            <FormCheck.Label htmlFor="mode_value_5">
+                              FTL
+                            </FormCheck.Label>
+                          </FormCheck>
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
 
+                    {modalData?.job_type && (
                       <div>
                         <FormLabel
-                          htmlFor="incoterm"
+                          htmlFor="destination-country"
                           className="text-base text-slate-500"
                         >
-                          INCOTERM <span className="text-red-400">*</span>
+                          JOB TYPE <span className="text-red-400">*</span>
                         </FormLabel>
 
-                        <FormSelect
-                          id="incoterm"
-                          value={modalData?.incoterm}
-                          disabled
-                        >
-                          <option value="">Select Incoterm</option>
-                          {incoterm &&
-                            incoterm?.map((ele, index) => (
+                        <FormSelect value={modalData?.job_type} disabled>
+                          <option value="">Select Job Type</option>
+                          {jobTypeList &&
+                            jobTypeList?.map((ele, index) => (
                               <option key={index} value={ele?.id}>
-                                {ele?.name}
+                                {ele?.job_type_name}
                               </option>
                             ))}
                         </FormSelect>
                       </div>
+                    )}
 
-                      {modalData?.jobData?.consignee_details?.mode == 2 ? (
-                        <div className="flex items-center gap-5  mx-4 mt-4">
-                          <FormLabel
-                            htmlFor="mode_value"
-                            className="mt-6 flex whitespace-nowrap"
-                          >
-                            MODE <span className="text-red-400">*</span>
-                          </FormLabel>
-                          <div className="flex flex-row gap-5 mt-4">
-                            <FormCheck className="mr-2">
-                              <FormCheck.Input
-                                id="mode_value_1"
-                                type="radio"
-                                checked={
-                                  modalData?.jobData?.consignee_details
-                                    ?.mode_value == "LCL"
-                                }
-                                disabled
-                                name="mode_value"
-                              />
-                              <FormCheck.Label htmlFor="mode_value_1">
-                                {"LCL"}
-                              </FormCheck.Label>
-                            </FormCheck>
-                            <FormCheck className="mt-2 mr-2 sm:mt-0">
-                              <FormCheck.Input
-                                // value={switchLogs}
-                                id="mode_value_2"
-                                type="radio"
-                                checked={
-                                  modalData?.jobData?.consignee_details
-                                    ?.mode_value == "FCL"
-                                }
-                                disabled
-                                name="mode_value"
-                              />
-                              <FormCheck.Label htmlFor="mode_value_2">
-                                FCL
-                              </FormCheck.Label>
-                            </FormCheck>
-                          </div>
-                        </div>
-                      ) : modalData?.jobData?.consignee_details?.mode == 3 ? (
-                        <div className="flex items-center gap-5  mx-4 mt-4">
-                          <FormLabel
-                            htmlFor="mode_value"
-                            className="mt-6 flex whitespace-nowrap"
-                          >
-                            MODE <span className="text-red-400">*</span>
-                          </FormLabel>
-                          <div className="flex flex-row gap-5 mt-4">
-                            <FormCheck className="mr-2">
-                              <FormCheck.Input
-                                // value={spotData?.mode_value}
-                                id="mode_value_4"
-                                type="radio"
-                                checked={
-                                  modalData?.jobData?.consignee_details
-                                    ?.mode_value == "LTL"
-                                }
-                                disabled
-                                name="mode_value"
-                              />
-                              <FormCheck.Label htmlFor="mode_value_4">
-                                {"LTL"}
-                              </FormCheck.Label>
-                            </FormCheck>
-                            <FormCheck className="mt-2 mr-2 sm:mt-0">
-                              <FormCheck.Input
-                                // value={switchLogs}
-                                id="mode_value_5"
-                                type="radio"
-                                checked={
-                                  modalData?.jobData?.consignee_details
-                                    ?.mode_value == "FTL"
-                                }
-                                disabled
-                                name="mode_value"
-                              />
-                              <FormCheck.Label htmlFor="mode_value_5">
-                                FTL
-                              </FormCheck.Label>
-                            </FormCheck>
-                          </div>
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-
-                      {modalData?.job_type && (
-                        <div>
-                          <FormLabel
-                            htmlFor="destination-country"
-                            className="text-base text-slate-500"
-                          >
-                            JOB TYPE <span className="text-red-400">*</span>
-                          </FormLabel>
-
-                          <FormSelect value={modalData?.job_type} disabled>
-                            <option value="">Select Job Type</option>
-                            {jobTypeList &&
-                              jobTypeList?.map((ele, index) => (
-                                <option key={index} value={ele?.id}>
-                                  {ele?.job_type_name}
-                                </option>
-                              ))}
-                          </FormSelect>
-                        </div>
-                      )}
-
-                      {/* <div className=" col-span-3 md:col-span-3 lg:col-span-1">
+                    {/* <div className=" col-span-3 md:col-span-3 lg:col-span-1">
                       <FormLabel
                         htmlFor="service_type"
                         className="text-base text-slate-500"
@@ -2037,9 +2203,9 @@ const ReadyToProcess = ({
                           : ""}
                       </FormSelect>
                     </div> */}
-                    </div>
                   </div>
-                )}
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-2">
               <div className="flex gap-4 items-center">
@@ -2222,10 +2388,11 @@ const ReadyToProcess = ({
             {modalData?.currency_id && (
               <>
                 (in{" "}
-                {`${currencyData?.find(
-                  (data) => data?.id == modalData?.currency_id,
-                )?.currency || ""
-                  }`}
+                {`${
+                  currencyData?.find(
+                    (data) => data?.id == modalData?.currency_id,
+                  )?.currency || ""
+                }`}
                 )
               </>
             )}
@@ -2319,12 +2486,14 @@ const ReadyToProcess = ({
   }, []);
   const editDescription = (
     <>
-      <div className=" flex justify-center mb-2">
-        <div className=" bg-gray-200 rounded p-2">
+      <div className=" inline-block justify-between gap-4 mb-2 border border-[#ffe7b1]   bg-gradient-to-r from-[#FFF9EB] via-[#FDFDFD] to-[#FDFDFD] rounded-lg">
+        <div className=" px-4 py-2 ">
           <b>ENQUIRY No: </b>
           {editData?.booking_no}
         </div>
       </div>
+
+
       <div className="col-span-12 h-[50vh] overflow-auto ">
         <div className="box">
           <div className="space-y-4 px-2 py-1">
@@ -2524,9 +2693,9 @@ const ReadyToProcess = ({
               {(editData?.shipment_type == 4 ||
                 editData?.shipment_type == 5 ||
                 editData?.shipment_type == 8) && (
-                  <div className="col-span-3">
-                    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-2 items-center">
-                      {/* <div>
+                <div className="col-span-3">
+                  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-2 items-center">
+                    {/* <div>
                       <FormLabel
                         htmlFor="destination-country"
                         className="text-base text-slate-500"
@@ -2556,422 +2725,426 @@ const ReadyToProcess = ({
                       </FormSelect>
                     </div> */}
 
-                      <div>
-                        <FormLabel
-                          htmlFor="clearence-type"
-                          className="text-base text-slate-500"
-                        >
-                          CLEARANCE TYPE <span className="text-red-400">*</span>
-                        </FormLabel>
+                    <div>
+                      <FormLabel
+                        htmlFor="clearence-type"
+                        className="text-base text-slate-500"
+                      >
+                        CLEARANCE TYPE <span className="text-red-400">*</span>
+                      </FormLabel>
 
-                        <FormSelect
-                          value={editData?.clearence_type}
-                          onChange={(e) => {
-                            const evalue = e.target.value;
-                            setEditData((prev) => ({
-                              ...prev,
-                              clearence_type: e.target.value,
-                            }));
-                          }}
-                        >
-                          <option value="">Select Clearance Type</option>
-                          {clearanceType &&
-                            clearanceType
-                              ?.filter((ele) => {
-                                if (editData?.shipment_type == 8) {
-                                  return ele.id !== 3;
-                                }
-                                return true;
-                              })
-                              ?.map((ele, index) => (
-                                <option key={index} value={ele.id}>
-                                  {ele.name}
-                                </option>
-                              ))}
-                        </FormSelect>
-                      </div>
-
-                      <div>
-                        <FormLabel
-                          htmlFor="incoterm"
-                          className="text-base text-slate-500"
-                        >
-                          INCOTERM <span className="text-red-400">*</span>
-                        </FormLabel>
-
-                        <FormSelect
-                          id="incoterm"
-                          value={editData?.incoterm}
-                          onChange={(e) => {
-                            setEditData((prev) => ({
-                              ...prev,
-                              incoterm: e.target.value,
-                            }));
-                          }}
-                        >
-                          <option value="">Select Incoterm</option>
-                          {incoterm &&
-                            incoterm?.map((ele, index) => (
-                              <option key={index} value={ele?.id}>
-                                {ele?.name}
+                      <FormSelect
+                        value={editData?.clearence_type}
+                        onChange={(e) => {
+                          const evalue = e.target.value;
+                          setEditData((prev) => ({
+                            ...prev,
+                            clearence_type: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option value="">Select Clearance Type</option>
+                        {clearanceType &&
+                          clearanceType
+                            ?.filter((ele) => {
+                              if (editData?.shipment_type == 8) {
+                                return ele.id !== 3;
+                              }
+                              return true;
+                            })
+                            ?.map((ele, index) => (
+                              <option key={index} value={ele.id}>
+                                {ele.name}
                               </option>
                             ))}
-                        </FormSelect>
-                      </div>
-
-                      <div>
-                        <FormLabel
-                          htmlFor="job_type"
-                          className="text-base text-slate-500"
-                        >
-                          JOB TYPE <span className="text-red-400">*</span>
-                        </FormLabel>
-
-                        <FormSelect
-                          id="job_type"
-                          value={editData?.job_type}
-                          onChange={(e) => {
-                            setEditData((prev) => ({
-                              ...prev,
-                              job_type: e.target.value,
-                            }));
-                          }}
-                        >
-                          <option value="">Select Job Type</option>
-                          {jobTypeList &&
-                            jobTypeList?.map((ele, index) => (
-                              <option key={index} value={ele?.id}>
-                                {ele?.job_type_name}
-                              </option>
-                            ))}
-                        </FormSelect>
-                      </div>
-
-                      <div>
-                        <FormLabel
-                          htmlFor="dimension-unit"
-                          className="text-base text-slate-500"
-                        >
-                          DIMENSIONS UNIT <span className="text-red-400">*</span>
-                        </FormLabel>
-                        <FormSelect
-                          value={dimensionUnit}
-                          onChange={(e) => {
-                            setDimensionUnit(e.target.value);
-                          }}
-                          className="uppercase"
-                        >
-                          {lengthUnit &&
-                            lengthUnit?.map((data: any, index: any) => (
-                              <option
-                                className="uppercase"
-                                key={index}
-                                value={data?.id}
-                              >
-                                {data?.value}
-                              </option>
-                            ))}
-                        </FormSelect>
-                      </div>
-
-
-                      {editData?.shipment_type == 8 &&
-                        (editData?.fair_data?.mode == 2 ? (
-                          <div className="col-span-12 sm:col-span-6 flex item-center gap-5  mx-4 mt-4">
-                            <FormLabel
-                              htmlFor="mode_value"
-                              className="mt-2 flex whitespace-nowrap"
-                            >
-                              MODE <span className="text-red-400">*</span>
-                            </FormLabel>
-                            <div className="flex flex-row gap-5">
-                              <FormCheck className="mr-2">
-                                <FormCheck.Input
-                                  id="mode_value_1"
-                                  type="radio"
-                                  checked={
-                                    jobData?.consignee_details?.mode_value == "LCL"
-                                  }
-                                  onChange={(e: any) => {
-                                    if (e.target.checked) {
-                                      setJobData((pre: any) => ({
-                                        ...pre,
-                                        consignee_details: {
-                                          ...pre.consignee_details,
-                                          mode_value: "LCL",
-                                        },
-                                      }));
-                                    }
-                                  }}
-                                  name="mode_value"
-                                />
-                                <FormCheck.Label htmlFor="mode_value_1">
-                                  {"LCL"}
-                                </FormCheck.Label>
-                              </FormCheck>
-                              <FormCheck className="mt-2 mr-2 sm:mt-0">
-                                <FormCheck.Input
-                                  // value={switchLogs}
-                                  id="mode_value_2"
-                                  type="radio"
-                                  checked={
-                                    jobData?.consignee_details?.mode_value == "FCL"
-                                  }
-                                  onChange={(e: any) => {
-                                    if (e.target.checked) {
-                                      setEditData((pre: any) => ({
-                                        ...pre,
-                                        consignee_details: {
-                                          ...pre.consignee_details,
-
-                                          mode_value: "FCL",
-                                        },
-                                      }));
-                                    }
-                                  }}
-                                  name="mode_value"
-                                />
-                                <FormCheck.Label htmlFor="mode_value_2">
-                                  FCL
-                                </FormCheck.Label>
-                              </FormCheck>
-                            </div>
-                          </div>
-                        ) : editData?.fair_data?.mode === 3 ? (
-                          <div className="col-span-12 sm:col-span-6 flex item-center gap-5  mx-4 mt-4">
-                            <FormLabel
-                              htmlFor="mode_value"
-                              className="mt-2 flex whitespace-nowrap"
-                            >
-                              MODE <span className="text-red-400">*</span>
-                            </FormLabel>
-                            <div className="flex flex-row gap-5">
-                              <FormCheck className="mr-2">
-                                <FormCheck.Input
-                                  // value={spotData?.mode_value}
-                                  id="mode_value_4"
-                                  type="radio"
-                                  checked={
-                                    jobData?.consignee_details?.mode_value == "LTL"
-                                  }
-                                  onChange={(e: any) => {
-                                    if (e.target.checked) {
-                                      setEditData((pre: any) => ({
-                                        ...pre,
-                                        consignee_details: {
-                                          ...pre.consignee_details,
-
-                                          mode_value: "LTL",
-                                        },
-                                      }));
-                                    }
-                                  }}
-                                  name="mode_value"
-                                />
-                                <FormCheck.Label htmlFor="mode_value_4">
-                                  {"LTL"}
-                                </FormCheck.Label>
-                              </FormCheck>
-                              <FormCheck className="mt-2 mr-2 sm:mt-0">
-                                <FormCheck.Input
-                                  // value={switchLogs}
-                                  id="mode_value_5"
-                                  type="radio"
-                                  checked={
-                                    jobData?.consignee_details?.mode_value == "FTL"
-                                  }
-                                  onChange={(e: any) => {
-                                    if (e.target.checked) {
-                                      setEditData((pre: any) => ({
-                                        ...pre,
-                                        consignee_details: {
-                                          ...pre.consignee_details,
-
-                                          mode_value: "FTL",
-                                        },
-                                      }));
-                                    }
-                                  }}
-                                  name="mode_value"
-                                />
-                                <FormCheck.Label htmlFor="mode_value_5">
-                                  FTL
-                                </FormCheck.Label>
-                              </FormCheck>
-                            </div>
-                          </div>
-                        ) : (
-                          <></>
-                        ))}
-                      <div >
-                        <FormLabel
-                          htmlFor="dimension-unit"
-                          className="text-base text-slate-500"
-                        >
-                          PRIMARY OVERSEAS
-                        </FormLabel>
-                        <FormSelect
-                          value={editData?.primary_overseas}
-                          onChange={(e) => {
-                            setEditData((prev) => ({
-                              ...prev,
-                              primary_overseas: e.target.value,
-                            }));
-                          }}
-                          className="uppercase"
-                        >
-                          <option value="">Select one</option>
-                          {overseasdata &&
-                            overseasdata?.map((data: any, index: any) => (
-                              <option
-                                className="uppercase"
-                                key={index}
-                                value={data?.party_id}
-                              >
-                                {data?.party_name}
-                              </option>
-                            ))}
-                        </FormSelect>
-                      </div>
-
-                      <div >
-                        <FormLabel
-                          htmlFor="dimension-unit"
-                          className="text-base text-slate-500"
-                        >
-                          SECONDARY OVERSEAS
-                        </FormLabel>
-                        <FormSelect
-                          value={editData?.secondary_overseas}
-                          onChange={(e) => {
-                            setEditData((prev) => ({
-                              ...prev,
-                              secondary_overseas: e.target.value,
-                            }));
-                          }}
-                          className="uppercase"
-                        >
-                          <option value="">Select one</option>
-                          {overseasdata &&
-                            overseasdata?.map((data: any, index: any) => (
-                              <option
-                                className="uppercase"
-                                key={index}
-                                value={data?.party_id}
-                              >
-                                {data?.party_name}
-                              </option>
-                            ))}
-                        </FormSelect>
-                      </div>
-
-                      <div>
-                        <FormLabel
-                          htmlFor="currency-select"
-                          className="text-base text-slate-500"
-                        >
-                          CURRENCY
-                        </FormLabel>
-                        <FormSelect
-                          id="currency-select"
-                          value={editData?.currency_id || "24"}
-                          onChange={(e) => {
-                            setEditData((prev) => ({
-                              ...prev,
-                              currency_id: e.target.value,
-                            }));
-                          }}
-                          className="uppercase"
-                        >
-                          {currencyData &&
-                            currencyData?.map((data: any, index: any) => (
-                              <option
-                                className="uppercase"
-                                key={index}
-                                value={data?.id}
-                              >
-                                {data?.currency}
-                              </option>
-                            ))}
-                        </FormSelect>
-                      </div>
-
-                      {(editData?.shipment_type == 4 ||
-                        editData?.shipment_type == 5) &&
-                        vendorData
-                          ?.find(
-                            (item: any) =>
-                              item?.product_id == editData?.courier_id,
-                          )
-                          ?.product_name?.toLowerCase()
-                          .includes("fedex") && (
-                          <div>
-                            <FormLabel
-                              htmlFor="fedex-services"
-                              className="text-base text-slate-500"
-                            >
-                              Fedex Services <span className="text-red-400">*</span>
-                            </FormLabel>
-                            <FormSelect
-                              id="fedex-services"
-                              value={editData?.fedex_services}
-                              onChange={(e) => {
-                                setEditData((prev) => ({
-                                  ...prev,
-                                  fedex_services: e.target.value,
-                                }));
-                              }}
-                            >
-                              <option value={""}>Select fedex services</option>
-                              <option value={1}>IPF</option>
-                              <option value={2}>IEF</option>
-                              <option value={3}>IP</option>
-                            </FormSelect>
-                          </div>
-                        )}
-
-                      {(editData?.shipment_type == 4 ||
-                        editData?.shipment_type == 5) &&
-                        vendorData
-                          ?.find(
-                            (item: any) =>
-                              item?.product_id == editData?.courier_id,
-                          )
-                          ?.product_name?.toLowerCase()
-                          .includes("aramex") && (
-                          <div>
-                            <FormLabel
-                              htmlFor="courier-vendor-code"
-                              className="text-base text-slate-500"
-                            >
-                              Aramex Product Code{" "}
-                              <span className="text-red-400">*</span>
-                            </FormLabel>
-                            <FormSelect
-                              id="courier-vendor-code"
-                              value={editData?.courier_vendor_code || ""}
-                              onChange={(e) => {
-                                setEditData((prev) => ({
-                                  ...prev,
-                                  courier_vendor_code: e.target.value,
-                                }));
-                              }}
-                            >
-                              <option value={""}>Select</option>
-                              {aramexProductList?.map(
-                                (item: any) =>
-                                  item?.is_active == 1 && (
-                                    <option key={item.id} value={item.code}>
-                                      {item.code}
-                                    </option>
-                                  ),
-                              )}
-                            </FormSelect>
-                          </div>
-                        )}
+                      </FormSelect>
                     </div>
+
+                    <div>
+                      <FormLabel
+                        htmlFor="incoterm"
+                        className="text-base text-slate-500"
+                      >
+                        INCOTERM <span className="text-red-400">*</span>
+                      </FormLabel>
+
+                      <FormSelect
+                        id="incoterm"
+                        value={editData?.incoterm}
+                        onChange={(e) => {
+                          setEditData((prev) => ({
+                            ...prev,
+                            incoterm: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option value="">Select Incoterm</option>
+                        {incoterm &&
+                          incoterm?.map((ele, index) => (
+                            <option key={index} value={ele?.id}>
+                              {ele?.name}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    <div>
+                      <FormLabel
+                        htmlFor="job_type"
+                        className="text-base text-slate-500"
+                      >
+                        JOB TYPE <span className="text-red-400">*</span>
+                      </FormLabel>
+
+                      <FormSelect
+                        id="job_type"
+                        value={editData?.job_type}
+                        onChange={(e) => {
+                          setEditData((prev) => ({
+                            ...prev,
+                            job_type: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option value="">Select Job Type</option>
+                        {jobTypeList &&
+                          jobTypeList?.map((ele, index) => (
+                            <option key={index} value={ele?.id}>
+                              {ele?.job_type_name}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    <div>
+                      <FormLabel
+                        htmlFor="dimension-unit"
+                        className="text-base text-slate-500"
+                      >
+                        DIMENSIONS UNIT <span className="text-red-400">*</span>
+                      </FormLabel>
+                      <FormSelect
+                        value={dimensionUnit}
+                        onChange={(e) => {
+                          setDimensionUnit(e.target.value);
+                        }}
+                        className="uppercase"
+                      >
+                        {lengthUnit &&
+                          lengthUnit?.map((data: any, index: any) => (
+                            <option
+                              className="uppercase"
+                              key={index}
+                              value={data?.id}
+                            >
+                              {data?.value}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    {editData?.shipment_type == 8 &&
+                      (editData?.fair_data?.mode == 2 ? (
+                        <div className="col-span-12 sm:col-span-6 flex item-center gap-5  mx-4 mt-4">
+                          <FormLabel
+                            htmlFor="mode_value"
+                            className="mt-2 flex whitespace-nowrap"
+                          >
+                            MODE <span className="text-red-400">*</span>
+                          </FormLabel>
+                          <div className="flex flex-row gap-5">
+                            <FormCheck className="mr-2">
+                              <FormCheck.Input
+                                id="mode_value_1"
+                                type="radio"
+                                checked={
+                                  jobData?.consignee_details?.mode_value ==
+                                  "LCL"
+                                }
+                                onChange={(e: any) => {
+                                  if (e.target.checked) {
+                                    setJobData((pre: any) => ({
+                                      ...pre,
+                                      consignee_details: {
+                                        ...pre.consignee_details,
+                                        mode_value: "LCL",
+                                      },
+                                    }));
+                                  }
+                                }}
+                                name="mode_value"
+                              />
+                              <FormCheck.Label htmlFor="mode_value_1">
+                                {"LCL"}
+                              </FormCheck.Label>
+                            </FormCheck>
+                            <FormCheck className="mt-2 mr-2 sm:mt-0">
+                              <FormCheck.Input
+                                // value={switchLogs}
+                                id="mode_value_2"
+                                type="radio"
+                                checked={
+                                  jobData?.consignee_details?.mode_value ==
+                                  "FCL"
+                                }
+                                onChange={(e: any) => {
+                                  if (e.target.checked) {
+                                    setEditData((pre: any) => ({
+                                      ...pre,
+                                      consignee_details: {
+                                        ...pre.consignee_details,
+
+                                        mode_value: "FCL",
+                                      },
+                                    }));
+                                  }
+                                }}
+                                name="mode_value"
+                              />
+                              <FormCheck.Label htmlFor="mode_value_2">
+                                FCL
+                              </FormCheck.Label>
+                            </FormCheck>
+                          </div>
+                        </div>
+                      ) : editData?.fair_data?.mode === 3 ? (
+                        <div className="col-span-12 sm:col-span-6 flex item-center gap-5  mx-4 mt-4">
+                          <FormLabel
+                            htmlFor="mode_value"
+                            className="mt-2 flex whitespace-nowrap"
+                          >
+                            MODE <span className="text-red-400">*</span>
+                          </FormLabel>
+                          <div className="flex flex-row gap-5">
+                            <FormCheck className="mr-2">
+                              <FormCheck.Input
+                                // value={spotData?.mode_value}
+                                id="mode_value_4"
+                                type="radio"
+                                checked={
+                                  jobData?.consignee_details?.mode_value ==
+                                  "LTL"
+                                }
+                                onChange={(e: any) => {
+                                  if (e.target.checked) {
+                                    setEditData((pre: any) => ({
+                                      ...pre,
+                                      consignee_details: {
+                                        ...pre.consignee_details,
+
+                                        mode_value: "LTL",
+                                      },
+                                    }));
+                                  }
+                                }}
+                                name="mode_value"
+                              />
+                              <FormCheck.Label htmlFor="mode_value_4">
+                                {"LTL"}
+                              </FormCheck.Label>
+                            </FormCheck>
+                            <FormCheck className="mt-2 mr-2 sm:mt-0">
+                              <FormCheck.Input
+                                // value={switchLogs}
+                                id="mode_value_5"
+                                type="radio"
+                                checked={
+                                  jobData?.consignee_details?.mode_value ==
+                                  "FTL"
+                                }
+                                onChange={(e: any) => {
+                                  if (e.target.checked) {
+                                    setEditData((pre: any) => ({
+                                      ...pre,
+                                      consignee_details: {
+                                        ...pre.consignee_details,
+
+                                        mode_value: "FTL",
+                                      },
+                                    }));
+                                  }
+                                }}
+                                name="mode_value"
+                              />
+                              <FormCheck.Label htmlFor="mode_value_5">
+                                FTL
+                              </FormCheck.Label>
+                            </FormCheck>
+                          </div>
+                        </div>
+                      ) : (
+                        <></>
+                      ))}
+                    <div>
+                      <FormLabel
+                        htmlFor="dimension-unit"
+                        className="text-base text-slate-500"
+                      >
+                        PRIMARY OVERSEAS
+                      </FormLabel>
+                      <FormSelect
+                        value={editData?.primary_overseas}
+                        onChange={(e) => {
+                          setEditData((prev) => ({
+                            ...prev,
+                            primary_overseas: e.target.value,
+                          }));
+                        }}
+                        className="uppercase"
+                      >
+                        <option value="">Select one</option>
+                        {overseasdata &&
+                          overseasdata?.map((data: any, index: any) => (
+                            <option
+                              className="uppercase"
+                              key={index}
+                              value={data?.party_id}
+                            >
+                              {data?.party_name}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    <div>
+                      <FormLabel
+                        htmlFor="dimension-unit"
+                        className="text-base text-slate-500"
+                      >
+                        SECONDARY OVERSEAS
+                      </FormLabel>
+                      <FormSelect
+                        value={editData?.secondary_overseas}
+                        onChange={(e) => {
+                          setEditData((prev) => ({
+                            ...prev,
+                            secondary_overseas: e.target.value,
+                          }));
+                        }}
+                        className="uppercase"
+                      >
+                        <option value="">Select one</option>
+                        {overseasdata &&
+                          overseasdata?.map((data: any, index: any) => (
+                            <option
+                              className="uppercase"
+                              key={index}
+                              value={data?.party_id}
+                            >
+                              {data?.party_name}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    <div>
+                      <FormLabel
+                        htmlFor="currency-select"
+                        className="text-base text-slate-500"
+                      >
+                        CURRENCY
+                      </FormLabel>
+                      <FormSelect
+                        id="currency-select"
+                        value={editData?.currency_id || "24"}
+                        onChange={(e) => {
+                          setEditData((prev) => ({
+                            ...prev,
+                            currency_id: e.target.value,
+                          }));
+                        }}
+                        className="uppercase"
+                      >
+                        {currencyData &&
+                          currencyData?.map((data: any, index: any) => (
+                            <option
+                              className="uppercase"
+                              key={index}
+                              value={data?.id}
+                            >
+                              {data?.currency}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+
+                    {(editData?.shipment_type == 4 ||
+                      editData?.shipment_type == 5) &&
+                      vendorData
+                        ?.find(
+                          (item: any) =>
+                            item?.product_id == editData?.courier_id,
+                        )
+                        ?.product_name?.toLowerCase()
+                        .includes("fedex") && (
+                        <div>
+                          <FormLabel
+                            htmlFor="fedex-services"
+                            className="text-base text-slate-500"
+                          >
+                            Fedex Services{" "}
+                            <span className="text-red-400">*</span>
+                          </FormLabel>
+                          <FormSelect
+                            id="fedex-services"
+                            value={editData?.fedex_services}
+                            onChange={(e) => {
+                              setEditData((prev) => ({
+                                ...prev,
+                                fedex_services: e.target.value,
+                              }));
+                            }}
+                          >
+                            <option value={""}>Select fedex services</option>
+                            <option value={1}>IPF</option>
+                            <option value={2}>IEF</option>
+                            <option value={3}>IP</option>
+                          </FormSelect>
+                        </div>
+                      )}
+
+                    {(editData?.shipment_type == 4 ||
+                      editData?.shipment_type == 5) &&
+                      vendorData
+                        ?.find(
+                          (item: any) =>
+                            item?.product_id == editData?.courier_id,
+                        )
+                        ?.product_name?.toLowerCase()
+                        .includes("aramex") && (
+                        <div>
+                          <FormLabel
+                            htmlFor="courier-vendor-code"
+                            className="text-base text-slate-500"
+                          >
+                            Aramex Product Code{" "}
+                            <span className="text-red-400">*</span>
+                          </FormLabel>
+                          <FormSelect
+                            id="courier-vendor-code"
+                            value={editData?.courier_vendor_code || ""}
+                            onChange={(e) => {
+                              setEditData((prev) => ({
+                                ...prev,
+                                courier_vendor_code: e.target.value,
+                              }));
+                            }}
+                          >
+                            <option value={""}>Select</option>
+                            {aramexProductList?.map(
+                              (item: any) =>
+                                item?.is_active == 1 && (
+                                  <option key={item.id} value={item.code}>
+                                    {item.code}
+                                  </option>
+                                ),
+                            )}
+                          </FormSelect>
+                        </div>
+                      )}
                   </div>
-                )}
+                </div>
+              )}
             </div>
             <div className="mb-4">
               <div>
@@ -3002,7 +3175,9 @@ const ReadyToProcess = ({
                       onClick={() =>
                         getChargeableWeight(
                           1,
-                          dimensionUnit == 2 ? convertedDimension : dimensionData,
+                          dimensionUnit == 2
+                            ? convertedDimension
+                            : dimensionData,
                           editData?.courier_id,
                           1,
                         )
@@ -3026,24 +3201,44 @@ const ReadyToProcess = ({
                     </Button>
                     <div className="relative group">
                       <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center cursor-pointer shadow-md hover:shadow-blue-300 hover:scale-110 transition-all duration-200">
-                        <Lucide icon="Info" className="w-3 h-3 text-white stroke-[2.5]" />
+                        <Lucide
+                          icon="Info"
+                          className="w-3 h-3 text-white stroke-[2.5]"
+                        />
                       </div>
                       <div className="absolute bottom-8 right-0 z-50 hidden group-hover:block w-72 pointer-events-none">
                         <div className="bg-white text-gray-800 text-xs rounded-xl px-4 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-blue-100">
                           <div className="flex items-center gap-2 mb-2">
                             <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                              <Lucide icon="Zap" className="w-3 h-3 text-blue-500" />
+                              <Lucide
+                                icon="Zap"
+                                className="w-3 h-3 text-blue-500"
+                              />
                             </div>
-                            <span className="font-bold text-blue-600 text-[11px] uppercase tracking-wide">Smart Auto-Fill</span>
+                            <span className="font-bold text-blue-600 text-[11px] uppercase tracking-wide">
+                              Smart Auto-Fill
+                            </span>
                           </div>
                           <p className="text-gray-600 leading-relaxed mb-2">
-                            Save time! Upload your document and we'll read it automatically to fill in your details.
+                            Save time! Upload your document and we'll read it
+                            automatically to fill in your details.
                           </p>
                           <div className="flex items-center gap-1.5 bg-green-50 border border-green-100 rounded-lg px-2 py-1.5">
-                            <Lucide icon="FileCheck" className="w-3 h-3 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-500">Supported: <span className="text-green-600 font-semibold">JPG, PNG, PDF</span></span>
+                            <Lucide
+                              icon="FileCheck"
+                              className="w-3 h-3 text-green-500 flex-shrink-0"
+                            />
+                            <span className="text-gray-500">
+                              Supported:{" "}
+                              <span className="text-green-600 font-semibold">
+                                JPG, PNG, PDF
+                              </span>
+                            </span>
                           </div>
-                          <p className="text-gray-400 mt-2 text-[10px]">You can always edit the pre-filled information before submitting.</p>
+                          <p className="text-gray-400 mt-2 text-[10px]">
+                            You can always edit the pre-filled information
+                            before submitting.
+                          </p>
                         </div>
                         <div className="w-2.5 h-2.5 bg-white border-r border-b border-blue-100 rotate-45 absolute -bottom-1.5 right-2"></div>
                       </div>
@@ -3319,7 +3514,7 @@ const ReadyToProcess = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 border-2 p-4 rounded-md ">
+            <div className="grid grid-cols-2 border-1 p-4 rounded-md bg-[#fff8eb] ">
               <div className="flex gap-4 items-center">
                 {" "}
                 <h1 className="font-bold text-sm md:text-lg whitespace-nowrap">
@@ -3370,7 +3565,13 @@ const ReadyToProcess = ({
                   onClose={() => {
                     setReceiverOpen(false);
                   }}
-                  booking={{ ...editData, courier_name: vendorData?.find((item: any) => item?.product_id == editData?.courier_id)?.product_name || "N.A." }}
+                  booking={{
+                    ...editData,
+                    courier_name:
+                      vendorData?.find(
+                        (item: any) => item?.product_id == editData?.courier_id,
+                      )?.product_name || "N.A.",
+                  }}
                   isEdit={true}
                   countryData={countryData || []}
                   setJobData={setJobData}
@@ -3431,8 +3632,7 @@ const ReadyToProcess = ({
               oldCharges={oldCharges}
               currencyname={
                 currencyData?.find(
-                  (item: any) =>
-                    item?.id == cargoOverseas?.currency,
+                  (item: any) => item?.id == cargoOverseas?.currency,
                 )?.currency || ""
               }
               singlefranchiseedata={cargoOverseas}
@@ -3474,17 +3674,33 @@ const ReadyToProcess = ({
         </div>
         <div className="text-left">
           <FormLabel>
-            GST {(toggle != 2 && (cargoOverseas?.is_overseas == 1 || importBookingType == 3)) || editGstStatus == 4 ? "(0%) " : ""}(₹)
+            GST{" "}
+            {(toggle != 2 &&
+              (cargoOverseas?.is_overseas == 1 || importBookingType == 3)) ||
+            editGstStatus == 4
+              ? "(0%) "
+              : ""}
+            (₹)
           </FormLabel>
           <FormInput
             disabled
             className="text-right"
             value={
               toggle == 2
-                ? indianFormat(parseFloat(Number(getgsttotal(buycharges, "inr_amount", "buy")).toFixed(3)))
-                : cargoOverseas?.is_overseas == 1 || editGstStatus == 4 || importBookingType == 3
+                ? indianFormat(
+                    parseFloat(
+                      Number(
+                        getgsttotal(buycharges, "inr_amount", "buy"),
+                      ).toFixed(3),
+                    ),
+                  )
+                : cargoOverseas?.is_overseas == 1 ||
+                    editGstStatus == 4 ||
+                    importBookingType == 3
                   ? "0.00"
-                  : indianFormat(getgsttotal(sellingcharges, "inr_amount", "sell"))
+                  : indianFormat(
+                      getgsttotal(sellingcharges, "inr_amount", "sell"),
+                    )
             }
           />
         </div>
@@ -3496,14 +3712,19 @@ const ReadyToProcess = ({
             value={
               toggle == 2
                 ? indianFormat(
-                  parseFloat((Number(totalbuy) + getgsttotal(buycharges, "inr_amount", "buy")).toFixed(3)),
-                )
+                    parseFloat(
+                      (
+                        Number(totalbuy) +
+                        getgsttotal(buycharges, "inr_amount", "buy")
+                      ).toFixed(3),
+                    ),
+                  )
                 : indianFormat(
-                  cargoOverseas?.is_overseas == 1 || importBookingType == 3
-                    ? Number(totalSell)
-                    : Number(totalSell) +
-                    getgsttotal(sellingcharges, "inr_amount", "sell"),
-                )
+                    cargoOverseas?.is_overseas == 1 || importBookingType == 3
+                      ? Number(totalSell)
+                      : Number(totalSell) +
+                          getgsttotal(sellingcharges, "inr_amount", "sell"),
+                  )
             }
           />
         </div>
@@ -3548,18 +3769,26 @@ const ReadyToProcess = ({
                 }
 
                 const sellMissingCurrency = sellingcharges?.some(
-                  (item: any) => item?.charge_id && !item?.currency
+                  (item: any) => item?.charge_id && !item?.currency,
                 );
                 if (sellMissingCurrency) {
-                  showAlert("Please select currency for all selling charges", "warning");
+                  showAlert(
+                    "Please select currency for all selling charges",
+                    "warning",
+                  );
                   return;
                 }
 
                 const sellMissingExRate = sellingcharges?.some(
-                  (item: any) => item?.charge_id && (!item?.ex_rate || Number(item?.ex_rate) <= 0)
+                  (item: any) =>
+                    item?.charge_id &&
+                    (!item?.ex_rate || Number(item?.ex_rate) <= 0),
                 );
                 if (sellMissingExRate) {
-                  showAlert("Please provide exchange rate for all selling charges", "warning");
+                  showAlert(
+                    "Please provide exchange rate for all selling charges",
+                    "warning",
+                  );
                   return;
                 }
 
@@ -3583,18 +3812,26 @@ const ReadyToProcess = ({
                   setJobData((pre) => ({ ...pre, buy_charges: [] }));
                 } else {
                   const buyMissingCurrency = buycharges?.some(
-                    (item: any) => item?.charge_id && !item?.currency
+                    (item: any) => item?.charge_id && !item?.currency,
                   );
                   if (buyMissingCurrency) {
-                    showAlert("Please select currency for all buying charges", "warning");
+                    showAlert(
+                      "Please select currency for all buying charges",
+                      "warning",
+                    );
                     return;
                   }
 
                   const buyMissingExRate = buycharges?.some(
-                    (item: any) => item?.charge_id && (!item?.ex_rate || Number(item?.ex_rate) <= 0)
+                    (item: any) =>
+                      item?.charge_id &&
+                      (!item?.ex_rate || Number(item?.ex_rate) <= 0),
                   );
                   if (buyMissingExRate) {
-                    showAlert("Please provide exchange rate for all buying charges", "warning");
+                    showAlert(
+                      "Please provide exchange rate for all buying charges",
+                      "warning",
+                    );
                     return;
                   }
 
@@ -3617,11 +3854,8 @@ const ReadyToProcess = ({
     </>
   );
 
-
   useEffect(() => {
     if (editData?.incoterm == 2) {
-
-
       setSellingCharges((prev: any) => {
         const updatedCharges = [...prev];
 
@@ -3639,29 +3873,24 @@ const ReadyToProcess = ({
               chargesList?.find((item2: any) => item2?.charge_id == 163)
                 ?.hsn_code || "",
             inr_amount: 0,
-           
           };
         } else if (!chargeExists) {
           updatedCharges.push({
             ...intarrcharges,
             weight: editData?.weight,
             inr_amount: 0,
-            
           });
         }
 
         return updatedCharges;
       });
     } else {
-
-
       setSellingCharges((prev: any) => {
         const updatedCharges = prev?.filter(
           (charge: any) => charge.charge_id != 162,
         );
         if (updatedCharges.length == 0) {
-          setSellingCharges([{ ...intarrcharges, weight: editData?.weight,
-           }]);
+          setSellingCharges([{ ...intarrcharges, weight: editData?.weight }]);
         } else {
           return updatedCharges;
         }
@@ -3880,36 +4109,68 @@ const ReadyToProcess = ({
           }
 
           // Extract unique foreign currencies from selling charges (charge_type == 2)
-          const sellingChargesData = res?.data?.data?.filter((item: any) => item?.charge_type == 2) || [];
+          const sellingChargesData =
+            res?.data?.data?.filter((item: any) => item?.charge_type == 2) ||
+            [];
           const uniqueForeignCurrencies: any[] = [];
           sellingChargesData.forEach((charge: any) => {
             const cId = String(charge?.currency || "24");
-            if (cId && cId !== "24" && !uniqueForeignCurrencies.find((c: any) => c.currency_id === cId)) {
-              uniqueForeignCurrencies.push({ currency_id: cId, ex_rate: String(charge?.ex_rate || "") });
+            if (
+              cId &&
+              cId !== "24" &&
+              !uniqueForeignCurrencies.find((c: any) => c.currency_id === cId)
+            ) {
+              uniqueForeignCurrencies.push({
+                currency_id: cId,
+                ex_rate: String(charge?.ex_rate || ""),
+              });
             }
           });
           if (uniqueForeignCurrencies.length > 0) {
             setExchangedataSell([
               { id: "1", currency_id: "24", ex_rate: "1" },
-              { id: "2", currency_id: uniqueForeignCurrencies[0]?.currency_id || "", ex_rate: uniqueForeignCurrencies[0]?.ex_rate || "" },
+              {
+                id: "2",
+                currency_id: uniqueForeignCurrencies[0]?.currency_id || "",
+                ex_rate: uniqueForeignCurrencies[0]?.ex_rate || "",
+              },
             ]);
             setExchangeSellLocked(true);
           }
 
           // Extract unique foreign currencies from buying charges (charge_type == 1)
-          const buyingChargesData = res?.data?.data?.filter((item: any) => item?.charge_type == 1) || [];
+          const buyingChargesData =
+            res?.data?.data?.filter((item: any) => item?.charge_type == 1) ||
+            [];
           const uniqueBuyCurrencies: any[] = [];
           buyingChargesData.forEach((charge: any) => {
             const cId = String(charge?.currency || "24");
-            if (cId && cId !== "24" && !uniqueBuyCurrencies.find((c: any) => c.currency_id === cId)) {
-              uniqueBuyCurrencies.push({ currency_id: cId, ex_rate: String(charge?.ex_rate || "") });
+            if (
+              cId &&
+              cId !== "24" &&
+              !uniqueBuyCurrencies.find((c: any) => c.currency_id === cId)
+            ) {
+              uniqueBuyCurrencies.push({
+                currency_id: cId,
+                ex_rate: String(charge?.ex_rate || ""),
+              });
             }
           });
           if (uniqueBuyCurrencies.length > 0) {
             setExchangedata([
               { id: "1", currency_id: "24", currency: "INR", ex_rate: "1" },
-              { id: "2", currency_id: uniqueBuyCurrencies[0]?.currency_id || "", currency: "", ex_rate: uniqueBuyCurrencies[0]?.ex_rate || "" },
-              { id: "3", currency_id: uniqueBuyCurrencies[1]?.currency_id || "", currency: "", ex_rate: uniqueBuyCurrencies[1]?.ex_rate || "" },
+              {
+                id: "2",
+                currency_id: uniqueBuyCurrencies[0]?.currency_id || "",
+                currency: "",
+                ex_rate: uniqueBuyCurrencies[0]?.ex_rate || "",
+              },
+              {
+                id: "3",
+                currency_id: uniqueBuyCurrencies[1]?.currency_id || "",
+                currency: "",
+                ex_rate: uniqueBuyCurrencies[1]?.ex_rate || "",
+              },
             ]);
           }
         }
@@ -4002,19 +4263,65 @@ const ReadyToProcess = ({
     }));
   };
 
+  // on scroll animatil this useffect load a card after one sec delay when you scroll
+
+  useEffect(() => {
+    const items = document.querySelectorAll<HTMLElement>(
+      ".rtp-reveal:not(.rtp-reveal-visible)",
+    );
+    if (!items.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) =>
+              Number((a.target as HTMLElement).dataset.revealIndex) -
+              Number((b.target as HTMLElement).dataset.revealIndex),
+          )
+          .forEach((entry, i) => {
+            const el = entry.target as HTMLElement;
+            el.style.transitionDelay = `${i * 600}ms`;
+            el.classList.remove("opacity-0", "translate-y-6");
+            el.classList.add(
+              "opacity-100",
+              "translate-y-0",
+              "rtp-reveal-visible",
+            );
+            const onEnd = (e: TransitionEvent) => {
+              if (e.propertyName === "transform") {
+                el.classList.remove("translate-y-0");
+                el.removeEventListener("transitionend", onEnd);
+              }
+            };
+            el.addEventListener("transitionend", onEnd);
+            observer.unobserve(entry.target);
+          });
+      },
+      { threshold: 0.1 },
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [readyToProcess]);
+  // end
+
   return (
     <>
-      <div className=" bg-white rounded-md justify-between shadow-blue-900 p-2 h-[100%]">
-        <div className=" p-2 bg-gray-100 flex justify-between items-center ">
-          <h2 className="text-sm font-medium">
-            {/* <button onClick={ToggleClass} className="p-0">
+      <div className=" NewtableBox min-h-auto lg:h-full bg-white rounded-md justify-between shadow-blue-900 border border-[#fff]  ">
+        <div className=" tbaleTittle p-2 bg-[#e9edf2] flex justify-between items-center rounded-t-md  ">
+          <div className="flex items-end gap-2">
+            <h2 className="text-sm font-medium">
+              {/* <button onClick={ToggleClass} className="p-0">
               <ChevronDown className="relative top-1 w-[18px]" />
             </button> */}
-            Ready To Process
-          </h2>
-
-          <div className=" relative w-200">
+              Ready To Process
+            </h2>
+          </div>
+          <div className="tableSearch relative w-200">
             <FormInput
+              className="h-[30px] w-full rounded-md border border-[#e5e7eb] pl-3 pr-10 text-sm focus:border-[#f0b646] focus:ring-[#f0b646]"
               id="vertical-form-1"
               type="text"
               placeholder="Search "
@@ -4027,8 +4334,8 @@ const ReadyToProcess = ({
               }}
             />
 
-            <button className="searchListTable absolute top-2 right-3 text-stone-300">
-              <Search />
+            <button className=" searchListTable absolute top-[6px] right-2 text-stone-300">
+              <Search className="w-[17px] h-[17px]" />
             </button>
           </div>
         </div>
@@ -4048,16 +4355,110 @@ const ReadyToProcess = ({
               </div>
             ) : (
               <>
-                <div className={`overflow-x-auto`}>
-                  <CommonTable
-                    minHeightTable="100%"
-                    className="h-[100vh]"
-                    columns={columns}
-                    row={rows}
-                    limit={5}
-                    currentPage={page}
-                    ops={1}
-                  />
+                <div className="w-full">
+                  {rows?.map((row: any, index: number) => (
+                    <div
+                      key={row?.id || index}
+                      data-reveal-index={index}
+                      className="rtp-reveal w-full border rounded-lg mb-3 group bg-[#fff] border-[#fff1d3] even:bg-[#fff] even:border-[#eaf1f6] hover:bg-[#fff] hover:border-[#E6E6E6] opacity-0 translate-y-6 transition-all duration-700 ease-out"
+                    >
+                      <div className="justify-between border-[#fff1d3] border-b w-full block lg:flex pt-[5px] pb-[3px] px-2 items-center bg-[#fffbf2] group-even:bg-[#f6faff] rounded-t-lg group-even:border-[#eaf1f6] group-hover:bg-[#F8F8F8] group-hover:border-[#E6E6E6]">
+                        <div className="flex relative mb-2 lg:mb-0">
+                          <figure className="bg-[#FFF0CE] group-even:bg-[#E8F2FF] rounded-full p-[2px] w-[30px] h-[30px] justify-between flex items-center group-hover:bg-[#e3e3e3]">
+                            <FileText className="w-[18px] h-[18px] text-[#B68F34] group-even:text-[#5A81B4] m-auto group-hover:text-[#303030]" />
+                          </figure>
+                          <aside className="ml-2 leading-[14px]">
+                            <h2 className="text-[#9099a2] text-[12px] font-medium uppercase leading-[14px]">
+                              ENQUIRY Number
+                            </h2>
+                            <h3 className="text-[12px] font-bold text-[#e1a722] rounded-[10px]">
+                              {row?.booking_no || "-"}
+                            </h3>
+                          </aside>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-left lg:text-right leading-[16px]">
+                            <h4 className="font-medium text-[13px]">
+                              WEIGHT :<span> {row?.weight}</span>
+                            </h4>
+                            <p className="text-[13px] text-[#797979]">
+                              {row?.created_date || "-"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-3 pt-3 pb-2">
+                        <div className="grid grid-cols-12 gap-2">
+                          <div className="col-span-12 lg:col-span-8">
+                            <div className="w-full">
+                              <div className="w-full font-medium text-[14px]">
+                                Franchisee : {row?.franchisee_name || "-"}
+                              </div>
+                              <div className="w-full  flex gap-x-5 mt-1">
+                                <div className="leading-[16px] mb-2 lg:mb-0">
+                                  <small className="text-[11px] text-[#797979] flex items-center">
+                                    <i className="w-[5px] h-[5px] bg-green-500 group-even:bg-[#6EA8E0] rounded-full mr-1 inline-block group-hover:bg-[#a0a0a0]"></i>
+                                    ORIGIN
+                                  </small>
+                                  <p className="text-[14px] text-[#303030]">
+                                    {countryData?.find(
+                                      (con: any) =>
+                                        con?.country_id == row?.org_country_id,
+                                    )?.country_name || "-"}
+                                  </p>
+                                </div>
+                                <div className="leading-[16px]">
+                                  <small className="text-[11px] text-[#797979] flex items-center">
+                                    <i className="w-[5px] h-[5px] bg-[#efb847] group-even:bg-[#6EA8E0] rounded-full mr-1 inline-block group-hover:bg-[#a0a0a0]"></i>
+                                    DESTINATION
+                                  </small>
+                                  <p className="text-[14px] text-[#303030]">
+                                    {row?.country_name || "-"}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-span-12 lg:col-span-4">
+                            <div className="flex relative gap-2 justify-end">
+                              <div className="flex justify-center items-center">
+                                {row?.action}
+                              </div>
+                            </div>
+                            <div className="w-full text-[13px] mt-2 text-left lg:text-right flex justify-end">
+                              Checklist :&nbsp;<span>{row?.checklist}</span>
+                            </div>
+                          </div>
+
+                          <div className="col-span-12 lg:col-span-12">
+                            <div className=" block lg:flex justify-between  w-full  border-t border-[#f2f2f2] px-[0] pt-[4px]">
+                              <h2 className="flex w-full lg:w-[50%] text-[#9099a2] text-[11px] items-center font-medium   leading-[20px]  ">
+                                <i className="mr-1 bg-[#f1f5f9] border-none p-[2px] w-[24px] h-[24px] rounded-full flex justify-center items-center ">
+                                  <User
+                                    className="w-[14px] h-[14px]  text-[#959595]"
+                                    strokeWidth={3}
+                                  />
+                                </i>
+                                <h3 className="text-[#959595] flex">
+                                  STATUS&nbsp;:&nbsp;
+                                  <span className="text-[14px]">
+                                    {row?.booking_status || "-"}
+                                  </span>
+                                </h3>
+                              </h2>
+
+                              <div className=" text-[13px] w-full lg:w-[50%] lg:justify-end text-left lg:text-right flex">
+                                Checklist Docs &nbsp;:&nbsp;
+                                <span className="text-[#959595]">
+                                  {row?.checklist_docs || "-"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 <CommonPagination
@@ -4075,6 +4476,16 @@ const ReadyToProcess = ({
           button[data-headlessui-state="open"] {
             border-color: #f0b646;
             color: #f0b646;
+          }
+          @keyframes rtpCardReveal {
+            from {
+              opacity: 0;
+              transform: translateY(24px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
         `}
       </style>
@@ -4113,7 +4524,10 @@ const ReadyToProcess = ({
         open={docModalOpen}
         onClose={() => setDocModalOpen(false)}
         onSubmit={(data: any) => {
-          if (data?.shipment_dimensions && data?.shipment_dimensions?.length > 0) {
+          if (
+            data?.shipment_dimensions &&
+            data?.shipment_dimensions?.length > 0
+          ) {
             setDimensionData(data?.shipment_dimensions || [initDimension]);
             setJobData((prev) => ({
               ...prev,
@@ -4124,8 +4538,8 @@ const ReadyToProcess = ({
               dimensionUnit == 2 ? convertedDimension : dimensionData,
               editData?.courier_id,
               1,
-            )
-          };
+            );
+          }
           setEditData({ ...editData, ...data });
           setDocModalOpen(false);
         }}

@@ -12,12 +12,14 @@ import {
   FormSelect,
   FormTextarea,
 } from "../../../base-components/Form";
-import { Search } from "lucide-react";
+import { ClipboardCheck, Scan, Search } from "lucide-react";
 import { ReverseShipmentInscanData } from "../../../DataTypes/dataTypes";
 import Modal from "../../../components/Modal";
 import LoadingIcon from "../../../base-components/LoadingIcon";
 import CommonPagination from "../../../components/Pagination";
 import { useDebounce } from "../../../components/Search";
+import { User } from "lucide-react";
+import { Loader } from "lucide-react";
 
 export default function ReverseShipmentAirwaybill(data: any) {
   const { showAlert } = useAlert();
@@ -60,7 +62,7 @@ export default function ReverseShipmentAirwaybill(data: any) {
           setAirwaybillNo(item.airwaybill_no);
           setOpenModal(true);
         }}
-        className="px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-200"
+        className="px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-200 border-none "
       >
         Inscan Shipment
       </Button>
@@ -111,37 +113,60 @@ export default function ReverseShipmentAirwaybill(data: any) {
 
   const description = (
     <>
-      <div>
-        <h1>Direct Shipment Paper work</h1>
-        <h1 className="text-sm sm:text-[25px] text-center p-4">
+      <div className="mb-3 justify-between gap-4  border border-[#ffe7b1]   bg-gradient-to-r from-[#FFF9EB] via-[#FDFDFD] to-[#FDFDFD] rounded-lg">
+        <div className="border-b border-[#ffe7b1] p-2 ">Direct Shipment Paper work</div>
+            <div className="  p-2 font-bold text-lg ">
           Airwaybill No - {airwaybillNo}
-        </h1>
+        </div>
       </div>
+
       <div>
-        <div className="flex justify-between">
+        <div className="flex-wrap lg:flex-nowrap flex gap-2 justify-between">
           <Button
-            className="bg-danger border-none px-1 py-1 sm:py-2 sm:px-4 text-white rounded-xl hover:bg-[#c9302c] focus:ring-4 focus:ring-opacity-70"
+            className="w-full lg:w-[48%] block bg-[#c9302c] align-left border-none p-2  text-white rounded-md hover:bg-[#c9302c] focus:ring-4 focus:ring-opacity-70"
 
             onClick={() => {setOpenHoldList(!openHoldList);setHeldUpReason(-1);setOtherReason(null)}}
           >
-            Hold
-            <br />
-            (Paperwork Not Clear)
+         <div className="flex justify-start gap-2">
+        <figure className="bg-[#9c1b18] rounded-full p-[3px] flex justify-center items-center w-[30px] h-[30px]">  
+            <Loader className="w-[17px] h-[17px] text-[#fff]" /></figure>
+        
+         <aside className="flex-wrap justify-start"> <h2 className="text-bold text-[20px] w-full text-left"> Hold</h2> 
+          
+           <p className="text-[12px] uppercase w-full text-left"> (Paperwork Not Clear)</p>
+           </aside>
+</div>
+
           </Button>
           <Button
-            className="bg-[#14d28b] border-none py-2 px-4 text-white rounded-xl hover:bg-[#169F85] focus:ring-4 focus:ring-opacity-70"
+            className="w-full lg:w-[48%]  bg-[#14d28b] border-none p-2 text-white rounded-md hover:bg-[#169F85] focus:ring-4 focus:ring-opacity-70"
             disabled={openHoldList || spinner}
             onClick={() => reverseShipmentInscan()}
           >
-            Inscan
-            <br />
-            (Paperwork Clear)
+            
+    
+           
+
+     <div className="flex justify-start gap-2 w-full">
+        <figure className="bg-[#177552] rounded-full p-[3px] flex justify-center items-center w-[30px] h-[30px]"> 
+             <Scan className="w-[17px] h-[17px] text-[#fff]" /></figure>
+        
+         <aside className="flex-wrap justify-start"> <h2 className="text-bold text-[20px] w-full text-left"> Inscan</h2> 
+          
+           <p className="text-[12px] uppercase w-full text-left">  (Paperwork Clear)</p>
+           </aside>
+</div>
+
+
+
+
+
             {spinner && <LoadingIcon icon="puff" className="ml-2" />}
           </Button>
         </div>
         {openHoldList && (
           <>
-            <div className="mt-4">
+            <div className="mt-4 bg-[#fff5f5] rounded-lg p-3 border border-[#ffc0c0]" >
               <FormLabel htmlFor="modal-form-6">Select Hold Reason</FormLabel>
               <FormSelect
                 onChange={(e) => setHeldUpReason(e.target.value)}
@@ -168,7 +193,7 @@ export default function ReverseShipmentAirwaybill(data: any) {
               )}
               <Button
                 disabled={spinner}
-                className="bg-mustard border-none py-1 px-4 mt-4 text-white rounded-xl"
+                className="bg-mustard border-none py-1 px-4 mt-4 text-white rounded-md"
                 onClick={() => reverseShipmentInscan()}
               >
                 Submit
@@ -183,13 +208,34 @@ export default function ReverseShipmentAirwaybill(data: any) {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 py-3 px-6 bg-white rounded-lg shadow-lg">
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="font-bold text-lg">Reversed Shipments</h1>
-          <div className="relative flex justify-between items-center">
+      <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+
+ <div className=" w-full py-3  px-3 border-b border-white commonGradientGray  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nwrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <ClipboardCheck className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                   Reversed Shipments
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center w-full lg:w-auto">
+                
+
+
+    
+     
+          <div className="relative flex justify-between items-center  w-full lg:w-auto">
             <FormInput
               placeholder="Search..."
-              className="pr-8 pt-1 pb-1 rounded-xl"
+              className="pr-8 pt-1 pb-1 rounded-md h-[37px]  w-full lg:w-auto"
               value={data?.manifestSearch}
               onChange={(e) => {
                 data?.setManifestSearch(e.target.value.toUpperCase());
@@ -197,11 +243,23 @@ export default function ReverseShipmentAirwaybill(data: any) {
                 data?.setPage(1);
               }}
             />
-            <Search className="absolute right-1 w-5 h-5" />
+            <Search className="absolute right-2 w-4 h-4" />
           </div>
-        </div>
-        <hr />
-        <div className="bg-white p-1 mt-2">
+
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+      
+     <div className="p-2  lg:p-6">
           {data.reversedShipmentsList.length > 0 ? (
             <>
               <Table columns={columns} row={row} heightTable="28.5vh" />
@@ -219,10 +277,12 @@ export default function ReverseShipmentAirwaybill(data: any) {
           )}
         </div>
       </div>
+</div>
+
       <Modal
         open={openModal}
         title="Inscan Shipment"
-        size="md"
+        size="lg"
         setOpen={setOpenModal}
         description={description}
         footer={null}

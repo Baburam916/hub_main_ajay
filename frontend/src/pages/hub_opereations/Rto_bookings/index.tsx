@@ -14,6 +14,8 @@ import {
 } from "../../../utils";
 import { Rto_listing_api } from "../../../AllServices/services";
 import { Box, Download, FileText } from "lucide-react";
+import { User } from "lucide-react";
+import { Smartphone } from "lucide-react";
 
 const main = () => {
   const today = new Date().toISOString().split("T")[0];
@@ -177,14 +179,33 @@ const main = () => {
   }, [fromDate, toDate, debouncedSearch, page]);
 
   return (
-    <div className="w-full max-w-8xl p-6 px-10 bg-white rounded-lg shadow-lg  mt-8 mb-16 z-[0] relative">
-      <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  xl:grid-cols-5  items-end gap-6 w-full">
-        <div className="w-full">
-          <h1 className="text-2xl font-bold ">R.T.O. List</h1>
-        </div>
-        <div className="w-full">
-          <FormLabel htmlFor="modal-form-5">
-            FROM DATE <span className="text-red-500">*</span>
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+
+
+    <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div className="w-full lg:w-auto">
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Smartphone className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                  R.T.O. List
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end">
+                 <div className="w-auto ">
+   <div className="grid  grid-cols-12 gap-2 ">
+       <div className="col-span-12 lg:col-span-1"></div>
+         <div className="col-span-6 lg:col-span-3">
+        <div className="w-full lg:flex items-center">
+          <FormLabel htmlFor="modal-form-5" className="whitespace-nowrap  items-center  mr-[5px] !mb-0"  >
+            FROM  <span className="text-red-500">*</span>
           </FormLabel>
           <FormInput
             id="modal-form-5"
@@ -194,9 +215,12 @@ const main = () => {
             onChange={(e) => setFromDate(e.target.value)}
           />
         </div>
-        <div className="w-full">
-          <FormLabel htmlFor="modal-form-5">
-            TO DATE <span className="text-red-500">*</span>
+</div>
+
+                <div className="col-span-6 lg:col-span-3">
+        <div className="w-full lg:flex  items-center">
+          <FormLabel htmlFor="modal-form-5"  className="whitespace-nowrap items-center mr-[5px] !mb-0">
+            TO  <span className="text-red-500">*</span>
           </FormLabel>
           <FormInput
             id="modal-form-5"
@@ -207,8 +231,10 @@ const main = () => {
             onChange={(e) => setToDate(e.target.value)}
           />
         </div>
+</div>
 
-        <FormInput
+              <div className="col-span-12 lg:col-span-3">
+                 <FormInput
           type="text"
           placeholder="Enter AWB No."
           value={search}
@@ -217,8 +243,10 @@ const main = () => {
             setPage(1);
           }}
         />
-        <Button
-          className=" rounded-lg bg-green-500 hover:bg-green-600 text-white ml-4 p-2"
+        </div>
+               <div className="col-span-12 lg:col-span-2">
+                 <Button
+          className=" rounded-md text-[14px] bg-green-500 hover:bg-green-600 text-white p-2 border-none w-full"
           onClick={handleDownload}
           disabled={downloadSpinner}
         >
@@ -230,14 +258,25 @@ const main = () => {
               className="w-5 h-5 ml-2 stroke-2.5 text-white"
             />
           ) : (
-            <Download className="ml-2" />
+           
+               <Download className="w-[16px] h-[16px]  ml-2" /> 
           )}
         </Button>
+         </div>
       </div>
 
-      <div className="flex justify-center w-full my-4 border-t border-slate-200 dark:border-darkmode-400"></div>
+              </div>
+            </div>
+          </div>
+  </div>
 
-      <div className="">
+
+
+   
+
+  
+
+      <div className="p-2  lg:p-6">
         {bookingData?.length > 0 ? (
           <>
             <Table heightTable="60vh" columns={columns} row={row} />
@@ -258,6 +297,7 @@ const main = () => {
         )}
       </div>
     </div>
+       </div>
   );
 };
 

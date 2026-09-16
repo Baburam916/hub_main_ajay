@@ -284,31 +284,59 @@ export default function BagInscanList(data: any) {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-        <div className="flex items-center">
-          <div
-            className="p-2 mb-2 cursor-pointer rounded-full shadow-lg mr-4"
+      <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+
+
+   <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+               
+ <div
+            className="p-1 flex justify-center items-center cursor-pointer rounded-full shadow-lg mr-2  bg-[#777] w-[30px] h-[30px]"
             onClick={() => data.setShowBagInscanList(false)}
           >
-            <ArrowLeft className="w-5 h-4" />
+            <ArrowLeft className="w-4 h-4 text-white" />
           </div>
-          <div className="flex justify-between w-[100%]">
+    
             <h1 className="text-base text-gray-500 font-bold">Bag Inscan</h1>
-            <div className="flex justify-end items-center">
-              <h1 className="mt-2 font-bold">Next Create Bag</h1>
-              <div className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2">
+            
+     
+
+
+
+
+
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                
+<div className="flex justify-end items-center">
+              <h1 className=" font-bold">Next Create Bag</h1>
+              <div className="p-1 flex justify-center items-center cursor-pointer rounded-full shadow-lg mr-2 ml-2 bg-[#777] w-[30px] h-[30px]">
                 <Link to="/hub/operation/create_bag" className="font-bold">
-                  <ArrowRight className="w-5 h-4 " />
+                  <ArrowRight className="w-4 h-4 text-white " />
                 </Link>
               </div>
             </div>
+
+              </div>
+            </div>
           </div>
-          <hr />
-        </div>
-        <div className="mt-4 flex">
+
+
+
+
+
+
+<div className="w-full p-2 lg:p-3 border-b border-gray-200 bg-[#f1f1f1]">
+        <div className=" flex-wrap lg:flex-nowrap flex gap-2 items-center ">
           <FormInput
             placeholder="Airwaybill No."
-            className="w-60 ml-4"
+            className="w-60 "
             value={airwaybillNumber}
             onChange={(e) => setAirwaybillNumber(e.target.value)}
             onKeyDown={(e) => {
@@ -320,7 +348,7 @@ export default function BagInscanList(data: any) {
             }}
           />
           <Button
-            className="bg-mustard border-none py-1 px-4 ml-8 text-white rounded-xl"
+            className="bg-mustard border-none py-2 px-4  text-white rounded-md "
             onClick={() => {
               // if (!airwaybillNumber) {
               //   showAlert("Fill the Airwaybil No", "error");
@@ -338,7 +366,7 @@ export default function BagInscanList(data: any) {
           </Button>
 
           <Button
-            className="bg-red-500 border-none py-1 px-4 sm:ml-8 text-white rounded-xl"
+            className="bg-red-500 border-none py-2 px-4  text-white rounded-md"
             onClick={() => {
               if (!airwaybillNumber) {
                 showAlert("Airwaybill No is required!", "warning");
@@ -354,14 +382,19 @@ export default function BagInscanList(data: any) {
             Hold Shipment
           </Button>
         </div>
+
+</div>
+     <div className="p-2  lg:p-6">
         <Table columns={columns} row={row} heightTable="28.5vh" />
         <Button
-          className="bg-red-500 border-none py-1 px-4 mt-3 text-white rounded-xl"
+          className="bg-red-500 border-none py-1 px-4 mt-3 text-white rounded-md"
           onClick={() => shortShipment()}
         >
           Short Shipment
         </Button>
       </div>
+</div></div>
+
       <Modal
         open={openModal}
         title="Inscan Shipment"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import Button from "../../../base-components/Button";
-import { Eye } from "lucide-react";
+import { ClipboardList, Eye, FileText, User } from "lucide-react";
 import Table from "../../../components/Table";
 import { FormInput, FormLabel } from "../../../base-components/Form";
 import LoadingIcon from "../../../base-components/LoadingIcon";
@@ -39,9 +39,9 @@ const AWBDetailsReports: React.FC = () => {
   const [fromTo, setFromTo] = useState<any>({ from_date: "", to_date: "" });
   const [allgetdata, setAllgetData] = useState<any>([]);
   const [bookingData, setBookingData] = useState<boolean>(true);
-  const [salesName, setSalesname] = useState<Array<any>>()
-  const [countryData, setCountryData] = useState<Array<any>>([])
-  const [branchItem, setBranchItem] = useState<Array<any>>([])
+  const [salesName, setSalesname] = useState<Array<any>>();
+  const [countryData, setCountryData] = useState<Array<any>>([]);
+  const [branchItem, setBranchItem] = useState<Array<any>>([]);
   const [docType, setDocType] = useState<Array<any>>([]);
 
   const { showAlert } = useAlert();
@@ -57,7 +57,7 @@ const AWBDetailsReports: React.FC = () => {
 
   useEffect(() => {
     getallintdata();
-    doctype()
+    doctype();
   }, []);
   const getallintdata = async () => {
     try {
@@ -85,10 +85,10 @@ const AWBDetailsReports: React.FC = () => {
     }
   };
 
-  const doctype = async() => {
+  const doctype = async () => {
     const res = await Get_doctype();
-    setDocType(res?.data?.data)
-  }
+    setDocType(res?.data?.data);
+  };
 
   const getalldownloddata = async () => {
     try {
@@ -105,43 +105,52 @@ const AWBDetailsReports: React.FC = () => {
         setDownloadisLoading(true);
         const response = await Get_search_awb_detail_report(
           "getAwbDetailsRportsDownload",
-          params
+          params,
         );
 
         if (response?.status == 200 || response?.status == 204) {
           const data = response?.data?.data;
           const newdata = data?.map((item: any) => {
-        
             const newcourierid = item["courier_id"];
             const newfid = item["pickup_franchisee_id"];
             const newcodeid = item["dispatch_status_code"];
             const newbookid = item["booking_shipment_type_id"];
-            const pickupitemy = item["pickup_item"]
-           
-                  const result = franchiseedata?.find((ele:any) => ele?.franchisee_id == newfid)?.field_sales;
-               
-            const salesper = salesName?.find((ele:any) => ele?.id == result)?.sales_person;
-          
+            const pickupitemy = item["pickup_item"];
 
-            const destination_countryy =  countryData?.find((ele:any) => ele?.country_id == item?.delivery_country_id)?.country_name;
-            const branch = branchItem?.find((ele:any) => ele?.branch_id == item?.pickup_branch_id)?.branch_name
-            const weightUnit = item?.weight_unit
+            const result = franchiseedata?.find(
+              (ele: any) => ele?.franchisee_id == newfid,
+            )?.field_sales;
+
+            const salesper = salesName?.find(
+              (ele: any) => ele?.id == result,
+            )?.sales_person;
+
+            const destination_countryy = countryData?.find(
+              (ele: any) => ele?.country_id == item?.delivery_country_id,
+            )?.country_name;
+            const branch = branchItem?.find(
+              (ele: any) => ele?.branch_id == item?.pickup_branch_id,
+            )?.branch_name;
+            const weightUnit = item?.weight_unit;
             delete item["courier_id"];
             delete item["pickup_franchisee_id"];
             delete item["dispatch_status_code"];
             delete item["booking_shipment_type_id"];
-         
-            delete item['delivery_country_id'];
-            delete item['pickup_item'];
-         
-            delete item['pickup_branch_id'];
-            delete item['weight_unit']
+
+            delete item["delivery_country_id"];
+            delete item["pickup_item"];
+
+            delete item["pickup_branch_id"];
+            delete item["weight_unit"];
             return {
               ...item,
               doc_type:
                 docType?.find((ele) => ele?.id == item?.doc_type)?.value ||
                 "N.A.",
-              actual_weight: weightUnit == 'gms'? Number(item?.actual_weight) / 1000: item?.actual_weight, 
+              actual_weight:
+                weightUnit == "gms"
+                  ? Number(item?.actual_weight) / 1000
+                  : item?.actual_weight,
               sales_person: salesper || "N.A.",
               destination_country: destination_countryy,
               branch: branch,
@@ -155,10 +164,10 @@ const AWBDetailsReports: React.FC = () => {
                 newbookid == 1
                   ? "Non-Document"
                   : newbookid == 2
-                  ? "Document"
-                  : newbookid == 4
-                  ? "Commercial"
-                  : "N.A.",
+                    ? "Document"
+                    : newbookid == 4
+                      ? "Commercial"
+                      : "N.A.",
               kyc_type:
                 getparticulardata("kyc", item?.doc_type, kyctypedata)?.value ||
                 "",
@@ -194,7 +203,10 @@ const AWBDetailsReports: React.FC = () => {
               //     ? item?.pickup_item[0]?.weight
               //     : "0"
               //   : item?.chargeable_weight + " " + item?.weight_unit,
-              "gross_weight (kgs)": weightUnit== 'gms' ? Number(item?.actual_weight)/1000: item?.actual_weight,
+              "gross_weight (kgs)":
+                weightUnit == "gms"
+                  ? Number(item?.actual_weight) / 1000
+                  : item?.actual_weight,
 
               "volumetric_weight (kgs)": item?.volumetric_weight,
               last_scan_event:
@@ -219,16 +231,15 @@ const AWBDetailsReports: React.FC = () => {
     }
   };
 
-  const country_destination = async() => {
-     const res = await Countrydestination();
-     setCountryData(res?.data?.data)
+  const country_destination = async () => {
+    const res = await Countrydestination();
+    setCountryData(res?.data?.data);
+  };
 
-  }
-
-  const branchData = async() => {
+  const branchData = async () => {
     const res = await branchId();
     setBranchItem(res?.data?.data);
-  }
+  };
   const getintdata = async (value: any) => {
     const { from_date, to_date } = fromTo;
     const params: any = {
@@ -247,7 +258,7 @@ const AWBDetailsReports: React.FC = () => {
         setPostisLoading(value);
         const response = await Get_search_awb_detail_report(
           "getAwbDetailsRports",
-          params
+          params,
         );
 
         if (response?.status == 200 || response?.status == 204) {
@@ -256,15 +267,15 @@ const AWBDetailsReports: React.FC = () => {
           setCondata(data || []);
           setTotalPages(
             Number(
-              Math.ceil(response?.data?.total / response?.data?.per_page)
-            ) || 0
+              Math.ceil(response?.data?.total / response?.data?.per_page),
+            ) || 0,
           );
 
           const res: any = await AwbDatafranchiseename();
-          setFranchiseedata(res?.data?.data)
+          setFranchiseedata(res?.data?.data);
 
           // console.log("awbData", data);
-          const res1:any = await AwbDataSalesname();
+          const res1: any = await AwbDataSalesname();
           setSalesname(res1?.data?.data);
         } else {
           showAlert("Something going wrong!..", "error");
@@ -296,12 +307,12 @@ const AWBDetailsReports: React.FC = () => {
 
   const columns = [
     { field: "airwaybillno", headerName: "AWB No" },
-    { field: "invoice_date", headerName: "Invoice Date"},
+    { field: "invoice_date", headerName: "Invoice Date" },
     { field: "booking_invoice_no", headerName: "Invoice Number" },
     { field: "sales_person", headerName: "Sales Person Name" },
     { field: "destination_country", headerName: "Destination" },
-    { field: "number_of_pieces", headerName: "No of Pcs"},
-    { field: "branch", headerName: "Branch Name"},
+    { field: "number_of_pieces", headerName: "No of Pcs" },
+    { field: "branch", headerName: "Branch Name" },
     { field: "length", headerName: "Length(cms)" },
     { field: "breadth", headerName: "Breadth(cms)" },
     { field: "height", headerName: "Height(cms)" },
@@ -361,11 +372,19 @@ const AWBDetailsReports: React.FC = () => {
       </Button>
     );
 
-    const result = franchiseedata?.find((ele:any) => ele?.franchisee_id == item?.pickup_franchisee_id)?.field_sales;
-    const salespe = salesName?.find((ele:any) => ele?.id == result)?.sales_person;
-    const branch = branchItem?.find((ele:any) => ele?.branch_id == item?.pickup_branch_id)?.branch_name
+    const result = franchiseedata?.find(
+      (ele: any) => ele?.franchisee_id == item?.pickup_franchisee_id,
+    )?.field_sales;
+    const salespe = salesName?.find(
+      (ele: any) => ele?.id == result,
+    )?.sales_person;
+    const branch = branchItem?.find(
+      (ele: any) => ele?.branch_id == item?.pickup_branch_id,
+    )?.branch_name;
 
-     const destination_country =  countryData?.find((ele:any) => ele?.country_id == item?.delivery_country_id)?.country_name;
+    const destination_country = countryData?.find(
+      (ele: any) => ele?.country_id == item?.delivery_country_id,
+    )?.country_name;
 
     const newbookid = item["booking_shipment_type_id"];
     return {
@@ -383,10 +402,10 @@ const AWBDetailsReports: React.FC = () => {
         item?.booking_shipment_type_id == 1
           ? "Non-Document"
           : item?.booking_shipment_type_id == 2
-          ? "Document"
-          : item?.booking_shipment_type_id == 4
-          ? "Commercial"
-          : "N.A.",
+            ? "Document"
+            : item?.booking_shipment_type_id == 4
+              ? "Commercial"
+              : "N.A.",
       kyc_type:
         getparticulardata("kyc", item?.doc_type, kyctypedata)?.value || "",
       integrator:
@@ -396,7 +415,7 @@ const AWBDetailsReports: React.FC = () => {
         getparticulardata(
           "franchisee",
           item?.pickup_franchisee_id,
-          franchiseedata
+          franchiseedata,
         )?.franchisee_name || "",
       booking_date: formatDateWithoutTime(item?.booking_date) || "",
 
@@ -427,92 +446,109 @@ const AWBDetailsReports: React.FC = () => {
     };
   });
   return (
-    <div className="m-auto  rounded p-4 mt-2">
-      <div className=" border-l border-gray-300  "></div>
-      <div className="flex justify-between  border-b-2 mb-4 pb-2 ">
-        <div className="flex items-centermb-2 w-full">
-          <span className={`mr-auto text-2xl text-primary font-bold `}>
-            AWB DETAILS REPORT
-          </span>
-        </div>
+    <>
+      <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <ClipboardList className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    AWB DETAILS REPORT
+                  </h4>
+                </div>
+              </div>
 
-        {condata?.length >= 1 ? (
-          <div>
-            <Button
-              className="p-2 text-white w-[120px]"
-              variant="success"
-              disabled={downloadisLoading}
-              onClick={() => getalldownloddata()}
-            >
-              {/* <Download className="mr-2"/> */}
-              Download
-              {downloadisLoading && (
-                <LoadingIcon
-                  icon="puff"
-                  color="white"
-                  className="w-5 h-5 ml-2 stroke-2.5 text-white"
-                />
-              )}
-            </Button>
-            {/* <Commondownload
+              <div className="flex items-center">
+                <div className="flex justify-between  border-b-2 mb-4 pb-2 ">
+                  {condata?.length >= 1 ? (
+                    <div>
+                      <Button
+                        className="p-2 text-white w-[120px]"
+                        variant="success"
+                        disabled={downloadisLoading}
+                        onClick={() => getalldownloddata()}
+                      >
+                        {/* <Download className="mr-2"/> */}
+                        Download
+                        {downloadisLoading && (
+                          <LoadingIcon
+                            icon="puff"
+                            color="white"
+                            className="w-5 h-5 ml-2 stroke-2.5 text-white"
+                          />
+                        )}
+                      </Button>
+                      {/* <Commondownload
               data={tranfereddata(allgetdata)}
               forwhat={"consolidated_reports"}
               icon={true}
             /> */}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="w-full">
-        <div className="bg-white rounded p-8 shadow-lg">
-          <div
-            className={` w-full grid sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 xl:grid-cols-4 gap-5 m-auto `}
-          >
-            <div className="grid col-span-1">
-              <div>
-                <FormLabel>Booking Date (From)</FormLabel>
-                <span className="text-red-400">*</span>
 
-                <FormInput
-                  type="date"
-                  name="from_date"
-                  value={fromTo?.from_date}
-                  onChange={(e) => {
-                    setFromTo((prev: any) => ({
-                      ...prev,
-                      from_date: e.target.value,
-                    }));
-                    handleint();
-                  }}
-                />
-              </div>
-            </div>
+          <div className="w-full p-2 lg:p-3 border-b border-gray-200 bg-[#f1f1f1]">
+            <div className="flex justify-end w-full">
+              <div className=" w-full  lg:w-auto">
+                <div className=" grid grid-cols-12 lg:grid-cols-12 gap-2">
+                  <div className=" col-span-12 lg:col-span-2"></div>
+                  <div className=" col-span-6 lg:col-span-4">
+                    <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center">
+                      <FormLabel className="!mb-0 whitespace-nowrap">
+                        Booking Date (From)
+                      </FormLabel>
+                      <span className="text-red-400">*</span>
 
-            <div className="grid col-span-1">
-              <div>
-                <FormLabel>Booking Date (To)</FormLabel>
-                <span className="text-red-400">*</span>
+                      <FormInput
+                        type="date"
+                        name="from_date"
+                        value={fromTo?.from_date}
+                        onChange={(e) => {
+                          setFromTo((prev: any) => ({
+                            ...prev,
+                            from_date: e.target.value,
+                          }));
+                          handleint();
+                        }}
+                      />
+                    </div>
+                  </div>
 
-                <FormInput
-                  type="date"
-                  name="to_date"
-                  value={fromTo?.to_date}
-                  onChange={(e) => {
-                    setFromTo((prev: any) => ({
-                      ...prev,
-                      to_date: e.target.value,
-                    }));
-                    setPage(1);
-                    setHit(2);
-                    setAllgetData([]);
-                    setCondata([]);
-                  }}
-                />
-              </div>
-            </div>
+                  <div className=" col-span-6 lg:col-span-4">
+                    <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center">
+                      <FormLabel className="!mb-0 whitespace-nowrap">
+                        Booking Date (To){" "}
+                        <span className="text-red-400">*</span>
+                      </FormLabel>
 
-            {/* <div className="grid col-span-1">
+                      <FormInput
+                        type="date"
+                        name="to_date"
+                        value={fromTo?.to_date}
+                        onChange={(e) => {
+                          setFromTo((prev: any) => ({
+                            ...prev,
+                            to_date: e.target.value,
+                          }));
+                          setPage(1);
+                          setHit(2);
+                          setAllgetData([]);
+                          setCondata([]);
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* <div className="grid col-span-1">
               <div>
                 <FormLabel>STATUS</FormLabel>
            
@@ -528,71 +564,79 @@ const AWBDetailsReports: React.FC = () => {
               </div>
             </div> */}
 
-            <div className=" mt-7 grid-cols-2">
-              <div>
-                <Button
-                  variant="mustard"
-                  disabled={
-                    postisLoading || !fromTo?.from_date || !fromTo?.to_date
-                  }
-                  onClick={() => {
-                    getintdata(1);
-                    country_destination();
-                    branchData()
-                    // getalldownloddata();
-                    // setCondata([]);
-                  }}
-                  className=" mr-1 p-2 w-full"
-                >
-                  Search
-                  {postisLoading && postisLoading == 1 && (
-                    <LoadingIcon
-                      icon="puff"
-                      color="white"
-                      className="w-5 h-5 ml-2 stroke-2.5 text-white"
-                    />
-                  )}
-                </Button>
+                  <div className=" col-span-12 lg:col-span-2">
+                    <div>
+                      <Button
+                        variant="mustard"
+                        disabled={
+                          postisLoading ||
+                          !fromTo?.from_date ||
+                          !fromTo?.to_date
+                        }
+                        onClick={() => {
+                          getintdata(1);
+                          country_destination();
+                          branchData();
+                          // getalldownloddata();
+                          // setCondata([]);
+                        }}
+                        className=" mr-1 p-2 w-full"
+                      >
+                        Search
+                        {postisLoading && postisLoading == 1 && (
+                          <LoadingIcon
+                            icon="puff"
+                            color="white"
+                            className="w-5 h-5 ml-2 stroke-2.5 text-white"
+                          />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
+
+          <div className="p-2  lg:p-6">
+            <div className="w-full h-full ">
+              {condata?.length > 0 ? (
+                bookingData ? (
+                  <div
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      margin: "auto",
+                      display: "block",
+                    }}
+                  >
+                    <LoadingIcon icon="puff" />
+                  </div>
+                ) : (
+                  <>
+                    <Table
+                      columns={columns}
+                      row={row}
+                      loading={postisLoading == 2 ? true : false}
+                      page={page - 1}
+                      overflowvalue={true}
+                      heightTable="40vh"
+                    />
+                    <CommonPagination
+                      onPageChange={onPageChange}
+                      page={Number(page)}
+                      totalpages={Number(totalPages)}
+                    />
+                  </>
+                )
+              ) : (
+                <p className="text-gray-400 text-center mt-4">No Data Found!</p>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full h-full ">
-        {condata?.length > 0 ? (
-          bookingData ? (
-            <div
-              style={{
-                width: "40px",
-                height: "40px",
-                margin: "auto",
-                display: "block",
-              }}
-            >
-              <LoadingIcon icon="puff" />
-            </div>
-          ) : (
-            <>
-              <Table
-                columns={columns}
-                row={row}
-                loading={postisLoading == 2 ? true : false}
-                page={page - 1}
-                overflowvalue={true}
-                heightTable="40vh"
-              />
-              <CommonPagination
-                onPageChange={onPageChange}
-                page={Number(page)}
-                totalpages={Number(totalPages)}
-              />
-            </>
-          )
-        ) : (
-          <p className="text-gray-400 text-center mt-4">No Data Found!</p>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 

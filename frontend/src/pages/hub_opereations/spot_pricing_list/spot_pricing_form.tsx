@@ -17,9 +17,10 @@ import {
   Spot_form_submit,
 } from "../../../AllServices/services";
 import { useAlert } from "../../../ContextProvider/AlertContext";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
 import "../../../components/Table/index.css";
 import LoadingIcon from "../../../base-components/LoadingIcon";
+import { User } from "lucide-react";
 
 const spot_pricing_form = (data: any) => {
   const { pickDataforForm } = data;
@@ -157,28 +158,45 @@ const spot_pricing_form = (data: any) => {
   return (
     <>
       <div
-        style={{ maxHeight: "80vh" }}
-        className="sm:flex sm:justify-between gap-4 tbl-overflow-x-auto"
+   
+        className="grid grid-cols-2 gap-2"
       >
-        <div
-          style={{ height: "fit-content" }}
-          className="sm:mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg sm:w-1/2"
-        >
-          <div className=" flex mb-4">
-            <div
-              className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+        <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white h-full">
+
+
+
+      <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  
+                   <div
+              className=" flex justify-center items-center p-1 cursor-pointer rounded-full shadow-lg mr-2 ml-0 bg-[#777] w-[32px] h-[32px]"
               onClick={() => {
                 data.setShowForm(true);
                 data.setPickDataforForm({});
                 data.setFormChangeBtn(false);
               }}
             >
-              <ArrowLeft className="w-5 h-4" />
+              <ArrowLeft className="w-4 h-4 text-white" />
             </div>
 
-            <h1 className="font-bold text-lg">Serviceability</h1>
+
+
+                  <h4 className="text-[16px] font-medium">
+                   Serviceability
+                  </h4>
+                </div>
+              </div>
+
+        
+            </div>
           </div>
-          <hr />
+
+<div className="p-2  lg:p-6">
+
+
           <div className="mt-2 mb-2">
             <FormLabel>Approval Type</FormLabel>
             <span className="text-red-500 ml-2">*</span>
@@ -289,14 +307,31 @@ const spot_pricing_form = (data: any) => {
             <FormInput disabled value={pickDataforForm.dest_city} />
           </div>
         </div>
-        <div
-          style={{ height: "fit-content" }}
-          className="sm:mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg sm:w-1/2"
-        >
-          <h1 className="mb-2 text-center font-bold text-medium">
-            Shipment Details
-          </h1>
-          <hr />
+       </div>
+       </div>
+   
+      <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white h-full">
+		
+    <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <FileText className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                 Shipment Details
+                  </h4>
+                </div>
+              </div>
+
+        
+            </div>
+          </div>
+
+    <div className="p-2  lg:p-6">
+
           <div className="mt-2 mb-2">
             <FormLabel>Shipment Type</FormLabel>
             <span className="text-red-500 ml-2">*</span>
@@ -600,6 +635,8 @@ const spot_pricing_form = (data: any) => {
             </Button>
           </div>
         </div>
+    </div>
+    </div>
       </div>
     </>
   );

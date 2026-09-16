@@ -155,3 +155,70 @@ filter: hue-rotate(53deg) brightness(.8);
 /**** END Shipment scan *****/
 
 
+
+/*** start new ui design ********/
+.commonGradient {
+	background-image: linear-gradient(to right, #ffe6b2, #fff5d9, #fffbf2);
+}
+.commonGradientGray {
+	background-image: linear-gradient(to right, #e1e5e9, #f4f4f4, #f0f0f0);
+}
+
+.searchawbno {
+	background-image: linear-gradient(to right top, #fff, #fff, #f6f6f6, #fff, #fff9e8);
+}
+
+.rangeinput input[type="range"]::-moz-range-progress {
+	background: #EFB847 !important;
+}
+
+
+.awbsearchbg {
+	background-image: linear-gradient(to right top, #fff8e5, #fff, #fffbf2, #fff, #fff);
+}
+
+
+.commonGradient{
+overflow: hidden;	position: relative;
+
+}
+.commonGradient::before {
+	position: absolute;
+	background: url("https://i.makeagif.com/media/2-02-2018/U1FXOQ.gif") no-repeat;
+	width: 400px;
+	height: 300px;
+	content: "";
+	top: -20px;
+	left: 0;
+	filter: hue-rotate(873deg) saturate(12) sepia(.6) contrast(1);
+	opacity: .8;
+	z-index: 0;
+}
+.commonGradient::after {
+	position: absolute;
+	background: #fff2d1;
+	width: 230px;
+	height: 300px;
+	content: "";
+	top: -20px;
+	left: 220px;
+	filter: blur(4px);
+}
+
+
+.commonGradient > div{
+position: relative;
+  z-index: 1;
+}
+@media (max-width: 767px) {
+body {
+	overflow: initial !important;
+}
+
+[type="date"] {
+	padding-left: 5px !important;
+	font-size: 13px !important;
+	padding-right: 5px !important;
+}
+
+}

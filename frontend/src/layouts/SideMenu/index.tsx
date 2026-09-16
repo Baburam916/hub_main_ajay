@@ -262,7 +262,7 @@ function Main() {
         </nav>
         {/* END: Side Menu */}
         {/* BEGIN: Content */}
-        <div className="overflow-auto min-w-0 min-h-[94vh] h-[90vh] scrollbar-hide pb-4 flex-1 bg-slate-100 dark:bg-darkmode-700 px-4 md:px-[22px] max-w-full md:max-w-auto before:content-[''] before:w-full before:block boxinner">
+        <div className="rounded-[5px] lg:rounded-[14px] lg:overflow-auto min-w-0 lg:min-h-[94vh] lg:h-[90vh] scrollbar-hide  flex-1 bg-slate-100 dark:bg-darkmode-700 pb-4 px-2 lg:px-4 md:px-[22px] max-w-full md:max-w-auto before:content-[''] before:w-full before:block boxinner">
           <TopBar />
           <Outlet />
         </div>
@@ -290,7 +290,7 @@ function Menu(props: {
       content={props.menu.title}
       href={props.menu.subMenu ? "#" : props.menu.pathname}
       className={clsx([
-        "h-[50px] flex items-center pl-5 text-white mb-1 relative rounded-full",
+        "h-[50px] flex items-center pl-3 text-white mb-1 relative rounded-full",
         {
           "dark:text-slate-300": props.menu.active && props.level != "first",
           "text-white/70 dark:text-slate-400":
@@ -331,7 +331,7 @@ function Menu(props: {
       </div>
       <div
         className={clsx([
-          "hidden xl:flex items-center w-full ml-3",
+          "hidden xl:flex items-center w-full ml-2",
           { "font-medium": props.menu.active && props.level != "first" },
           {
             "text-slate-800 font-medium dark:text-slate-300":

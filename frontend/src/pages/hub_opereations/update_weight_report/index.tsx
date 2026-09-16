@@ -5,6 +5,7 @@ import Table from "../../../components/Table";
 import { UpdateWeights } from "../../../AllServices/services";
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import LoadingIcon from "../../../base-components/LoadingIcon";
+import { Ruler, User } from "lucide-react";
 
 const index = () => {
   const { showAlert } = useAlert();
@@ -87,11 +88,32 @@ const index = () => {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="font-bold text-lg">Update Weights</h1>
-        <hr />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-          <div>
+
+
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Ruler className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                  Update Weights
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center w-full lg:w-auto">
+                
+
+
+
+             <div className="flex-wrap md:flex-nowrap flex gap-2 items-center w-full lg:w-auto">
+       <div className="flex-wrap md:flex-nowrap flex  items-center gap-x-1 lg:gap-2 w-[48%] lg:w-auto">
+                <label className="!mb-0">From</label>
             <FormInput
               id="regular-form-1"
               type="date"
@@ -102,8 +124,10 @@ const index = () => {
               placeholder="From Date..."
             />
           </div>
-          <div>
-            <FormInput
+           <div className="flex-wrap md:flex-nowrap flex  items-center gap-x-1 lg:gap-2 w-[48%] lg:w-auto">
+          
+                  <label className="!mb-0">From</label>
+                    <FormInput
               id="regular-form-1"
               type="date"
               value={toDate}
@@ -113,11 +137,11 @@ const index = () => {
               placeholder="To Date..."
             />
           </div>
-          <div>
+            <div className=" w-full lg:w-auto">
             <Button
               onClick={() => handleSubmit()}
               disabled={spinner}
-              className="p-2 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
+              className="px-3 py-2 border-none rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
             >
               Search {spinner && <LoadingIcon icon="puff" className="ml-2" />}
             </Button>
@@ -126,9 +150,20 @@ const index = () => {
           </Button> */}
           </div>
         </div>
-      </div>
+     
 
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+          <div className="p-2  lg:p-6">
+            
+      <div className="w-full">
         {updateWeightList.length == 0 ? (
           <>
             <p className="text-gray-400 text-center mt-4">No Data Found!</p>
@@ -137,6 +172,14 @@ const index = () => {
           <Table columns={columns} row={row} heightTable="51.5vh" />
         )}
       </div>
+          </div>
+        </div>
+      </div>
+      
+
+
+
+
     </>
   );
 };

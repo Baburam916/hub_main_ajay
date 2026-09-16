@@ -1,4 +1,4 @@
-import { ArrowLeft, Check, FileText, Trash2 } from "lucide-react";
+import { ArrowLeft, Check, ClipboardList, FileText, Trash2, User } from "lucide-react";
 import {
   FormCheck,
   FormInput,
@@ -285,7 +285,7 @@ export default function create_bag(data: any) {
           generateCreateBagPdf(item.airwaybill_no);
         }}
         disabled={loading || !hubCourierList?.includes(item.courier_id)}
-        className="px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-700"
+        className="px-2 py-1 rounded-md border-none bg-blue-500 text-white hover:bg-blue-700"
       >
         <FileText className="w-5 h-4 mr-1" />
         Generate
@@ -353,24 +353,36 @@ export default function create_bag(data: any) {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
-        <div className="flex items-center mb-2">
+    <div className="w-full mt-2 mb-4">
+      <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+      
+     <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex items-center w-full">
           <div
-            className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+            className="  p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]"
             onClick={() => {setShowCreateBag(false)
             setForwhat("")
           setShipmentInscanList([])}}
           >
-            <ArrowLeft className="w-5 h-4" />
+            <ArrowLeft className="w-5 h-4 text-white" />
           </div>
           <h1 className="text-base text-gray-500 font-bold">
             {forwhat == "Bag" ? "Create Bag" : "Mother Box"}
           </h1>
         </div>
-        <hr />
+ </div>
+
+
+
+
+
+
+<div className="p-2  lg:p-6">
+
+ 
         <div
           className={`mt-4 w-full grid ${
-            forwhat == "Bag" ? "grid-cols-4" : "grid grid-cols-3"
+            forwhat == "Bag" ? "grid-cols-1 lg:grid-cols-4" : "grid grid-cols-1 lg:grid-cols-3"
           } gap-2`}
         >
           <div>
@@ -722,7 +734,7 @@ export default function create_bag(data: any) {
               }}
               // disabled={spinner || disableField}
               disabled={spinner || !airwaybillNo}
-              className="px-4 py-1 rounded-lg bg-mustard text-white"
+              className="px-3 py-2 rounded-lg bg-mustard text-white border-none"
             >
               Inscan Shipment{" "}
               {spinner == forwhat && (
@@ -732,20 +744,58 @@ export default function create_bag(data: any) {
           </div>
         </div>
       </div>
+     </div>
+     </div>
       {showCloseBag && forwhat == "Bag" && (
-        <div className="w-full max-w-6xl mx-auto mt-4 px-4 py-2 bg-white rounded-lg shadow-lg">
+         <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+  <div className=" w-full py-3  px-3 border-b border-white commonGradientGray  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+             <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <ClipboardList className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                  
+                    Manger Dashboard Report
+                  </h4>
+                </div>
+              </div>
+
+        
+            </div>
+          </div>
+
+  <div className="p-2  lg:p-6">
+
+
           <Table columns={columns} row={rows} heightTable="33vh" />
-          <Button
+
+
+
+  <div className="flex items-center gap-2 justify-end mt-3 w-full">
+                   <Button
             onClick={() => removeShipment()}
-            className="mt-4 px-2 py-2 rounded bg-red-500 text-white hover:bg-red-700"
+            className=" px-2 py-1 rounded-md border-none bg-red-500 text-white hover:bg-red-700"
           >
             <Trash2 className="w-5 h-4 mr-1" />
             Remove Shipment
           </Button>
+                </div>
+
+
+
+           </div>
         </div>
+ </div>
+
       )}
       {showCloseBag && forwhat == "Mother" && (
-        <div className="w-full max-w-6xl mx-auto mt-4 px-4 py-2 bg-white rounded-lg shadow-lg">
+       <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		 <div className="p-2  lg:p-6">
           <Table columns={columns2} row={rows2} heightTable="33vh" />
           {/* <Button
             onClick={() => removeShipment()}
@@ -755,6 +805,7 @@ export default function create_bag(data: any) {
             Remove Shipment
           </Button> */}
         </div>
+         </div></div>
       )}
     </>
   );

@@ -21,7 +21,7 @@ import {
   FormLabel,
   FormSelect,
 } from "../../../base-components/Form";
-import { Eye, Scale, Search, Upload, UserCog } from "lucide-react";
+import { Eye, Scale, Search, Upload, User, UserCog } from "lucide-react";
 import { useDebounce } from "../../../components/Search";
 import CommonPagination from "../../../components/Pagination";
 import CommonSearchableAll from "../../../components/commonSearchableAll";
@@ -343,22 +343,22 @@ const index = ({ pdata }) => {
 
   const description2 = (
     <>
-      <FormLabel className="pl-2">Enquiry Docs</FormLabel>
-      <div className="text-center">
+      <FormLabel className="">Enquiry Docs</FormLabel>
+      <div className="text-center flex-wrap lg:flex-nowrap flex gap-2 items-center">
         <Button
-          className="mr-2 p-2 bg-mustard w-[120px] text-white"
+          className=" p-2 bg-mustard w-[120px] text-white border-none"
           onClick={() => funcOpenDoc(rowData?.proforma_url)}
         >
           Performa
         </Button>
         <Button
-          className="p-2 bg-mustard w-[120px] text-white"
+          className="p-2 bg-green-400 w-[120px] text-white  border-none"
           onClick={() => funcOpenDoc(rowData?.house_draft)}
         >
           House Draft
         </Button>
         <Button
-          className="ml-2 p-2 bg-mustard w-[120px] text-white"
+          className="p-2 bg-blue-400 w-[120px] text-white  border-none"
           onClick={() => funcOpenDoc(rowData?.house_pdf)}
         >
           House Pdf
@@ -492,9 +492,9 @@ const index = ({ pdata }) => {
     </div>
   );
   const Uploadfooter = (
-    <div className="flex justify-end items-end ">
+    <div className="flex gap-2 justify-end items-end ">
       <Button
-        className=" bg-gray-400 text-white w-[100px] p-2 "
+        className="px-4 py-2  border-none bg-red-400 text-white  "
         onClick={() => {
           handleCancel();
         }}
@@ -504,7 +504,7 @@ const index = ({ pdata }) => {
       <div>
         <Button
           disabled={!multipleFile || uploadloading}
-          className="p-2 bg-success text-white   "
+          className="px-4 py-2  border-none bg-mustard text-white   "
           onClick={() => uploadChecklist()}
         >
           {uploadloading ? "Uploading..." : "Upload"}
@@ -513,7 +513,7 @@ const index = ({ pdata }) => {
     </div>
   );
   const footer3 = (
-    <div className="flex justify-between ">
+    <div className="flex gap-2 justify-between ">
       <Button
         className=" bg-gray-400 text-white w-[100px] "
         onClick={() => {
@@ -525,7 +525,7 @@ const index = ({ pdata }) => {
       <div>
         {(prerequeteddata?.new_house || prerequeteddata?.new_master) &&
           prerequeteddata?.status == 0 ? (
-          <Button className="p-2 bg-mustard text-white w-[250px]" disabled>
+          <Button className="px-4 py-2 bg-blue-400 text-white   border-none" disabled>
             Approval Pending
           </Button>
         ) : (
@@ -533,7 +533,7 @@ const index = ({ pdata }) => {
             disabled={
               (!requestdata?.hawb && !requestdata?.mawb) || requestloading
             }
-            className="p-2 bg-success text-white  w-[250px] "
+            className="px-4 py-2 bg-mustard text-white   border-none"
             onClick={() => handlerequest(requestdata)}
           >
             {requestloading ? "Requesting..." : "Change Request (Mawb/Hawb)"}
@@ -968,7 +968,7 @@ let isStatus2 = (
   const footer = (
     <div className="flex justify-end gap-4">
       <Button
-        className="px-4 py-1 rounded-lg bg-green-400 text-white hover:bg-green-500 ml-2"
+        className="px-4 py-2 rounded-md border-none bg-mustard text-white hover:bg-green-500 ml-2"
         onClick={() => {
           setShowForm(false);
           setOpenModal(false);
@@ -1033,16 +1033,32 @@ let isStatus2 = (
   return (
     <>
       {showForm ? (
-        <div className="w-full max-w-8xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-          <div className="flex flex-row justify-between border-b border-gray-300">
-            <div className="w-[40%]">
-              <h1 className="font-bold text-lg">Spot Pricing Enquiry List</h1>
-            </div>
-            <div className="flex w-[60%] justify-end mb-4">
+        <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+  
+
+   <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
               <div>
-                <div className="relative flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <FileText  className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                 Spot Pricing Enquiry List
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center w-full lg:w-auto">
+                
+
+<div className="flex-wrap lg:flex-nowrap flex gap-2 w-full lg:w-auto">
+          
+                <div className="relative flex-wrap lg:flex-nowrap flex gap-2 w-full lg:w-[240px]">
                   <FormInput
-                    className="px-6 py-2"
+                    className="px-2 py-2 h-[36px] text-[13px] pr-[20px]  w-full border-none "
                     type="text"
                     value={enquiryId}
                     onChange={(e) => {
@@ -1051,13 +1067,13 @@ let isStatus2 = (
                     }}
                     placeholder="Enter Enq_Id/AWB/MAWB"
                   />
-                  <Search className="absolute left-1 w-5 h-5" />
+                  <Search className="absolute top-[10px] right-2 w-4 h-4 text-[#ccc]" />
                 </div>
-              </div>
-            </div>
-            <div className="ml-2">
+              
+          
+            <div className="">
               <Button
-                className="p-2 bg-success w-[120px] text-white"
+                className="p-2 bg-success text-white border-none px-3 py-2"
                 // disabled={csvSpinner}
                 onClick={() =>
                   convertJSONtoCSV(formatData(getSpotList), "spot_pricing.csv")
@@ -1067,11 +1083,26 @@ let isStatus2 = (
                 {/* {csvSpinner && <LoadingIcon icon="puff" className="ml-2" />} */}
               </Button>
             </div>
+
+  </div>
+
+
+
+
+
+
+              </div>
+            </div>
           </div>
-          <div className="flex justify-between w-full mt-4  pb-8 border-b border-gray-300">
-            <div className="grid min-[876px]:grid-cols-5 min-[500px]:grid-cols-2 min-[500px]:grid-cols-1 gap-4 ">
-              <div>
-                <FormLabel>
+
+
+
+
+
+          <div className="fw-full p-2 lg:p-3 border-b border-gray-200 bg-[#f1f1f1]">
+            <div className="grid grid-cols-12  gap-2 ">
+              <div className="col-span-12 lg:col-span-3">
+                <FormLabel className="!mb-0 text-[13px]">
                   Search By Franchisee<span className="text-red-400">*</span>
                 </FormLabel>
                 <CommonSearchableAll
@@ -1087,8 +1118,8 @@ let isStatus2 = (
                 // questionmark={true}
                 />
               </div>
-              <div>
-                <FormLabel>ENQUIRY DATE (from)</FormLabel>
+              <div className="col-span-6 lg:col-span-2">
+                <FormLabel className="!mb-0 text-[13px]">Enquiry Date (from)</FormLabel>
                 <FormInput
                   name="from_date"
                   onChange={handlechange}
@@ -1097,8 +1128,8 @@ let isStatus2 = (
                   type="date"
                 />
               </div>
-              <div>
-                <FormLabel>ENQUIRY DATE (To)</FormLabel>
+              <div className="col-span-6 lg:col-span-2">
+                <FormLabel className="!mb-0 text-[13px]">Enquiry Date (To)</FormLabel>
                 <FormInput
                   value={datatoget?.to_date}
                   onChange={handlechange}
@@ -1107,8 +1138,8 @@ let isStatus2 = (
                   type="date"
                 />
               </div>
-              <div>
-                <FormLabel>PRICING STATUS</FormLabel>
+               <div className="col-span-12 lg:col-span-3">
+                <FormLabel className="!mb-0 text-[13px]">Pricing Status</FormLabel>
                 <FormSelect
                   name="booking_status"
                   value={pricingStatus}
@@ -1124,10 +1155,10 @@ let isStatus2 = (
                
                 </FormSelect>
               </div>
-              <div>
+           <div className="col-span-12 lg:col-span-2">
                 {" "}
                 <Button
-                  className="bg-success p-2 text-white w-[120px] mt-7 "
+                  className="bg-mustard p-2 text-white w-full mt-[21px] border-none "
                   onClick={() => getspotlistdata(2)}
                   disabled={isLoading}
                 >
@@ -1136,7 +1167,7 @@ let isStatus2 = (
               </div>
             </div>
           </div>
-          <div className="">
+    <div className="p-2  lg:p-6">
             {getSpotList?.length > 0 ? (
               <>
                 <Table
@@ -1167,7 +1198,8 @@ let isStatus2 = (
             )}
           </div>
         </div>
-      ) : (
+     </div>
+    ) : (
         <SpotPricingForm
           showForm={showForm}
           setShowForm={setShowForm}

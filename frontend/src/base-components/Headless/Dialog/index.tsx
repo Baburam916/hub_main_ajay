@@ -143,7 +143,7 @@ Dialog.Description = ({
   return (
     <HeadlessDialog.Description
       as={as}
-      className={twMerge(["p-5", className])}
+      className={twMerge(["p-2 lg:p-5", className])}
       {...props}
     >
       {children}

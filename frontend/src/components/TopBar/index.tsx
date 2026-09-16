@@ -111,14 +111,14 @@ function Main() {
         onClick={() => {
           setOpenModal(false);
         }}
-        className="text-white w-20 bg-red-400 hover:bg-red-500 mr-1 p-1"
+        className="text-white w-20 bg-red-400 hover:bg-red-500 border-none mr-1 p-1"
       >
         Cancel
       </Button>
       <Button
         type="button"
         onClick={() => changePassword()}
-        className="text-white w-20 bg-green-400 hover:bg-green-500 p-1"
+        className="text-white w-20 bg-mustard border-none  p-1"
       >
         Done
       </Button>

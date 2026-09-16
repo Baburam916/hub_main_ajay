@@ -28,14 +28,14 @@ function Main(data: any) {
         }}
         className="mt-0"
       >
-        <Dialog.Panel className="px-2 py-1">
-          <Dialog.Title className="flex justify-between">
+        <Dialog.Panel className="px-0 py-0">
+          <Dialog.Title className="flex justify-between bg-[#f6c153] rounded-t">
             <h2 className="mr-auto text-base font-medium">{title}</h2>
             <div className="flex justify-between">
               {addfield ? <div className="mr-2">{addfield}</div> : ""}
               <Lucide
                 icon="XCircle"
-                className={`w-5 h-5 cursor-pointer hover:text-red-500 ${
+                className={`w-5 h-5 cursor-pointer text-red-500  hover:text-red-700 ${
                   addfield ? "mt-2" : ""
                 }`}
                 onClick={() => {

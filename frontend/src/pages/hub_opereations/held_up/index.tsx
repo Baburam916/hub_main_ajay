@@ -20,7 +20,7 @@ import {
 } from "../../../AllServices/services";
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import { formatDateWithoutTime } from "../../../utils";
-import { Search, Wallet } from "lucide-react";
+import { Box, Search, User, Wallet } from "lucide-react";
 import Modal from "../../../components/Modal";
 import { Menu } from "../../../base-components/Headless";
 import { UserCog } from "lucide-react";
@@ -195,7 +195,7 @@ const index = () => {
       //   </Menu.Items>
       // </Menu>
       <Button
-        className="bg-mustard text-white p-2"
+        className="bg-mustard text-white p-2 border-none"
         onClick={() => {
           setConfirmData({
             data: { enquiry_id: item?.id, remark: "" },
@@ -339,12 +339,32 @@ const index = () => {
   }, [page, debouncedSearch]);
   return (
     <>
-      <div className="w-full max-w-8xl mx-auto mt-4 py-3 px-6 bg-white rounded-lg shadow-lg">
-        <div className="flex flex-row justify-between border-b pb-2 border-gray-300">
-          <h1 className="font-bold text-lg">Held Up</h1>
-          <div className="relative flex justify-between items-center">
+     <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+
+
+      <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-none flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Box className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                   Held Up
+                  </h4>
+                </div>
+              </div>
+
+
+
+     <div className="flex items-center w-full lg:w-auto">
+      
+          <div className="relative flex justify-between items-center  w-full lg:w-auto">
             <FormInput
-              className="pr-8 pt-1 pb-1 rounded-xl"
+              className="pr-8 pt-1 pb-1 rounded-md h-[35px]  w-full lg:w-auto"
               type="text"
               value={search}
               onChange={(e) => {
@@ -353,7 +373,7 @@ const index = () => {
               }}
               placeholder="Enter Enquiry No."
             />
-            <Search className="absolute right-1 w-5 h-5" />
+            <Search className="absolute right-2 w-4 h-4" />
             {/* <Button
               //   onClick={() => {
               //     getWalkinTable();
@@ -365,6 +385,15 @@ const index = () => {
             </Button> */}
           </div>
         </div>
+
+
+            </div>
+          </div>
+
+
+
+ <div className="p-2  lg:p-6">
+
 
         {isLoading ? (
           <div className="flex justify-center mt-6">
@@ -398,6 +427,13 @@ const index = () => {
           </>
         )}
       </div>
+
+  </div>
+
+      </div>
+
+
+
       <Modal
         open={confirm}
         setOpen={setConfirm}

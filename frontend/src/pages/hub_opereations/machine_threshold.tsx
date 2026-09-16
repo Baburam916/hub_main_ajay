@@ -6,9 +6,10 @@ import {
   Get_threshold_limit,
   Put_threshold_limit,
   post_weight_diff,
-  get_weight_diff
+  get_weight_diff,
 } from "../../AllServices/services";
 import LoadingIcon from "../../base-components/LoadingIcon";
+import { Box, User } from "lucide-react";
 
 export default function index() {
   const { showAlert } = useAlert();
@@ -75,14 +76,14 @@ export default function index() {
     if (Number(thresholdLimitInPercent) < 0) {
       showAlert(
         "Threshold limit in Percentage should not be less than 0",
-        "warning"
+        "warning",
       );
       return;
     }
     if (Number(thresholdLimitInPercent) > 100) {
       showAlert(
         "Threshold limit in Percentage should not be greater than 100",
-        "warning"
+        "warning",
       );
       return;
     }
@@ -126,77 +127,107 @@ export default function index() {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="font-bold text-lg">Threshold</h1>
-        <hr />
-        <div className="mt-4 sm:flex">
-          <FormLabel className="flex items-center text-500">
-            Threshold Limit in kgs :
-          </FormLabel>
-          <FormInput
-            className="sm:w-60 sm:ml-4"
-            type="number"
-            value={thresholdLimitInKg}
-            onChange={(e) => setThresholdLimitInKg(e.target.value)}
-          />
-        </div>
-        <div className="mt-4 sm:flex">
-          <FormLabel className="flex items-center text-500">
-            Threshold Limit in per (%) :
-          </FormLabel>
-          <FormInput
-            className="sm:w-60 sm:ml-4"
-            type="number"
-            value={thresholdLimitInPercent}
-            onChange={(e) => setThresholdLimitInPercent(e.target.value)}
-          />
-        </div>
-
-        <hr className="my-6" />
-
-        <div className="mt-6 sm:flex sm:items-center">
-          <FormLabel className="flex items-center text-500">
-            Weight Update Tolerance (0-10g) :
-          </FormLabel>
-
-          <div className="sm:ml-4 sm:flex sm:items-center sm:gap-4 w-full sm:w-auto">
-            <input
-              type="range"
-              min="0"
-              max="10"
-              step="0.5"
-              value={sliderValue}
-              onChange={handleSliderChange}
-              className="w-full sm:w-64 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-mustard"
-              style={{
-                background: `linear-gradient(to right, #d4a517 0%, #d4a517 ${(sliderValue / 10) * 100
-                  }%, #e5e7eb ${(sliderValue / 10) * 100}%, #e5e7eb 100%)`,
-              }}
-            />
-
-            <div className="mt-2 sm:mt-0 text-center sm:text-left">
-              <span className="inline-block bg-mustard text-white px-3 py-1 rounded-lg font-semibold min-w-16">
-                {sliderValue} g
-              </span>
+      <div className="w-full lg:w-[550px] m-auto mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Box className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium"> Threshold</h4>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+          <div className="p-2  lg:p-6">
+            <div className="w-full ">
+              <div className="grid  grid-cols-12 gap-2 ">
+                <div className="col-span-12 lg:col-span-6">
+                  <FormLabel className="!mb-0  text-500">
+                    Threshold Limit in kgs
+                  </FormLabel>
+                  <FormInput
+                    className="w-full"
+                    type="number"
+                    value={thresholdLimitInKg}
+                    onChange={(e) => setThresholdLimitInKg(e.target.value)}
+                  />
+                </div>
 
-        <div className="w-full flex justify-end">
-          <Button
-            className="bg-mustard border-none py-2 px-4 m-6 text-white rounded-xl"
-            onClick={handleHubThreshold}
-            disabled={spinner}
-          >
-            Submit{" "}
-            {spinner && (
-              <LoadingIcon
-                icon="puff"
-                color="white"
-                className="w-5 h-5 ml-2 stroke-2.5 text-white"
-              />
-            )}
-          </Button>
+                <div className="col-span-12 lg:col-span-6">
+                  <FormLabel className="!mb-0 text-500">
+                    Threshold Limit in per (%)
+                  </FormLabel>
+                  <FormInput
+                    className="w-full"
+                    type="number"
+                    value={thresholdLimitInPercent}
+                    onChange={(e) => setThresholdLimitInPercent(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-6 lg:col-span-12">
+                <div className=" mt-3 border border-[#ffeab6] rounded-lg p-[10px] bg-[#fff9ea] cursor-pointer gap-3">
+                  <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center  w-full">
+                    <div>
+                      <div className="">
+                        <span className="border-double border-[4px] border-[#ffe3ab] flex justify-between items-center h-[45px] w-[55px] bg-white text-white px-3 py-1 rounded-lg font-semibold min-w-16">
+                          <p className="flex justify-between items-center m-auto font-bold text-[#b68d26] ">
+                            {sliderValue} g
+                          </p>
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="">
+                        <FormLabel className="flex items-center font-bold">
+                          Weight Update Tolerance (0-10g) :
+                        </FormLabel>
+                      </div>
+
+                      <div className="w-full flex items-center rangeinput">
+                        <input
+                          type="range"
+                          min="0"
+                          max="10"
+                          step="0.5"
+                          value={sliderValue}
+                          onChange={handleSliderChange}
+                          className="w-full sm:w-64 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-mustard "
+                          style={{
+                            background: `linear-gradient(to right, #d4a517 0%, #d4a517 ${
+                              (sliderValue / 10) * 100
+                            }%, #e5e7eb ${(sliderValue / 10) * 100}%, #e5e7eb 100%)`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-span-6 lg:col-span-12">
+                <div className="w-full mt-3">
+                  <Button
+                    className="bg-mustard px-3 py-2   text-white rounded-md border-none"
+                    onClick={handleHubThreshold}
+                    disabled={spinner}
+                  >
+                    Submit{" "}
+                    {spinner && (
+                      <LoadingIcon
+                        icon="puff"
+                        color="white"
+                        className="w-5 h-5 ml-2 stroke-2.5 text-white"
+                      />
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

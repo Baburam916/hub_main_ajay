@@ -13,7 +13,7 @@ import {
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import Button from "../../../base-components/Button";
 import Table from "../../../components/Table";
-import { ArrowLeft, Eye } from "lucide-react";
+import { ArrowLeft, Box, ClipboardList, Eye, User } from "lucide-react";
 import CreateBag from "./create_bag";
 import LoadingIcon from "../../../base-components/LoadingIcon";
 import { Link } from "react-router-dom";
@@ -23,6 +23,7 @@ import {
   ChargableWeightData,
   CreateBagData,
 } from "../../../DataTypes/dataTypes";
+import { Truck } from "lucide-react";
 
 export default function Index() {
   const { showAlert } = useAlert();
@@ -204,7 +205,7 @@ export default function Index() {
      setForwhat("Bag");
           getShipmentInscanList(item?.bag_no,"Bag");
         }}
-        className="px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-700"
+        className="px-2 py-1 rounded-md border-none bg-blue-500 text-white hover:bg-blue-700"
       >
         Continue
       </Button>
@@ -292,7 +293,7 @@ if(res?.status==200){
           type="button"
           disabled={cancelLoading}
           onClick={(e: any) => handleSubmit()}
-          className="w-[150px] p-2 ml-2"
+          className="w-[150px] p-2 ml-2 rounded-md border-none"
         >
           Cancel
         </Button>
@@ -321,7 +322,7 @@ if(res?.status==200){
         </div>
       );
       const cancelShipment = (
-        <Button className="px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-700" onClick={()=>{
+        <Button className="px-2 py-1 rounded-md border-none bg-blue-500 text-white hover:bg-blue-700" onClick={()=>{
           setCancelModal(true)
           setCancelMotherboxNo(item?.bag_no)
         }}>
@@ -430,12 +431,29 @@ if(res?.status==200){
     <>
       {!showCreateBag ? (
         <>
-          <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-4 bg-white rounded-lg shadow-lg">
-            <div className="w-full sm:flex justify-between">
-              <h1 className="font-bold text-lg">Bag List</h1>
-              <div className="flex items-center">
+          <div className="w-full">
+          <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+       
+               <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+           
+
+ <div className="block lg:flex items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2 mb-2 lg:mb-0">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <ClipboardList  className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+             Bag List
+                  </h4>
+                </div>
+              </div>
+
+
+
+              <div className="flex-wrap lg:flex-none flex gap-2 items-center ">
                 <Button
-                  className="px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-700 ml-2"
+               className="px-3 py-1 border-none rounded-md bg-mustard text-white hover:bg-[#777]"
                   onClick={() => {
                     setShowCloseBag(false);
                     setDisableField(false);
@@ -448,7 +466,7 @@ if(res?.status==200){
                   Mother Box
                 </Button>
                 <Button
-                  className="px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-700"
+                 className="px-3 py-1 border-none rounded-md bg-blue-500 text-white hover:bg-[#777]"
                   onClick={() => {
                     setShowCloseBag(false);
                     setDisableField(false);
@@ -461,7 +479,7 @@ if(res?.status==200){
                 </Button>
 
                 <Button
-                  className="px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-700 ml-2"
+                  className="px-3 py-1 border-none rounded-md bg-[#777] text-white hover:bg-[#777]"
                   onClick={() => {
                     setShowCloseBag(false);
                     setDisableField(false);
@@ -475,19 +493,22 @@ if(res?.status==200){
                 </Button>
                 <div className="flex items-center ml-2">
                   <h1 className="font-bold">Next Create Manifest</h1>
-                  <div className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2">
+                  <div className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]">
                     <Link
                       to="/hub/operation/create_manifest"
                       className="font-bold"
                     >
-                      <ArrowRight className="w-5 h-4 " />
+                      <ArrowRight className="w-5 h-4 text-[#fff] " />
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
-            <hr className="mt-2" />
-            <div className="bg-white p-1 mt-1">
+     </div>
+
+
+        
+            <div className="p-2  lg:p-6">
               {createdBagList.length > 0 ? (
                 <Table
                   columns={createdBagColumns}
@@ -502,16 +523,19 @@ if(res?.status==200){
               )}
             </div>
           </div>
+          </div>
 
-          <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
+          <div className="w-full mt-4 flex-wrap lg:flex-none flex gap-2">
             {!showIncompleteShipmentList ? (
               <>
                 <Button
-                  className="px-4 py-1 rounded-lg bg-mustard text-white"
+                  className="mr-2 px-3 py-2 rounded-md bg-mustard text-white border-none"
                   disabled={spinner}
                   onClick={() => getIncompleteShipmentList("Bag")}
                 >
-                  Check Incomplete Shipments{" "}
+                <i className="bg-[#FFEEC5] rounded-full p-1 w-[30px] h-[30px] flex items-center justify-center">
+                <Truck className="w-[16px] h-[16px] text-[#DBA628]" /> </i>
+                <p className="font-bold ml-2"> Check Incomplete Shipments{" "}</p>
                   {spinner=="Bag" && <LoadingIcon icon="puff" className="ml-2" />}
                 </Button>
 
@@ -528,34 +552,47 @@ if(res?.status==200){
               </>
             ) : (
               <>
-                <div className="flex items-center">
+               
+               <div className="w-full border border-[#E6E6E6] rounded-[15px] shadow-[0_0px_5px_#edf5ff] mb-4 bg-white">
+                <div className="bookleftTittle rounded-tl-[15px] rounded-tr-[15px] border-b border-[#E6E6E6] px-[12px] py-[10px]  bg-[#F8F8F8] ">
+                <div className="flex items-center ">
                   <div
-                    className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+                    className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]"
                     onClick={() => setShowIncompleteShipmentList(false)}
                   >
-                    <ArrowLeft className="w-5 h-4" />
+                    <ArrowLeft className="w-5 h-4 text-[#fff] " />
                   </div>
                   <h1 className="text-base text-gray-500 font-bold">
                     Pending Inscan List
                   </h1>
-                </div>
-                <div className="bg-white px-1">
+                </div></div>
+
+
+                <div className="  p-1 lg:p-4">
                   <Table
                     columns={incompleteShipmentColumns}
                     row={incompleteShipmentRows}
                     heightTable="29vh"
                   />
                 </div>
+    </div>
+
+
               </>
             )}
             {!showMotherBoxlist ? (
               <>
                 <Button
-                  className="px-4 py-1 rounded-lg bg-mustard text-white"
+                    className="px-3 py-2 rounded-md bg-mustard text-white border-none"
                   disabled={spinner}
                   onClick={() => getIncompleteShipmentList("Mother")}
                 >
+
+                  <i className="bg-[#FFEEC5] rounded-full p-1 w-[30px] h-[30px] flex items-center justify-center">
+                <Box className="w-[16px] h-[16px] text-[#DBA628]" /> </i>
+                <p className="font-bold ml-2">
                   Check Mother Boxes{" "}
+                  </p>
                   {spinner=="Mother" && <LoadingIcon icon="puff" className="ml-2" />}
                 </Button>
 
@@ -572,24 +609,33 @@ if(res?.status==200){
               </>
             ) : (
               <>
-                <div className="flex items-center">
+              
+                <div className="w-full border border-[#E6E6E6] rounded-[15px] shadow-[0_0px_5px_#edf5ff] mb-4 mt-4 bg-white">
+                <div className="bookleftTittle rounded-tl-[15px] rounded-tr-[15px] border-b border-[#E6E6E6] px-[12px] py-[10px]  bg-[#F8F8F8] ">
+               
+
+                <div className="flex items-center ">
                   <div
-                    className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+                    className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]"
                     onClick={() => setShowMotherBoxLists(false)}
                   >
-                    <ArrowLeft className="w-5 h-4" />
+                    <ArrowLeft className="w-5 h-4 text-[#fff]" />
                   </div>
                   <h1 className="text-base text-gray-500 font-bold">
                     Mother Box List
                   </h1>
                 </div>
-                <div className="bg-white px-1">
+                </div>
+                 <div className="  p-1 lg:p-4">
                   <Table
                     columns={motherboxlistscolumn}
                     row={motherboxlistsrow}
                     heightTable="29vh"
                   />
                 </div>
+
+</div>
+
               </>
             )}
           </div>
@@ -617,7 +663,7 @@ if(res?.status==200){
           getCreatedBagList={getCreatedBagList}
           showCloseBag={showCloseBag}
           shipmentInscanList={shipmentInscanList}
-          setShowCloseBag={setShowCreateBag}
+          setShowCloseBag={setShowCloseBag}
           setHubTypeId={setHubTypeId}
           setRegHubTypeId={setRegHubTypeId}
           chargableWeightList={chargableWeightList}

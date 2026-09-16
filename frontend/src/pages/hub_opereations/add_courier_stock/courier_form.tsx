@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormInput, FormLabel } from "../../../base-components/Form";
 import Button from "../../../base-components/Button";
 import { Add_courier_stock } from "../../../AllServices/services";
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import CsvDownloader from "react-csv-downloader";
 import LoadingIcon from "../../../base-components/LoadingIcon";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+
 import {
   X,
   Plus,
@@ -119,20 +123,32 @@ const courier_form = (data: any) => {
     }
   };
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
-    <div className="mt-4 max-w-3xl space-y-6">
-      <div className="w-full sm:w-64">
+
+
+    <div className="mt-4 w-full lg:w-[650px] m-auto  bg-[#FEFEFF] border border-[#e9e9e9] rounded-lg  mb-2 " data-aos="fade-up">
+     
+      <div className="w-full border-[#E5E5E5] border-b rounded-t-lg bg-[#f3f4f4] p-5 items-center group-hover:border-[#fdf2da] min-h-[33px]">
         <FormLabel className="flex items-center gap-1.5 mb-1.5 text-sm font-medium text-slate-600">
           <CalendarDays className="w-4 h-4 text-slate-400" />
-          Date
+        Select  Date
         </FormLabel>
         <FormInput
           type="date"
-          className="w-full rounded-xl"
+          className="w-full rounded-md "
           value={date || ""}
           onChange={(e) => setDate(e.target.value)}
         />
       </div>
+
+<div className="w-full p-2 lg:p-6 space-y-6">
 
       <div>
         <p className="text-sm font-medium text-slate-600 mb-2">
@@ -267,7 +283,7 @@ const courier_form = (data: any) => {
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-1">
         <Button
           disabled={spinner}
-          className="flex items-center justify-center gap-2 bg-mustard border-none py-1.5 px-5 text-white rounded-xl w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 bg-mustard border-none py-1.5 px-3 text-white rounded-md w-full sm:w-auto"
           onClick={() => addCourierStock()}
         >
           {spinner ? <LoadingIcon icon="puff" className="w-4 h-4" /> : <Save className="w-4 h-4" />}
@@ -282,29 +298,15 @@ const courier_form = (data: any) => {
                 Airwaybill_no: "",
               },
             ]}
-            className="w-full sm:w-auto"
-            style={{
-              color: "#fff",
-              alignItems: "center",
-              display: "inline-flex",
-              justifyContent: "center",
-              gap: "8px",
-              cursor: "pointer",
-              fontWeight: "600",
-              fontSize: "13px",
-              lineHeight: "1.75",
-              letterSpacing: "0.02857em",
-              padding: "6px 14px",
-              borderRadius: "12px",
-              background: "#1976d2",
-            }}
+            className="flex items-center justify-center gap-2 bg-[#777779] border-none py-1.5 px-3 text-white rounded-md w-full sm:w-auto"
+          
           >
             <FileDown className="w-4 h-4" />
             Download Dummy CSV
           </CsvDownloader>
         )}
       </div>
-    </div>
+    </div></div>
   );
 };
 

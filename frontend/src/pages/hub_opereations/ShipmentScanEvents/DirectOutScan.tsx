@@ -201,13 +201,32 @@ const DirectOutscan = () => {
 
   return (
     <>
-      <div className="mt-3  w-full md:py-8  md:px-5  py-3  px-3 bg-white rounded-lg shadow-lg">
-        <div className="w-full lg:w-[810px] xl:w-[900px] m-auto ">
-          <div>
-            <h1 className="text-sm sm:text-xl font-bold mb-2">
-              Direct Outscan
-            </h1>
+      <div className="mt-3  w-full xl:w-[100%]  2xl:w-[70%]  m-auto  bg-white rounded-lg shadow-lg">
+       <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+
+
+   <div className=" w-full py-3  px-3 border-b border-white commonGradientGray  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-none flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Scan className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                Direct Outscan
+                  </h4>
+                </div>
+              </div>
+
+         
+            </div>
           </div>
+    
+        <div className="w-full p-2  lg:p-6">
+        
           <div className="w-full shipmentAccount bg-[#F8FBFE] border border-[#D4E6F8] rounded-lg py-6 px-5 md:flex items-center justify-between  block mt-5">
             <div className="w-full flex  items-center ">
               <figure className="relative top-[5px] mr-1 hidden md:block">
@@ -225,7 +244,7 @@ const DirectOutscan = () => {
                 onClick={() => onForwardShipment()}
                 className="btnAnimation overflow-hidden  duration-200  
                 inline-flex items-center justify-center cursor-pointer 
-                 bg-yellow-300 text-white  text-xl py-2 px-7 rounded-lg 
+                 bg-mustard text-white  text-xl py-2 px-7 rounded-lg 
                  hover:bg-yellow-250 transition uppercase"
               >
                 <Scan className="mr-2 w-[20px]" /> Outscan
@@ -352,7 +371,7 @@ const DirectOutscan = () => {
 
                   <div className="scanBoxbutton relative flex md:ml-5 mt-3 md:mt-0">
                     <Button
-                      className="btnAnimation overflow-hidden  duration-200  inline-flex items-center justify-center cursor-pointer  bg-yellow-300 text-white  text-xl py-2 px-7 rounded-lg hover:bg-yellow-250 transition uppercase"
+                      className="btnAnimation overflow-hidden  duration-200  inline-flex items-center justify-center cursor-pointer  bg-mustard border-none text-white  text-xl py-2 px-7 rounded-lg hover:bg-yellow-250 transition uppercase"
                       disabled={!value}
                       onClick={() => {
                         directOutscan();
@@ -457,6 +476,9 @@ const DirectOutscan = () => {
             </button>
           </div> */}
         </div>
+     
+     
+         </div>    </div>
       </div>
     </>
   );

@@ -16,7 +16,7 @@ import { OnForwardShipmentData } from "../../../DataTypes/dataTypes";
 import LoadingIcon from "../../../base-components/LoadingIcon";
 import AutoComplete from "../../../components/AutoComplete/index";
 import CommonPagination from "../../../components/Pagination";
-import { Search } from "lucide-react";
+import { Plane, Search, User } from "lucide-react";
 import { useDebounce } from "../../../components/Search";
 
 export default function Index() {
@@ -118,12 +118,29 @@ export default function Index() {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 py-4 px-6 bg-white rounded-lg shadow-lg">
-        <h1 className="font-bold text-lg mb-2">
-          Manifest Onforword Shipment List
-        </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2">
-          <div className="">
+     <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+       <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nwrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Plane className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                    Manifest Onforword Shipment List
+                  </h4>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+     <div className="p-2  lg:p-6">
+        <div className="grid grid-cols-12 gap-2 lg:gap-3">
+          <div className="col-span-12 lg:col-span-3">
             <FormSelect
               className=""
               value={type}
@@ -137,7 +154,7 @@ export default function Index() {
               ))}
             </FormSelect>
           </div>
-          <div className="">
+       <div className="col-span-12 lg:col-span-3">
             <AutoComplete
               apiFunction={Get_contact_detail}
               setMobileNumber={setMobileNumber}
@@ -146,7 +163,7 @@ export default function Index() {
               setVehicleNo={setVehicleNo}
             />
           </div>
-          <div className="">
+           <div className="col-span-12 lg:col-span-3">
             <FormInput
               id="regular-form-1"
               type="text"
@@ -155,7 +172,7 @@ export default function Index() {
               onChange={(e) => setDriverName(e.target.value)}
             />
           </div>
-          <div className="">
+             <div className="col-span-12 lg:col-span-3">
             <FormInput
               id="regular-form-1"
               type="text"
@@ -164,7 +181,7 @@ export default function Index() {
               onChange={(e) => setVehicleNo(e.target.value)}
             />
           </div>
-          <div className="">
+          <div className="col-span-12 lg:col-span-3">
             <FormInput
               id="regular-form-1"
               type="text"
@@ -173,9 +190,10 @@ export default function Index() {
               onChange={(e) => setManifestNumber(e.target.value.toUpperCase())}
             />
           </div>
+             <div className="col-span-12 lg:col-span-6">
           <FormTextarea
             name="address"
-            className="px-4 py-3 mt-2  max-h-10 min-h-12"
+            className="p-2 h-[37px]"
             placeholder="Extra Details"
             autoComplete="off"
             value={extraDetails}
@@ -186,14 +204,16 @@ export default function Index() {
               }
             }}
           ></FormTextarea>
+          </div>
+                <div className="col-span-12 lg:col-span-3">
           <Button
             disabled={spinner}
             onClick={() => onForwardShipment()}
-            className="mt-4 p-2 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
+            className=" border-none w-full  px-2 py-2 h-[37px] rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
           >
             Outscan Manifest{" "}
             {spinner && <LoadingIcon icon="puff" className="ml-2" />}
-          </Button>
+          </Button></div>
         </div>
         {/* <Button
         className="ml-2 bg-blue-600 border-none py-2 px-4 text-white"
@@ -202,13 +222,42 @@ export default function Index() {
           Download Outscan Manifest
       </Button> */}
       </div>
-      <div className="w-full max-w-6xl mx-auto mt-4 py-3 px-6 bg-white rounded-lg shadow-lg">
-        <div className="flex justify-between">
-          <h1 className="font-400 text-md">Onforward Pending List</h1>
-          <div className="relative flex justify-between items-center">
+</div></div>
+
+
+
+
+
+
+
+
+
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+  <div className=" w-full py-3  px-3 border-b border-white commonGradientGray  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nwrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Plane className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+          Onforward Pending List
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center w-full lg:w-auto">
+
+
+
+
+       
+          <div className="relative flex justify-between items-center w-full lg:w-auto">
             <FormInput
               placeholder="Search..."
-              className="pr-8 pt-1 pb-1 rounded-xl"
+              className="pr-8 pt-1 pb-1 rounded-md border-none h-[35px] w-full lg:w-auto"
               value={manifestSearch}
               onChange={(e) => {
                 setManifestSearch(e.target.value.toUpperCase());
@@ -216,25 +265,44 @@ export default function Index() {
                 setPage(1);
               }}
             />
-            <Search className="absolute right-1 w-5 h-4" />
+            <Search className="absolute right-2 w-4 h-4" />
           </div>
-        </div>
+        
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
         {pendingOnforwardShipment.length > 0 ? (
           <>
+                   <div className="p-2  lg:p-6">
             <Table columns={columns} row={row} heightTable="29vh" />
             <CommonPagination
               totalpages={totalpages}
               onPageChange={handlePagechange}
               page={page}
             />
+            </div>
           </>
         ) : (
           <>
+             <div className="p-2  lg:p-6">
             {/* <h1 className="font-400 text-md">Pending Onforward Shipment</h1> */}
             <p className="text-gray-400 text-center">No Data Found!</p>
+             </div>
           </>
         )}
       </div>
+      
+ </div>
+
     </>
   );
 }

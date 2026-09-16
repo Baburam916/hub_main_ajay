@@ -21,7 +21,7 @@ import Modal from "../../../components/Modal";
 import { ChevronDown, Search, Send, Upload } from "lucide-react";
 import { Check } from "lucide-react";
 import { Menu } from "../../../base-components/Headless";
-import { FileText } from "lucide-react";
+import { FileText, User, ClipboardList } from "lucide-react";
 
 const index = () => {
   const { showAlert } = useAlert();
@@ -89,7 +89,7 @@ const index = () => {
   const rows = checklistData?.map((item: any) => {
     const Action = (
       <Button
-        className="text-white bg-mustard p-1"
+        className="text-white bg-mustard p-1 border-none"
         onClick={() => {
           setModalData(item);
           setOpen(true);
@@ -341,12 +341,12 @@ const index = () => {
 
   const Description = (
     <>
-      <div className=" flex justify-between gap-4 mb-2">
-        <div className=" bg-gray-200 rounded p-2 max-w-1/2 overflow-hidden truncate">
+      <div className=" justify-between gap-4 mb-2 border border-[#ffe7b1]   bg-gradient-to-r from-[#FFF9EB] via-[#FDFDFD] to-[#FDFDFD] rounded-lg">
+        <div className="border-b border-[#ffe7b1] p-2 ">
           <b>ENQUIRY No: </b>
           {modalData?.booking_no}
         </div>
-        <div className=" bg-gray-200 rounded p-2 overflow-hidden truncate max-w-1/2">
+        <div className="  p-2 ">
           <b>FRANCHISEE : </b>
           {
             franchiseData?.find(
@@ -360,16 +360,17 @@ const index = () => {
         <FormLabel htmlFor="regular-form-1">
           KYC Documents <span className="text-red-500">*</span>
         </FormLabel>
-        <div className="flex gap-4 items-end">
+        <div className="flex-col lg:flex-row flex gap-4 items-end">
           <FormInput
             type="file"
             placeholder="Choose File"
             multiple
             onChange={(e) => handleFileChange(e, 2)}
             ref={uploadMultipleFile}
+            className="w-full !bg-[#f1f1f1]"
           />
           <Button
-            className="text-white bg-mustard p-2"
+            className="text-white bg-mustard p-2 border-none"
             disabled={uploadSpinner}
             onClick={uploadChecklist}
           >
@@ -390,16 +391,17 @@ const index = () => {
         <FormLabel htmlFor="regular-form-1">
           Upload Checklist <span className="text-red-500">*</span>
         </FormLabel>
-        <div className="flex gap-4 items-end justify-between">
+        <div className="flex-col lg:flex-row flex  gap-4 items-end justify-between">
           <FormInput
             type="file"
             placeholder="Choose File"
-            className="w-2/3"
+
             onChange={(e) => handleFileChange(e, 3)}
             ref={uploadMailFile}
+                   className="w-full lg:w-full !bg-[#f1f1f1]"
           />
           <Button
-            className="text-white bg-mustard p-2 "
+            className="text-white bg-mustard p-2 border-none "
             disabled={mailSpinner}
             onClick={sendChecklistMail}
           >
@@ -422,15 +424,16 @@ const index = () => {
             <FormLabel htmlFor="regular-form-1">
               Approved Checklist <span className="text-red-500">*</span>
             </FormLabel>
-            <div className="flex gap-4 items-end">
+            <div className="flex-col lg:flex-row flex gap-4 items-end">
               <FormInput
                 type="file"
                 placeholder="Choose File"
                 onChange={(e) => handleFileChange(e, 1)}
                 ref={uploadSingleFile}
+                   className="w-full lg:w-full !bg-[#f1f1f1]"
               />
               <Button
-                className="text-white bg-mustard p-2"
+                className="text-white bg-mustard p-2 border-none"
                 disabled={approveSpinner}
                 onClick={approveChecklist}
               >
@@ -453,16 +456,16 @@ const index = () => {
         <FormLabel htmlFor="regular-form-1">
           Upload Shipping Bill Document <span className="text-red-500">*</span>
         </FormLabel>
-        <div className="flex gap-4 items-end justify-between">
+        <div className="  flex-col lg:flex-row flex gap-4 items-end justify-between">
           <FormInput
             type="file"
             placeholder="Choose File"
-            className="w-2/3"
+              className="w-full lg:w-full !bg-[#f1f1f1]"
             onChange={(e) => handleFileChange(e, 4)}
             ref={shippingBillFile}
           />
           <Button
-            className="text-white bg-mustard p-2 "
+            className="text-white bg-mustard p-2 border-none "
             disabled={shippingBillSpinner}
             onClick={shippingBillUpload}
           >
@@ -491,12 +494,34 @@ const index = () => {
   }, [page, debouncedSearch]);
   return (
     <>
-      <div className="w-full max-w-8xl mx-auto mt-4 py-3 px-6 bg-white rounded-lg shadow-lg">
-        <div className="flex flex-row justify-between border-b pb-2 border-gray-300">
-          <h1 className="font-bold text-lg">Checklist</h1>
-          <div className="relative flex justify-between items-center">
+
+
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="block lg:flex items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2 mb-2 lg:mb-0">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <ClipboardList  className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                  Checklist
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+
+
+
+
+
+
+      <div className="flex items-center w-full">
+          <div className="relative flex justify-between items-center w-full">
             <FormInput
-              className="pr-8 pt-1 pb-1 rounded-xl"
+              className="pr-8 pt-1 pb-1 rounded-md border-none h-[35px] w-full"
               type="text"
               value={search}
               onChange={(e) => {
@@ -505,7 +530,7 @@ const index = () => {
               }}
               placeholder="Enter Enquiry No."
             />
-            <Search className="absolute right-1 w-5 h-5" />
+            <Search className="absolute right-2 w-5 h-5" />
             {/* <Button
               //   onClick={() => {
               //     getWalkinTable();
@@ -517,6 +542,40 @@ const index = () => {
             </Button> */}
           </div>
         </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+          </div>
+
+          <div className="p-2  lg:p-6">
+
+
+     
+	  
+	  
+
+
+
+
+
+
+
+      <div className="w-full ">
+      
 
         {isLoading ? (
           <div className="flex justify-center mt-6">
@@ -550,6 +609,16 @@ const index = () => {
           </>
         )}
       </div>
+       
+          </div>
+        </div>
+      </div>
+      
+	  
+
+
+
+
       <Modal
         open={open}
         setOpen={setOpen}

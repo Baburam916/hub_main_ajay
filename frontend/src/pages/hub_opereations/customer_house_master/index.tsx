@@ -4,7 +4,7 @@ import Table from "../../../components/Table";
 import CustomerForm from "./customer_form";
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import { Customer_house_master_list } from "../../../AllServices/services";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
 
 const index = () => {
   const { showAlert } = useAlert();
@@ -69,26 +69,42 @@ const index = () => {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-        <div className="w-full flex justify-between">
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+        
+  <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-none flex gap-2 items-center justify-between w-full">
           <div className=" flex">
             {houseMasterList.length > 0 && showHouseMasterForm && (
               <div
-                className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+                className="  p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]"
                 onClick={() => {
                   setPickDataForEdit(null);
                   setShowHouseMasterForm(false);
                 }}
               >
-                <ArrowLeft className="w-5 h-4" />
+                <ArrowLeft className="w-5 h-4 text-white" />
               </div>
             )}
-            <h1 className="font-bold text-lg">Customer House Master</h1>
+     
+
+ <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Home className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                  Customer House Master 
+                  </h4>
+                </div>
+
+
+
           </div>
           {!showHouseMasterForm && (
             <div className="flex items-center">
               <Button
-                className="px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-700 ml-2"
+                className="px-4 py-1 rounded-md bg-mustard text-white  ml-2 border-none"
                 onClick={() => {
                   setShowHouseMasterForm(true), setSubmitUpdateBtn(false);
                 }}
@@ -98,7 +114,11 @@ const index = () => {
             </div>
           )}
         </div>
-        <hr className="mt-2" />
+   </div>
+
+    
+      <div className="p-2  lg:p-6">
+
         {!showHouseMasterForm ? (
           <Table columns={columns} row={row} heightTable="66vh" />
         ) : (
@@ -112,6 +132,10 @@ const index = () => {
             submitUpdatebtn={submitUpdatebtn}
           />
         )}
+</div>
+
+
+      </div>
       </div>
     </>
   );

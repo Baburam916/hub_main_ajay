@@ -16,7 +16,7 @@ import {
   Tagged_house_csv,
   Print_house_list,
 } from "../../../AllServices/services";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Building, Search, User } from "lucide-react";
 import TomSelect from "../../../base-components/TomSelect";
 import { TagHouseData } from "../../../DataTypes/dataTypes";
 import LoadingIcon from "../../../base-components/LoadingIcon";
@@ -341,8 +341,12 @@ const index = () => {
   return (
     <>
       {!showTagHouseDetail ? (
-        <div className="w-full max-w-6xl mx-auto mt-4 py-3 px-6 bg-white rounded-lg shadow-lg">
-          <div className="w-full flex justify-between">
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+      <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+
             <div className=" flex">
               {taggedHouseList?.length > 0 &&
                 showTagHouseForm && (
@@ -356,7 +360,20 @@ const index = () => {
                     <ArrowLeft className="w-5 h-4" />
                   </div>
                 )}
-              <h1 className="font-bold text-lg">Tag House</h1>
+
+  <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Building className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                    Manger Dashboard Report
+                  </h4>
+                </div>
+              </div>
+
+              <h1 className="font-bold text-lg">Tag House </h1>
             </div>
             {!showTagHouseForm && (
               <>
@@ -407,11 +424,23 @@ const index = () => {
               </>
             )}
           </div>
-          <hr className="mt-2 mb-4" />
+
+  </div>
+
+
+
+
+
+
+
+  <div className="p-2  lg:p-6">
+
+
+     
           {showTagHouseForm ? (
             <div className="flex flex-col">
-              <div className="sm:flex flex-row">
-                <div className="sm:w-[25%] mr-2 mb-2 sm:mb-0">
+               <div className="grid  grid-cols-12 gap-2 ">
+                      <div className="col-span-12 lg:col-span-3">
                   <SearchableComp
                     // apiEndpoint="admin/franchisee-settings"
 
@@ -423,7 +452,8 @@ const index = () => {
                     hubid={hub_id}
                   />
                 </div>
-                <div className="sm:w-[40%] mr-2 mb-2 sm:mb-0">
+
+                  <div className="col-span-12 lg:col-span-6">
                   <FormLabel>House No</FormLabel>
                   <TomSelect
                     value={houseNo}
@@ -442,11 +472,11 @@ const index = () => {
                     })}
                   </TomSelect>
                 </div>
-                <div className="sm:w-[40%] mr-2 sm:mb-0">
+                     <div className="col-span-12 lg:col-span-3">
                   <Button
                     disabled={spinner}
                     onClick={() => submitTagHouse()}
-                    className="sm:w-[50%] mt-[28px] p-2 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
+                    className="w-full mt-[28px] border-none p-2 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-mustard text-white"
                   >
                     Tag House{" "}
                     {spinner && <LoadingIcon icon="puff" className="ml-2" />}
@@ -465,6 +495,9 @@ const index = () => {
             </>
           )}
         </div>
+        </div>
+</div>
+
       ) : (
         <TagHouseDetail
           editId={editId}
@@ -473,6 +506,8 @@ const index = () => {
           setShowTagHouseDetail={setShowTagHouseDetail}
         />
       )}
+
+
       <Modal
         size="lg"
         title={"Confirmation"}

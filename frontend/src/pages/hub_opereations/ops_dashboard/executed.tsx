@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/Table";
-import { Search } from "lucide-react";
+import { Search, FileText } from "lucide-react";
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import {
   FormInput,
   FormLabel,
@@ -21,6 +25,7 @@ import { useAlert } from "../../../ContextProvider/AlertContext";
 import Modal from "../../../components/Modal";
 import LoadingIcon from "../../../base-components/LoadingIcon";
 import { useDebounce } from "../../../components/Search";
+import { User } from "lucide-react";
 
 const Executed = ({
   loadCountData,
@@ -72,7 +77,7 @@ const Executed = ({
         },
         debouncedSearch.trim() || "",
         datatoget?.weight || "",
-        datatoget?.destination_country || ""
+        datatoget?.destination_country || "",
       );
       if (res?.status == 200) {
         setExecuted(res?.data?.data || []);
@@ -106,7 +111,7 @@ const Executed = ({
 
   useEffect(() => {
     Release_held_up_shipment_list().then((res) =>
-      setStatusList(res?.data?.data)
+      setStatusList(res?.data?.data),
     );
   }, []);
 
@@ -128,7 +133,7 @@ const Executed = ({
       } else {
         showAlert(
           res?.data?.message || res?.response?.data?.message || res?.message,
-          "error"
+          "error",
         );
       }
     } catch (error) {
@@ -162,7 +167,7 @@ const Executed = ({
       } else {
         showAlert(
           res?.data?.message || res?.response?.data?.message || res?.message,
-          "error"
+          "error",
         );
       }
     } catch (error) {
@@ -188,7 +193,7 @@ const Executed = ({
               {
                 franchiseeData?.find(
                   (item: any) =>
-                    item?.franchisee_id == confirmData?.franchisee_id
+                    item?.franchisee_id == confirmData?.franchisee_id,
                 )?.franchisee_name
               }
             </div>
@@ -333,7 +338,7 @@ const Executed = ({
       //   </Menu.Items>
       // </Menu>
       <Button
-        className="bg-mustard text-white p-2"
+        className="bg-mustard text-white p-2 border-none"
         onClick={() => {
           setConfirmData({
             data: { enquiry_id: item?.id, remark: "" },
@@ -351,9 +356,9 @@ const Executed = ({
     const Status = (
       <>
         {item?.booking_status == 14 ? (
-          <p className=" text-red-500 text-base ">Insufficient Balance</p>
+          <p className=" text-red-500 text-[13px] ">Insufficient Balance</p>
         ) : item?.booking_status == 17 ? (
-          <p className=" text-red-500 text-base ">
+          <p className=" text-red-500 text-[13px] ">
             {item?.held_up_remark ? item?.held_up_remark : "Manual Held Up"}
           </p>
         ) : (
@@ -368,7 +373,7 @@ const Executed = ({
         franchiseeData?.find((cus) => cus.franchisee_id == item.franchisee_id)
           ?.franchisee_name || "-",
       country_name: countryData?.find(
-        (con) => con.country_id == item.dest_country_id
+        (con) => con.country_id == item.dest_country_id,
       )?.country_name,
       created_date: formatDateWithoutTime(item?.created_date),
       weight: item.weight + " " + item.weight_unit,
@@ -377,19 +382,67 @@ const Executed = ({
     };
   });
 
+  // on scroll animatil this useffect load a card after one sec delay when you scroll
+
+  useEffect(() => {
+    const items = document.querySelectorAll<HTMLElement>(
+      ".exec-reveal:not(.exec-reveal-visible)",
+    );
+    if (!items.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) =>
+              Number((a.target as HTMLElement).dataset.revealIndex) -
+              Number((b.target as HTMLElement).dataset.revealIndex),
+          )
+          .forEach((entry, i) => {
+            const el = entry.target as HTMLElement;
+            el.style.transitionDelay = `${i * 600}ms`;
+            el.classList.remove("opacity-0", "translate-y-6");
+            el.classList.add(
+              "opacity-100",
+              "translate-y-0",
+              "exec-reveal-visible",
+            );
+            const onEnd = (e: TransitionEvent) => {
+              if (e.propertyName === "transform") {
+                el.classList.remove("translate-y-0");
+                el.removeEventListener("transitionend", onEnd);
+              }
+            };
+            el.addEventListener("transitionend", onEnd);
+            observer.unobserve(entry.target);
+          });
+      },
+      { threshold: 0.1 },
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [executed]);
+
+  // end
+
   return (
     <>
-      <div className="  bg-white rounded-md justify-between shadow-blue-900 p-2 h-[100%]">
-        <div className=" p-2 bg-gray-100 flex justify-between items-center ">
-          <h2 className="text-sm font-medium">
-            {/* <button onClick={ToggleClass} className="p-0">
+      <div className=" NewtableBox min-h-auto lg:h-full bg-white rounded-md justify-between shadow-blue-900 border border-[#fff]  ">
+        <div className=" tbaleTittle p-2 bg-[#e9edf2] flex justify-between items-center rounded-t-md  ">
+          <div className="flex items-end gap-2">
+            <h2 className="text-sm font-medium">
+              {/* <button onClick={ToggleClass} className="p-0">
               <ChevronDown className="relative top-1 w-[18px]" />
             </button> */}
-            Held Up
-          </h2>
+              Held Up
+            </h2>
+          </div>
 
           <div className=" relative w-200">
             <FormInput
+              className="h-[30px] w-full rounded-md border border-[#e5e7eb] pl-3 pr-10 text-sm focus:border-[#f0b646] focus:ring-[#f0b646]"
               id="vertical-form-1"
               type="text"
               placeholder="Search"
@@ -402,8 +455,8 @@ const Executed = ({
               }}
             />
 
-            <button className="searchListTable absolute top-2 right-3 text-stone-300">
-              <Search />
+            <button className=" searchListTable absolute top-[6px] right-2 text-stone-300">
+              <Search className="w-[17px] h-[17px]" />
             </button>
           </div>
         </div>
@@ -423,7 +476,8 @@ const Executed = ({
               </div>
             ) : (
               <>
-                <div className={`overflow-x-auto`}>
+                {/* Old table UI - commented out in favor of card UI below, functionality unchanged */}
+                {/* <div className={`overflow-x-auto`}>
                   <Table
                     minHeightTable="94%"
                     className="h-[100vh]"
@@ -433,6 +487,86 @@ const Executed = ({
                     currentPage={page}
                     ops={1}
                   />
+                </div> */}
+
+                <div className="w-full">
+                  {rows?.map((item: any, index: number) => (
+                    <div
+                      key={item?.id || item?.job_id || index}
+                      data-reveal-index={index}
+                      className="exec-reveal w-full border rounded-lg mb-3 group bg-[#fff] border-[#fff1d3] even:bg-[#fff] even:border-[#eaf1f6] hover:bg-[#fff] hover:border-[#E6E6E6] opacity-0 translate-y-6 transition-all duration-700 ease-out"
+                    >
+                      <div className="justify-between border-[#fff1d3] border-b w-full block lg:flex pt-[5px] pb-[3px] px-2 items-center bg-[#fffbf2] group-even:bg-[#f6faff] rounded-t-lg group-even:border-[#eaf1f6] group-hover:bg-[#F8F8F8] group-hover:border-[#E6E6E6]">
+                        <div className="flex relative mb-2 lg:mb-0">
+                          <figure className="bg-[#FFF0CE] group-even:bg-[#E8F2FF] rounded-full p-[2px] w-[30px] h-[30px] justify-between flex items-center group-hover:bg-[#e3e3e3]">
+                            <FileText className="w-[18px] h-[18px] text-[#B68F34] group-even:text-[#5A81B4] m-auto group-hover:text-[#303030]" />
+                          </figure>
+                          <aside className="ml-2 leading-[14px]">
+                            <h2 className="text-[#9099a2] text-[12px]  uppercase leading-[14px]">
+                              Enquiry Number
+                            </h2>
+                            <h3 className="text-[12px] font-bold text-[#e1a722] rounded-[10px]">
+                              {item?.booking_no || "-"}
+                            </h3>
+                          </aside>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-left lg:text-right leading-[16px]">
+                            <h4 className="font-medium text-[13px]">
+                              WEIGHT :<span> {item?.weight}</span>
+                            </h4>
+                            <p className="text-[13px] text-[#797979]">
+                              {item?.created_date || "-"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-3 pt-3 pb-2">
+                        <div className="grid grid-cols-12 gap-2">
+                          <div className="col-span-12 lg:col-span-8">
+                            <div className="w-full">
+                              <div className="w-full font-medium text-[14px]">
+                                Name : {item?.franchisee_name || "-"}
+                              </div>
+                              <div className="w-full block lg:flex gap-x-5 mt-1">
+                                <div className="leading-[16px]">
+                                  <small className="text-[11px] text-[#797979] flex items-center">
+                                    <i className="w-[5px] h-[5px] bg-[#efb847] group-even:bg-[#6EA8E0] rounded-full mr-1 inline-block group-hover:bg-[#a0a0a0]"></i>
+                                    DESTINATION
+                                  </small>
+                                  <p className="text-[14px] text-[#303030]">
+                                    {item?.country_name || "-"}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-span-12 lg:col-span-4">
+                            <div className="flex relative gap-2 justify-end">
+                              <div className="flex justify-center items-center">
+                                {item?.action}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="col-span-12 lg:col-span-12">
+                            <div className=" flex  w-full  border-t border-[#f2f2f2] px-[0] pt-[4px]">
+                              <h2 className="flex text-[#9099a2] text-[11px] font-medium   leading-[20px]  ">
+                                <i className="mr-1 bg-[#f1f5f9] border-none p-[2px] w-[18px] h-[18px] rounded-full flex justify-center items-center ">
+                                  <User
+                                    className="w-[12px] h-[12px]  text-[#959595]"
+                                    strokeWidth={3}
+                                  />
+                                </i>
+                                <span className="text-[#959595]">STATUS </span>
+                                &nbsp; : &nbsp; <span>{item?.status}</span>
+                              </h2>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 <CommonPagination
@@ -458,6 +592,16 @@ const Executed = ({
           button[data-headlessui-state="open"] {
             border-color: #f0b646;
             color: #f0b646;
+          }
+          @keyframes execCardReveal {
+            from {
+              opacity: 0;
+              transform: translateY(24px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
         `}
       </style>

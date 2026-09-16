@@ -9,7 +9,7 @@ import { Download, Search } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Laptop  } from "lucide-react";
 import Modal from "../../../components/Modal";
 import {
   Created_manifest_list,
@@ -257,7 +257,7 @@ const index = () => {
           // text({ value: "Pending", bgColor: "blue-600" });
           <div className="flex justify-center items-center ">
             <Button
-              className="flex justify-center items-center p-2 bg-green-400 text-white"
+              className="flex justify-center items-center p-2 bg-green-400 text-white rounded-md border-none"
               onClick={() => {
                 setManifistModal(true);
                 setManifestData((pre: any) => ({
@@ -716,14 +716,32 @@ const index = () => {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
+ <div className="w-full mt-2 mb-4">
+  <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+      <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap  flex items-center justify-between w-full">
         {!showGenerateManfest ? (
-          <div className="w-full flex justify-between">
-            <h1 className="font-bold text-lg">Create Manifest</h1>
-            <div className="flex items-center">
+          <div className="w-full flex-wrap  flex items-center justify-between ">
+
+          
+           <div className="flex items-center gap-2 mb-2 lg:mb-0">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <Laptop  className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                 Create Manifest
+                  </h4>
+                </div>
+          
+          
+          
+          
+          
+            <div className="flex-wrap gap-2 lg:flex-none flex items-center">
               <Button
                 disabled={widectSpinner}
-                className=" mr-4 px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-700"
+                className=" mr-4 px-4 py-1 rounded-lg bg-mustard text-white hover:bg-blue-700 border-none"
                 onClick={() => {
                   setWidectBagModal(true);
                 }}
@@ -733,19 +751,19 @@ const index = () => {
               </Button>
               <Button
                 disabled={spinner}
-                className=" mr-4 px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-700"
+                className=" mr-4 px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-700 border-none"
                 onClick={() => createManifest()}
               >
                 Create Manifest{" "}
                 {spinner && <LoadingIcon icon="puff" className="ml-2" />}
               </Button>
-              <h1 className="mt-2 font-bold">Next Onforward Shipment</h1>
-              <div className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2">
+              <h1 className=" font-bold">Next Onforward Shipment</h1>
+              <div className="  p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]">
                 <Link
                   to="/hub/operation/onforward_shipment"
                   className="font-bold"
                 >
-                  <ArrowRight className="w-5 h-4 " />
+                  <ArrowRight className="w-5 h-4  text-white" />
                 </Link>
               </div>
             </div>
@@ -754,10 +772,10 @@ const index = () => {
           <div className="w-full flex justify-between">
             <div className="flex items-center mb-2">
               <div
-                className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+                className="  p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]"
                 onClick={() => setShowGenerateManifest(false)}
               >
-                <ArrowLeft className="w-5 h-4" />
+                <ArrowLeft className="w-5 h-4  text-white" />
               </div>
               <h1 className="font-bold text-lg">Generate Manifest</h1>
             </div>
@@ -770,28 +788,29 @@ const index = () => {
                 {spinner && <LoadingIcon icon="puff" className="ml-2" />}
               </Button> */}
               <h1 className="mt-2 font-bold">Next Onforward Shipment</h1>
-              <div className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2">
+              <div className="  p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]">
                 <Link
                   to="/hub/operation/onforward_shipment"
                   className="font-bold"
                 >
-                  <ArrowRight className="w-5 h-4 " />
+                  <ArrowRight className="w-5 h-4  text-white" />
                 </Link>
               </div>
             </div>
           </div>
         )}
       </div>
-
+</div>
       {!showGenerateManfest ? (
         <>
-          <div className="w-full max-w-6xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
-            <div className="flex items-center justify-between">
-              <h1 className="font-400 text-md">Manifested List</h1>
+
+<div className="w-full p-2 lg:p-3 border-b border-gray-200 bg-[#f1f1f1]">
+  <div className="flex-wrap lg:flex-none lg:flex gap-2 items-center justify-between">
+              <h1 className="font-400 text-lg">Manifested List</h1>
               <div className="relative flex justify-between items-center">
                 <FormInput
                   placeholder="Search..."
-                  className="pr-8 pt-1 pb-1 rounded-xl"
+                  className="pr-8 pt-1 pb-1 rounded-md h-[35px]"
                   value={manifestSearch}
                   onChange={(e) => {
                     setManifestSearch(e.target.value.toUpperCase());
@@ -799,9 +818,16 @@ const index = () => {
                     setPage(1);
                   }}
                 />
-                <Search className="absolute right-1 w-5 h-5" />
+                <Search className="absolute right-2 w-4 h-4" />
               </div>
             </div>
+  </div>
+
+
+          <div className="w-full p-3 lg:p-6">
+          
+
+
             {manifestedList.length > 0 ? (
               <>
                 <Table columns={columns} row={row} heightTable="53vh" />
@@ -820,17 +846,32 @@ const index = () => {
           </div>
         </>
       ) : (
-        <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-          <div className="flex items-center mt-2 justify-between">
-            <h1 className="font-400 text-lg">List for generate manifest</h1>
+
+
+
+
+        <div className="w-full ">
+         <div className="w-full p-2 lg:p-3 border-b border-gray-200 bg-[#f1f1f1]">
+        <h1 className="font-400 text-lg">List for generate manifest</h1>
           </div>
+
+         
+        <div className="w-full p-2 lg:p-6">
+
+
           <Table
             columns={createManifestColumn}
             row={createManifestRow}
             heightTable="55vh"
           />
         </div>
+ </div>
+
+
       )}
+    </div>
+  </div>
+
       <Modal
         open={manifestModal}
         title={"Generate"}

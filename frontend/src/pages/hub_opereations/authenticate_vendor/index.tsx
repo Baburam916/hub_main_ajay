@@ -8,6 +8,7 @@ import {
 import { useAlert } from "../../../ContextProvider/AlertContext";
 import Button from "../../../base-components/Button";
 import LoadingIcon from "../../../base-components/LoadingIcon";
+import { User } from "lucide-react";
 
 const index = () => {
   const { showAlert } = useAlert();
@@ -84,14 +85,32 @@ const index = () => {
 
   return (
     <>
-      <div
-        className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg"
-        style={{ maxHeight: "78vh", overflowY: "scroll" }}
-      >
-        <h1 className="text-base text-gray-500 font-bold">
-          Authenticate Vendor List
-        </h1>
-        <div className="grid grid-cols-3 gap-4 mt-4">
+
+
+
+
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <User className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    Authenticate Vendor List
+                  </h4>
+                </div>
+              </div>
+
+          
+            </div>
+          </div>
+
+              <div className="p-2  lg:p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-4 ">
           {vendorListAll?.map((item, index) => (
             <FormCheck className="mt-2 justify-start" key={index}>
               <FormCheck.Input
@@ -111,12 +130,14 @@ const index = () => {
           <Button
             disabled={spinner}
             onClick={() => saveCheckbox()}
-            className="bg-mustard border-none py-2 px-6 mr-4 text-white rounded-xl"
+            className="bg-mustard border-none py-2 px-6  text-white rounded-md "
           >
             Save {spinner && <LoadingIcon icon="puff" className="ml-2" />}
           </Button>
         </div>
-      </div>
+      </div>   
+       </div>
+       </div>
     </>
   );
 };

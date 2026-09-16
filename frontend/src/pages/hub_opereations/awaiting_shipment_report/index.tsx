@@ -4,6 +4,7 @@ import {
   Awaiting_pud_branch,
   Awaiting_shipment_report,
 } from "../../../AllServices/services";
+import { User } from "lucide-react";
 
 const index = () => {
   const [branchData, setBranchData] = useState<Array<any>>([]);
@@ -47,10 +48,37 @@ const index = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-6xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
-      <div className="w-full flex justify-between">
-        <h1 className="font-bold text-lg">Awaiting Shipments</h1>
-      </div>
+    <>
+ 
+
+
+
+
+
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
+          <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <User className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                Awaiting Shipments
+                  </h4>
+                </div>
+              </div>
+
+    
+            </div>
+          </div>
+
+          <div className="p-2  lg:p-6">
+            
+   <div className="w-full">
+     
 
       {branchData?.length > 0 ? (
         <Table columns={columns} row={row} heightTable="65vh" />
@@ -60,6 +88,24 @@ const index = () => {
         </>
       )}
     </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+      
+
+
+
+
+
+
+
+
+
+    </>
   );
 };
 

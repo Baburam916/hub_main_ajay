@@ -14,7 +14,7 @@ import { FormInput, FormLabel, FormSelect, InputGroup } from "../../../base-comp
 import { common_delete, common_get, common_post, common_put } from "../../../AllServices/services";
 import { convertJSONtoCSV } from "../../../utils";
 import CommonPagination from "../../../components/Pagination";
-import { Eye } from "lucide-react";
+import { Eye, User } from "lucide-react";
 const intextradata = {
   contact_person: "",
   customers_email:""
@@ -855,27 +855,43 @@ const newdata=data?.map((item:any)=>{
 
   return (
     <>
-      <div className="w-full max-w-8xl p-6 px-10 bg-white rounded-lg shadow-lg mt-2 mb-16 z-[0] relative">
-        <div className="min-[700px]:flex justify-between gap-8 w-full">
-          <div className="w-full">
-            <h1 className="text-2xl font-bold text-left whitespace-nowrap">
-              MSME / Corporate Customer List
-            </h1>
-          </div>
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+		
 
-          <div className="flex w-full items-end">
+   <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <User className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+               MSME / Corporate Customer List
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                
+
+ 
+
+          <div className="flex gap-2 items-end">
+         <div className="w-full lg:w-[280px] ">
             <FormInput
               type="text"
               placeholder="Enter MSME ID / Company Name / GSTIN"
               value={search}
-              className="w-2/3"
+              className="text-[13px] px-2 py-1 w-full"
               onChange={(e) => {
                 setSearch(e.target.value);
                 setPage(1);
               }}
             />
+            </div>
             <Button
-              className="w-1/3 p-2 rounded-lg bg-red-500 hover:bg-red-600 text-white ml-4"
+              className=" px-2 py-1 h-[33px]  rounded-md bg-red-500 hover:bg-red-600 text-white border-none"
               onClick={() => {
                 setSearch("");
                 setPage(1);
@@ -886,7 +902,7 @@ const newdata=data?.map((item:any)=>{
             </Button>
             {data?.length >= 1 ? (
               <Button
-                className="w-1/3 p-2 rounded-lg bg-green-500 hover:bg-green-600 text-white ml-4"
+                className=" px-2 py-1 h-[33px] rounded-lg bg-green-500 hover:bg-green-600 text-white "
                 onClick={() => {
                   handledownload();
                 }}
@@ -898,9 +914,20 @@ const newdata=data?.map((item:any)=>{
               ""
             )}
           </div>
-        </div>
+       
 
-        <div className="flex justify-center w-full my-4 border-t border-slate-200 dark:border-darkmode-400"></div>
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div className="p-2  lg:p-6">
 
         {data?.length > 0 && !isLoading ? (
           <div className="overflow-auto max-h-[350px]  ">
@@ -1171,6 +1198,8 @@ setRegistration({
           ""
         )}
       </div>
+       </div>
+       </div>
     </>
   );
 };

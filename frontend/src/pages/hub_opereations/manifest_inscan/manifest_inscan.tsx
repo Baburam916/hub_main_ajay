@@ -82,7 +82,7 @@ export default function ManifestInscan(data: any) {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
+      <div className="w-full">
         {!showPendingList ? (
           <Button
             disabled={pendingSpinner}
@@ -94,12 +94,14 @@ export default function ManifestInscan(data: any) {
           </Button>
         ) : (
           <>
-            <div className="flex items-center">
+          <div className="w-full border border-[#E6E6E6] rounded-[15px] shadow-[0_0px_5px_#edf5ff] mb-4 bg-white">
+         <div className="bookleftTittle rounded-tl-[15px] rounded-tr-[15px] border-b border-[#E6E6E6] px-[12px] py-[10px]  bg-[#F8F8F8] ">
+       <div className="flex-wrap lg:flex-nowrap flex gap-2 items-center justify-between w-full">
               <div
-                className="p-2 cursor-pointer rounded-full shadow-lg mr-4"
+                className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]"
                 onClick={() => setShowPendingList(false)}
               >
-                <ArrowLeft className="w-5 h-4" />
+                <ArrowLeft className="w-4 h-4 text-white" />
               </div>
               <div className="flex justify-between items-center w-full">
                 <h1 className="text-gray-500 text-sm sm:text-lg font-bold">
@@ -108,7 +110,7 @@ export default function ManifestInscan(data: any) {
                 <div className="relative flex justify-between items-center">
                   <FormInput
                     placeholder="Search..."
-                    className="pr-8 pt-1 pb-1 rounded-xl"
+                    className="pr-8 pt-1 pb-1 rounded-md"
                     value={manifestSearch}
                     onChange={(e) => {
                       setManifestSearch(e.target.value.toUpperCase());
@@ -116,26 +118,28 @@ export default function ManifestInscan(data: any) {
                       setPage(1)
                     }}
                   />
-                  <Search className="absolute right-1 w-5 h-5" />
+                  <Search className="absolute right-1 w-4 h-4" />
                 </div>
               </div>
             </div>
-
+</div>
             {
               getPendingList.length > 0 ? (
                   <>
+                     <div className="p-2  lg:p-6">
                     <Table columns={columns} row={row} heightTable="43.5vh" currentPage={page || 0}/>
                     <CommonPagination
                           totalpages={totalpages}
                           onPageChange={handlePagechange}
                           page={page}
                     />
+                    </div>
                   </>
               ) : (
                 <p className="text-gray-400 text-center">No Data Found!</p>
               )
             }
-            
+            </div>
           </>
         )}
       </div>

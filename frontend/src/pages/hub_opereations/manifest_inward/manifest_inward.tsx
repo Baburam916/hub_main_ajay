@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { FileText, Search, User } from "lucide-react";
 import { FormInput } from "../../../base-components/Form";
 import Table from "../../../components/Table";
 import { useEffect, useState } from "react";
@@ -119,15 +119,32 @@ export default function Index() {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto mt-4 px-6 py-3 bg-white rounded-lg shadow-lg">
-        <div className="sm:flex justify-between items-center mb-4">
-          <h1 className="text-sm sm:text-md font-bold">Manifest Inward List</h1>
+ <div className="w-full mt-2 mb-4">
+        <div className="mt-1 w-full bg-white rounded-[10px]  border border-white">
+
+ <div className=" w-full py-3  px-3 border-b border-white commonGradient  rounded-t-[10px]">
+            <div className="flex-wrap lg:flex-none flex gap-2 items-center justify-between w-full">
+
+
+  <div>
+                <div className="flex items-center gap-2">
+                  <i className=" w-[25px] h-[25px]  rounded-lg flex items-center justify-center bg-mustard">
+                    <FileText className="w-[17px]  text-[#fff] " />
+                  </i>
+                  <h4 className="text-[16px] font-medium">
+                    {" "}
+                  Manifest Inward List
+                  </h4>
+                </div>
+              </div>
+
+
          
-            <div className="flex items-center"> 
-              <div className="relative flex justify-between items-center">
+            <div className="flex-wrap lg:flex-nwrap flex gap-2 items-center"> 
+              <div className="relative flex justify-between items-center w-full lg:w-auto">
                 <FormInput
                   placeholder="Search..."
-                  className="pr-8 pt-1 pb-1 rounded-xl"
+                  className="pr-8 pt-1 pb-1 rounded-md  w-full lg:w-auto h-[34px]"
                   value={manifestSearch} 
                   onChange={(e) => {
                     setManifestSearch(e.target.value.toUpperCase());
@@ -135,17 +152,17 @@ export default function Index() {
                     setPage(1)
                   }}
                 />
-                <Search className="absolute right-1 w-5 h-5" />
+                <Search className="absolute right-1 w-45 h-4" />
               </div>
               <div>
                 <div className="flex items-center ml-2">
                   <h1 className="text-sm sm:text-md font-bold">Next Manifest Inscan</h1>
-                  <div className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2">
+                  <div className="p-2 cursor-pointer rounded-full shadow-lg mr-4 ml-2 bg-[#777] w-[34px] h-[34px]">
                     <Link
                       to="/hub/operation/manifest_inscan"
                       className="font-bold"
                     >
-                      <ArrowRight className="w-5 h-4 " />
+                      <ArrowRight className="w-4 h-4  text-white" />
                     </Link>
                   </div>
                 </div>
@@ -153,9 +170,17 @@ export default function Index() {
             </div>
           
         </div>
- 
-        <hr />
-        <div className="mt-4">
+     </div>
+  
+
+
+
+
+
+
+
+
+        <div className="p-2 lg:p-5">
           {gatManifestInward.length > 0 ? (
             <>
             <Table columns={columns} row={row} heightTable="60vh" currentPage={page || 0}/>
@@ -170,6 +195,9 @@ export default function Index() {
           )}
         </div>
       </div>
+    </div>
+
+
     </>
   );
 }

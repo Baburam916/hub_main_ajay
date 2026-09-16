@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Table from "../../../base-components/Table";
 import CommonTable from "../../../components/Table";
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import {
   Search,
   UserCog,
@@ -13,6 +17,7 @@ import {
   Send,
   Upload,
   Minus,
+  User,
 } from "lucide-react";
 import {
   FormInput,
@@ -124,8 +129,8 @@ const intexchangedataSell = [
   { id: "1", currency_id: "24", ex_rate: "1" },
   { id: "2", currency_id: "", ex_rate: "" },
 ];
-const fun1 = (value: any) => { };
-const funtoempty = () => { };
+const fun1 = (value: any) => {};
+const funtoempty = () => {};
 
 const ReadyToExecute = ({
   loadCountData,
@@ -213,10 +218,13 @@ const ReadyToExecute = ({
   const [alltypedata, setAlltypedata] = useState<any>([]);
   const [totalbuy, setTotalBuy] = useState<any>(0);
   const [totalSell, setTotalsell] = useState<any>(0);
-  const [sellingcharges, setSellingCharges] = useState<any>([{ ...intarrcharges }]);
+  const [sellingcharges, setSellingCharges] = useState<any>([
+    { ...intarrcharges },
+  ]);
   const [buycharges, setBuyCharges] = useState<any>([{ ...intarrcharges2 }]);
   const [exchangedata, setExchangedata] = useState<any>(intexchangedata);
-  const [exchangedataSell, setExchangedataSell] = useState<any>(intexchangedataSell);
+  const [exchangedataSell, setExchangedataSell] =
+    useState<any>(intexchangedataSell);
   const [exchangeSellLocked, setExchangeSellLocked] = useState(false);
   const [exchangeBuyLocked, setExchangeBuyLocked] = useState(false);
   const [importBookingType, setImportBookingType] = useState<any>(null);
@@ -253,7 +261,7 @@ const ReadyToExecute = ({
                 (+item?.breadth || 0) *
                 (+item?.height || 0) *
                 (+item?.quantity || 0)) /
-              courier_data[0]?.denom_fac,
+                courier_data[0]?.denom_fac,
               +item?.weight || 0,
             ),
           0,
@@ -270,7 +278,7 @@ const ReadyToExecute = ({
               (+item?.breadth || 0) *
               (+item?.height || 0) *
               (+item?.quantity || 0)) /
-            courier_data[0]?.denom_fac,
+              courier_data[0]?.denom_fac,
           0,
         );
         chargeable_weight = Math.max(gross_w, vol_w);
@@ -291,15 +299,13 @@ const ReadyToExecute = ({
     const dimsForCalc =
       dimensionUnit == "2"
         ? dimensionData.map((item: any) => ({
-          ...item,
-          height: (parseFloat(item?.height) * 2.54).toFixed(2),
-          length: (parseFloat(item?.length) * 2.54).toFixed(2),
-          breadth: (parseFloat(item?.breadth) * 2.54).toFixed(2),
-        }))
+            ...item,
+            height: (parseFloat(item?.height) * 2.54).toFixed(2),
+            length: (parseFloat(item?.length) * 2.54).toFixed(2),
+            breadth: (parseFloat(item?.breadth) * 2.54).toFixed(2),
+          }))
         : dimensionData;
-    const courier_id =
-      (modalData as any)?.courier_id ||
-      editData?.courier_id;
+    const courier_id = (modalData as any)?.courier_id || editData?.courier_id;
     getChargeableWeight(dimsForCalc, courier_id);
   }, [dimensionData]);
 
@@ -324,11 +330,21 @@ const ReadyToExecute = ({
       if (item?.charge_id == 163 || item?.charge_id == 162) {
         return total;
       } else {
-        const chargeInfo = forwhat === "sell"
-          ? chargesList?.find((c: any) => c.ref_sell_id == item?.charge_id)
-          : chargesList?.find((c: any) => c.charge_id == item?.charge_id);
-        const igstRate = parseFloat(chargeInfo?.tax_breakup?.igst || "18") / 100;
-        return total + Number(item[key] || 0) * (editGstStatus == 4 || (forwhat === "sell" && importBookingType == 3) || cargoOverseas?.is_overseas ? 0 : igstRate);
+        const chargeInfo =
+          forwhat === "sell"
+            ? chargesList?.find((c: any) => c.ref_sell_id == item?.charge_id)
+            : chargesList?.find((c: any) => c.charge_id == item?.charge_id);
+        const igstRate =
+          parseFloat(chargeInfo?.tax_breakup?.igst || "18") / 100;
+        return (
+          total +
+          Number(item[key] || 0) *
+            (editGstStatus == 4 ||
+            (forwhat === "sell" && importBookingType == 3) ||
+            cargoOverseas?.is_overseas
+              ? 0
+              : igstRate)
+        );
       }
     }, 0);
     return total;
@@ -343,7 +359,9 @@ const ReadyToExecute = ({
     );
     setCargoOverseas(franchisee || {});
     if (franchisee?.is_overseas == 1) {
-      const currency = currencyData?.find((cur: any) => cur?.id == franchisee?.currency);
+      const currency = currencyData?.find(
+        (cur: any) => cur?.id == franchisee?.currency,
+      );
       setCargoOverseasCurrency(currency || {});
     }
     setEditGstStatus(franchisee?.gst_status || 0);
@@ -358,35 +376,65 @@ const ReadyToExecute = ({
       const res = await GetChargesApi(id);
       if (res?.status == 200 && res?.data?.data?.length > 0) {
         // Selling: charge_type == 2
-        const sellingChargesData = res?.data?.data?.filter((item: any) => item?.charge_type == 2) || [];
+        const sellingChargesData =
+          res?.data?.data?.filter((item: any) => item?.charge_type == 2) || [];
         const uniqueSellCurrencies: any[] = [];
         sellingChargesData.forEach((charge: any) => {
           const cId = String(charge?.currency || "24");
-          if (cId && cId !== "24" && !uniqueSellCurrencies.find((c: any) => c.currency_id === cId)) {
-            uniqueSellCurrencies.push({ currency_id: cId, ex_rate: String(charge?.ex_rate || "") });
+          if (
+            cId &&
+            cId !== "24" &&
+            !uniqueSellCurrencies.find((c: any) => c.currency_id === cId)
+          ) {
+            uniqueSellCurrencies.push({
+              currency_id: cId,
+              ex_rate: String(charge?.ex_rate || ""),
+            });
           }
         });
         if (uniqueSellCurrencies.length > 0) {
           setExchangedataSell([
             { id: "1", currency_id: "24", ex_rate: "1" },
-            { id: "2", currency_id: uniqueSellCurrencies[0]?.currency_id || "", ex_rate: uniqueSellCurrencies[0]?.ex_rate || "" },
+            {
+              id: "2",
+              currency_id: uniqueSellCurrencies[0]?.currency_id || "",
+              ex_rate: uniqueSellCurrencies[0]?.ex_rate || "",
+            },
           ]);
           setExchangeSellLocked(true);
         }
         // Buying: charge_type == 1
-        const buyingChargesData = res?.data?.data?.filter((item: any) => item?.charge_type == 1) || [];
+        const buyingChargesData =
+          res?.data?.data?.filter((item: any) => item?.charge_type == 1) || [];
         const uniqueBuyCurrencies: any[] = [];
         buyingChargesData.forEach((charge: any) => {
           const cId = String(charge?.currency || "24");
-          if (cId && cId !== "24" && !uniqueBuyCurrencies.find((c: any) => c.currency_id === cId)) {
-            uniqueBuyCurrencies.push({ currency_id: cId, ex_rate: String(charge?.ex_rate || "") });
+          if (
+            cId &&
+            cId !== "24" &&
+            !uniqueBuyCurrencies.find((c: any) => c.currency_id === cId)
+          ) {
+            uniqueBuyCurrencies.push({
+              currency_id: cId,
+              ex_rate: String(charge?.ex_rate || ""),
+            });
           }
         });
         if (uniqueBuyCurrencies.length > 0) {
           setExchangedata([
             { id: "1", currency_id: "24", currency: "INR", ex_rate: "1" },
-            { id: "2", currency_id: uniqueBuyCurrencies[0]?.currency_id || "", currency: "", ex_rate: uniqueBuyCurrencies[0]?.ex_rate || "" },
-            { id: "3", currency_id: uniqueBuyCurrencies[1]?.currency_id || "", currency: "", ex_rate: uniqueBuyCurrencies[1]?.ex_rate || "" },
+            {
+              id: "2",
+              currency_id: uniqueBuyCurrencies[0]?.currency_id || "",
+              currency: "",
+              ex_rate: uniqueBuyCurrencies[0]?.ex_rate || "",
+            },
+            {
+              id: "3",
+              currency_id: uniqueBuyCurrencies[1]?.currency_id || "",
+              currency: "",
+              ex_rate: uniqueBuyCurrencies[1]?.ex_rate || "",
+            },
           ]);
           setExchangeBuyLocked(true);
         }
@@ -444,7 +492,10 @@ const ReadyToExecute = ({
     }
   };
 
-  const handleGetJob = async (job_id: any = "", captureOriginal: boolean = false) => {
+  const handleGetJob = async (
+    job_id: any = "",
+    captureOriginal: boolean = false,
+  ) => {
     try {
       if (!job_id) return showAlert("Job id is required", "warning");
       const res = await GetJobApi(job_id);
@@ -457,7 +508,6 @@ const ReadyToExecute = ({
           shipper_details: shipper,
           consignee_details: consignee,
         }));
-        
       } else {
         showAlert(
           res?.data?.message || res?.response?.data?.message || res?.message,
@@ -539,11 +589,19 @@ const ReadyToExecute = ({
           flag: "edit_booking",
         });
       } else {
-        res = await Raise_spot_enquiry({ ...editData, booking_status: 7, weight: chWeight, chargeable_weight: chWeight });
+        res = await Raise_spot_enquiry({
+          ...editData,
+          booking_status: 7,
+          weight: chWeight,
+          chargeable_weight: chWeight,
+        });
       }
       if (res?.status == 200) {
         if (!isInWeightRange) {
-          showAlert("Shipment is out of weight range, send to Pricing for Approval", "warning");
+          showAlert(
+            "Shipment is out of weight range, send to Pricing for Approval",
+            "warning",
+          );
         } else {
           showAlert(res?.data?.message);
         }
@@ -595,7 +653,8 @@ const ReadyToExecute = ({
           commodity: editData?.commodity || "",
           gross_weight: grWeight || 0,
           chargeable_weight: chWeight || 0,
-          shipment_dimensions: dimensionUnit == "2" ? convertedDimension : dimensionData,
+          shipment_dimensions:
+            dimensionUnit == "2" ? convertedDimension : dimensionData,
           currency_id: editData?.currency_id || "24",
         });
         if (res?.status == 200) {
@@ -605,7 +664,10 @@ const ReadyToExecute = ({
         } else if (res?.response?.status == 406) {
           showAlert(res?.response?.data?.errors[0]?.msg, "warning");
         } else {
-          showAlert(res?.data?.message || res?.response?.data?.message || res?.message, "error");
+          showAlert(
+            res?.data?.message || res?.response?.data?.message || res?.message,
+            "error",
+          );
         }
       } catch (error: any) {
         showAlert(error?.message || error?.msg, "error");
@@ -679,6 +741,52 @@ const ReadyToExecute = ({
         </div>
       ) : (
         <>
+
+
+
+
+
+
+
+<div className="flex-wrap lg:flex-nowrap flex gap-2 mb-3">
+<div className="bg-[#fff3dc] rounded-lg p-[7px] flex w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <FileText className="w-[35px]  text-[#ba9650] " />
+    </figure>
+    <aside className="md:border-l md:border-[#fbe9c7] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">ENQUIRY No.</p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">        {scanData?.booking_no}</span>
+           
+        </h4>
+    </aside>
+</div>
+
+<div className="bg-[#f2f7ff] rounded-lg p-[7px] flex  w-full lg:w-[50%]">
+    <figure className="w-[35px] flex items-center justify-center">
+      <User className="w-[30px]  text-[#4478cb] " />
+    </figure>
+    <aside className="md:border-l md:border-[#d8e7ff] md:pl-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">ACL </p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">
+            {
+                franchiseeData?.find(
+                  (item: any) => item?.franchisee_id == scanData?.franchisee_id,
+                )?.franchisee_name
+              }</span>
+           
+        </h4>
+    </aside>
+</div>
+</div>
+
+
+
+
+
+
+{/* 
           <div className=" flex justify-between gap-4 mb-2">
             <div className=" bg-gray-200 rounded p-2 max-w-1/2 overflow-hidden truncate">
               <b>ENQUIRY No: </b>
@@ -692,7 +800,7 @@ const ReadyToExecute = ({
                 )?.franchisee_name
               }
             </div>
-          </div>
+          </div> */}
           <div className="flex gap-4 justify-between items-end w-full">
             <div className="w-full">
               <FormLabel htmlFor="regular-form-1">
@@ -951,7 +1059,7 @@ const ReadyToExecute = ({
 
   const description = (
     <>
-      <div className=" flex justify-between gap-4 mb-4">
+      {/* <div className=" flex justify-between gap-4 mb-4">
         <div className=" bg-gray-200 rounded p-2 max-w-1/2 overflow-hidden truncate">
           <b>ENQUIRY No: </b>
           {modalData?.booking_no}
@@ -964,11 +1072,55 @@ const ReadyToExecute = ({
             )?.franchisee_name
           }
         </div>
-      </div>
+      </div> */}
+
+
+
+<div className="flex-wrap lg:flex-nowrap justify-between flex gap-2 mb-3">
+
+<div className="flex-wrap lg:flex-nowrap flex gap-2 mb-3">
+<div className="bg-[#fff3dc] rounded-lg p-[8px] flex w-full lg:w-auto">
+    <figure className="w-[35px] flex items-center justify-center">
+      <FileText className="w-[35px]  text-[#ba9650] " />
+    </figure>
+    <aside className="md:border-l md:border-[#fbe9c7] md:pl-2 md:pr-3 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">ENQUIRY No.</p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">            {modalData?.booking_no} </span>
+           
+        </h4>
+    </aside>
+</div>
+
+<div className="bg-[#f2f7ff] rounded-lg p-[8px] flex  w-full lg:w-auto">
+    <figure className="w-[35px] flex items-center justify-center">
+      <User className="w-[30px]  text-[#4478cb] " />
+    </figure>
+    <aside className="md:border-l md:border-[#d8e7ff] md:pl-2 md:pr-3 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">FRANCHISEE </p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">
+           {
+            franchiseeData?.find(
+              (item: any) => item?.franchisee_id == modalData?.franchisee_id,
+            )?.franchisee_name
+          }</span>
+           
+        </h4>
+    </aside>
+</div>
+</div>
+
+
+
+
+
+
+
       <div>
-        <div className="flex justify-between mb-4">
+        <div className="flex-wrap lg:flex-nowrap flex gap-1 mb-4">
           <Button
-            className="bg-mustard text-white p-1"
+            className="bg-mustard text-white p-1  border-none"
             onClick={() => {
               // handleGetJob(modalData?.job_id);
               if (modalData?.job_id) {
@@ -977,10 +1129,10 @@ const ReadyToExecute = ({
               }
             }}
           >
-            <ArrowUpRight className="h-4 w-4 mr-2" /> Sender Details
+            <ArrowUpRight className="h-4 w-4 mr-1" /> Sender Details
           </Button>
           <Button
-            className="bg-mustard text-white p-1"
+            className="bg-green-400 text-white p-1 border-none"
             onClick={() => {
               // handleGetJob(modalData?.job_id);
               if (modalData?.job_id) {
@@ -989,10 +1141,10 @@ const ReadyToExecute = ({
               }
             }}
           >
-            <ArrowDownRight className="h-4 w-4 mr-2" /> Receiver Details
+            <ArrowDownRight className="h-4 w-4 mr-1" /> Receiver Details
           </Button>
           <Button
-            className="bg-mustard text-white p-1"
+            className="bg-gray-400 text-white p-1  border-none"
             onClick={generateHouseDraft}
             disabled={printSpinner}
           >
@@ -1008,11 +1160,11 @@ const ReadyToExecute = ({
           </Button>
 
           <Button
-            className="bg-mustard text-white p-1"
+            className="bg-blue-400 text-white p-1  border-none"
             onClick={handleSendMail}
             disabled={mailSpinner}
           >
-            <Send className="h-4 w-4 mr-2" />
+            <Send className="h-4 w-4 mr-1" />
             Send Email
             {mailSpinner && (
               <LoadingIcon
@@ -1023,25 +1175,32 @@ const ReadyToExecute = ({
             )}
           </Button>
         </div>
-        <div className="flex justify-between items-end mb-4">
-          <div className="w-2/3">
-            <FormLabel htmlFor="upload_hawb">
+      
+      </div>
+</div>
+
+
+  <div className="flex-wrap lg:flex-nowrap flex gap-2 items-end mb-4 border-y border-[#eee]  px-0 py-2">
+          <div className="">
+            <FormLabel htmlFor="upload_hawb" className="!mb-0">
               Upload Signed HAWB <span className="text-red-500">*</span>
             </FormLabel>
             <FormInput
+            className="bg-[#ddd]"
               id="upload_hawb"
               type="file"
-              placeholder={`Upload Signed ${modalData?.shipment_type == "8" && modalData?.mode == "2"
-                ? "HBL"
-                : "HAWB"
-                }`}
+              placeholder={`Upload Signed ${
+                modalData?.shipment_type == "8" && modalData?.mode == "2"
+                  ? "HBL"
+                  : "HAWB"
+              }`}
               onChange={(e) => handleFileChange(e, "file")}
               ref={uploadedFile}
             />
           </div>
-          <div className="w-1/3 flex justify-end">
+          <div className="">
             <Button
-              className="bg-mustard text-white p-1"
+              className="bg-mustard text-white px-4 py-2 border-none h-[37px]"
               onClick={handleUploadSignedHouse}
               disabled={uploadSpinner}
             >
@@ -1057,7 +1216,14 @@ const ReadyToExecute = ({
             </Button>
           </div>
         </div>
-      </div>
+
+
+
+
+
+
+
+
 
       <div className="mb-4">
         <div className="flex items-end justify-between my-2">
@@ -1068,7 +1234,7 @@ const ReadyToExecute = ({
             Shipment Dimensions
           </FormLabel>
           <Button
-            className="bg-mustard text-white p-2"
+            className="bg-mustard text-white p-2 border-none"
             disabled={weightSpinner}
             onClick={() =>
               getChargeableWeight(
@@ -1591,7 +1757,7 @@ const ReadyToExecute = ({
   const footer = (
     <div className="flex justify-end ">
       <Button
-        className="px-4 py-1 rounded-lg bg-mustard text-white  ml-2"
+        className="px-4 py-1 rounded-lg bg-mustard text-white  ml-2 border-none"
         onClick={() => {
           checkDimension();
         }}
@@ -1829,17 +1995,19 @@ const ReadyToExecute = ({
     { field: "checklist_docs", headerName: "Checklist Docs" },
     {
       field: "airwaybilno",
-      headerName: `${modalData?.shipment_type == "8" && modalData?.mode == "2"
-        ? "HBL"
-        : "HAWB"
-        }`,
+      headerName: `${
+        modalData?.shipment_type == "8" && modalData?.mode == "2"
+          ? "HBL"
+          : "HAWB"
+      }`,
     },
     {
       field: "master",
-      headerName: `${modalData?.shipment_type == "8" && modalData?.mode == "2"
-        ? "MBL"
-        : "MAWB"
-        }`,
+      headerName: `${
+        modalData?.shipment_type == "8" && modalData?.mode == "2"
+          ? "MBL"
+          : "MAWB"
+      }`,
     },
   ];
 
@@ -1856,7 +2024,7 @@ const ReadyToExecute = ({
         </Menu.Button>
         <Menu.Items
           className="w-48"
-          placement={`${index > 2 ? "custom-top" : "custom"}`}
+          placement={`${index > 2 ? "left-start" : "left-start"}`}
         >
           <Menu.Item
             onClick={() => {
@@ -1906,16 +2074,16 @@ const ReadyToExecute = ({
                 shipment_type: item?.shipment_type,
                 ...(item?.shipment_type == "8"
                   ? {
-                    gr_waiver: item?.fair_data?.gr_waiver || "",
-                    ata_carnet: item?.fair_data?.ata_carnet || "",
-                    gr_waiver_date: item?.fair_data?.gr_waiver_date || "",
-                    ata_carnet_date: item?.fair_data?.ata_carnet_date || "",
-                    gr_waiver_document:
-                      item?.fair_data?.gr_waiver_document || "",
-                    ata_carnet_document:
-                      item?.fair_data?.ata_carnet_document || "",
-                    mode: item?.fair_data?.mode,
-                  }
+                      gr_waiver: item?.fair_data?.gr_waiver || "",
+                      ata_carnet: item?.fair_data?.ata_carnet || "",
+                      gr_waiver_date: item?.fair_data?.gr_waiver_date || "",
+                      ata_carnet_date: item?.fair_data?.ata_carnet_date || "",
+                      gr_waiver_document:
+                        item?.fair_data?.gr_waiver_document || "",
+                      ata_carnet_document:
+                        item?.fair_data?.ata_carnet_document || "",
+                      mode: item?.fair_data?.mode,
+                    }
                   : {}),
               });
               setDimensionData(item?.shipment_dimensions || [initDimension]);
@@ -1954,7 +2122,22 @@ const ReadyToExecute = ({
           </Menu.Item>
           <Menu.Item
             onClick={() => {
-              const data = JSON.parse(JSON.stringify(item?.shipment_dimensions || [{ item_description: "", weight: "", length: "", breadth: "", height: "", quantity: "", value: "", hsn_code: "" }]));
+              const data = JSON.parse(
+                JSON.stringify(
+                  item?.shipment_dimensions || [
+                    {
+                      item_description: "",
+                      weight: "",
+                      length: "",
+                      breadth: "",
+                      height: "",
+                      quantity: "",
+                      value: "",
+                      hsn_code: "",
+                    },
+                  ],
+                ),
+              );
               setDimensionData(data);
               setDimensionUnit("1");
               setEditData(item);
@@ -2010,9 +2193,9 @@ const ReadyToExecute = ({
     const Checklist = (
       <>
         {item?.is_checklist == 1 ? (
-          <p className=" text-green-500 text-base ">Done</p>
+          <p className=" text-green-500 text-[13px]">Done</p>
         ) : item?.is_checklist == 0 ? (
-          <p className=" text-mustard text-base ">Pending</p>
+          <p className=" text-mustard text-[13px] ">Pending</p>
         ) : (
           "N.A."
         )}
@@ -2065,12 +2248,33 @@ const ReadyToExecute = ({
 
   const editBookingDescription = (
     <>
-      <div className=" flex justify-center mb-2">
+      {/* <div className=" flex justify-center mb-2">
         <div className=" bg-gray-200 rounded p-2">
           <b>AWB No: </b>
           {editData?.airwaybilno}
         </div>
-      </div>
+      </div> */}
+
+<div className="flex-wrap lg:flex-nowrap flex gap-2 mb-3">
+<div className="bg-[#fff3dc] rounded-lg p-[8px] flex w-full lg:w-auto">
+    <figure className="w-[35px] flex items-center justify-center">
+      <FileText className="w-[35px]  text-[#ba9650] " />
+    </figure>
+    <aside className="md:border-l md:border-[#fbe9c7] md:pl-2 md:pr-2 w-[80%] leading-[18px]">
+        <p className="text-[12px] uppercase text-[#757575] w-full">AWB No.</p>
+        <h4 className="font-medium text-[14px] text-[#383838] w-full flex justify-between items-center">
+            <span className="capitalize font-bold cursor-pointer">           {editData?.airwaybilno}</span>
+           
+        </h4>
+    </aside>
+</div>
+</div>
+
+
+
+
+
+
       <div className="col-span-12 h-[50vh] overflow-auto ">
         <div className="box">
           <div className="space-y-4 px-2 py-1">
@@ -2082,9 +2286,7 @@ const ReadyToExecute = ({
                 <FormInput
                   value={
                     franchiseeData?.find(
-                      (cus) =>
-                        cus?.franchisee_id ==
-                        editData?.franchisee_id,
+                      (cus) => cus?.franchisee_id == editData?.franchisee_id,
                     )?.franchisee_name || "-"
                   }
                   disabled
@@ -2100,9 +2302,7 @@ const ReadyToExecute = ({
                 <FormSelect
                   id="default"
                   disabled
-                  value={
-                    editData?.shipment_type
-                  }
+                  value={editData?.shipment_type}
                 >
                   <option value="">Select Shipment Type</option>
                   {shipmentType?.map(
@@ -2193,137 +2393,130 @@ const ReadyToExecute = ({
                     id={editData?.commodity}
                   />
                 </div>
-                {(editData?.shipment_type ==
-                  4 ||
-                  editData?.shipment_type ==
-                  5 ||
-                  editData?.shipment_type ==
-                  8) && (
+                {(editData?.shipment_type == 4 ||
+                  editData?.shipment_type == 5 ||
+                  editData?.shipment_type == 8) && (
+                  <>
+                    <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+                      <FormLabel
+                        htmlFor="clearence-type"
+                        className="text-sm text-slate-500 whitespace-nowrap"
+                      >
+                        CLEARANCE TYPE <span className="text-red-400">*</span>
+                      </FormLabel>
 
-                    <>
-                      <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-                        <FormLabel
-                          htmlFor="clearence-type"
-                          className="text-sm text-slate-500 whitespace-nowrap"
-                        >
-                          CLEARANCE TYPE <span className="text-red-400">*</span>
-                        </FormLabel>
-
-                        <FormSelect
-                          value={String(editData?.clearence_type ?? "")}
-                          onChange={(e) => {
-                            setEditData((prev: any) => ({
-                              ...prev,
-                              clearence_type: e.target.value,
-                            }));
-                          }}
-                        >
-                          <option value="">Select Clearance Type</option>
-                          {clearanceType &&
-                            (clearanceType as any[])
-                              ?.filter((ele: any) => {
-                                if (editData?.shipment_type == 8) {
-                                  return ele.id !== 3;
-                                }
-                                return true;
-                              })
-                              ?.map((ele: any, index: any) => (
-                                <option key={index} value={String(ele.id)}>
-                                  {ele.name}
-                                </option>
-                              ))}
-                        </FormSelect>
-                      </div>
-
-                      <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-                        <FormLabel
-                          htmlFor="incoterm"
-                          className="text-sm text-slate-500 whitespace-nowrap"
-                        >
-                          INCOTERM <span className="text-red-400">*</span>
-                        </FormLabel>
-
-                        <FormSelect
-                          id="incoterm"
-                          value={String(editData?.incoterm ?? "")}
-                          onChange={(e) => {
-                            setEditData((prev: any) => ({
-                              ...prev,
-                              incoterm: e.target.value,
-                            }));
-                          }}
-                        >
-                          <option value="">Select Incoterm</option>
-                          {incoterm &&
-                            (incoterm as any[])?.map((ele: any, index: any) => (
-                              <option key={index} value={String(ele?.id)}>
-                                {ele?.name}
+                      <FormSelect
+                        value={String(editData?.clearence_type ?? "")}
+                        onChange={(e) => {
+                          setEditData((prev: any) => ({
+                            ...prev,
+                            clearence_type: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option value="">Select Clearance Type</option>
+                        {clearanceType &&
+                          (clearanceType as any[])
+                            ?.filter((ele: any) => {
+                              if (editData?.shipment_type == 8) {
+                                return ele.id !== 3;
+                              }
+                              return true;
+                            })
+                            ?.map((ele: any, index: any) => (
+                              <option key={index} value={String(ele.id)}>
+                                {ele.name}
                               </option>
                             ))}
-                        </FormSelect>
-                      </div>
-                      <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-                        <FormLabel
-                          htmlFor="dimension-unit"
-                          className="text-sm text-slate-500 whitespace-nowrap"
-                        >
-                          DIMENSIONS UNIT <span className="text-red-400">*</span>
-                        </FormLabel>
-                        <FormSelect
-                          value={dimensionUnit}
-                          onChange={(e) => {
-                            setDimensionUnit(e.target.value);
-                          }}
-                          className="uppercase"
-                        >
-                          {lengthUnit &&
-                            lengthUnit?.map((data: any, index: any) => (
-                              <option
-                                className="uppercase"
-                                key={index}
-                                value={data?.id}
-                              >
-                                {data?.value}
-                              </option>
-                            ))}
-                        </FormSelect>
-                      </div>
-                      <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-                        <FormLabel
-                          htmlFor="currency-select"
-                          className="text-sm text-slate-500 whitespace-nowrap"
-                        >
-                          CURRENCY
-                        </FormLabel>
-                        <FormSelect
-                          id="currency-select"
-                          value={editData?.currency_id || ""}
-                          onChange={(e) => {
-                            setEditData((prev: any) => ({
-                              ...prev,
-                              currency_id: e.target.value,
-                            }));
-                          }}
-                          className="uppercase"
-                        >
-                          {currencyData &&
-                            currencyData?.map((data: any, index: any) => (
-                              <option
-                                className="uppercase"
-                                key={index}
-                                value={data?.id}
-                              >
-                                {data?.currency}
-                              </option>
-                            ))}
-                        </FormSelect>
-                      </div>
-                    </>
+                      </FormSelect>
+                    </div>
 
-                  )}
+                    <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+                      <FormLabel
+                        htmlFor="incoterm"
+                        className="text-sm text-slate-500 whitespace-nowrap"
+                      >
+                        INCOTERM <span className="text-red-400">*</span>
+                      </FormLabel>
+
+                      <FormSelect
+                        id="incoterm"
+                        value={String(editData?.incoterm ?? "")}
+                        onChange={(e) => {
+                          setEditData((prev: any) => ({
+                            ...prev,
+                            incoterm: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option value="">Select Incoterm</option>
+                        {incoterm &&
+                          (incoterm as any[])?.map((ele: any, index: any) => (
+                            <option key={index} value={String(ele?.id)}>
+                              {ele?.name}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+                    <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+                      <FormLabel
+                        htmlFor="dimension-unit"
+                        className="text-sm text-slate-500 whitespace-nowrap"
+                      >
+                        DIMENSIONS UNIT <span className="text-red-400">*</span>
+                      </FormLabel>
+                      <FormSelect
+                        value={dimensionUnit}
+                        onChange={(e) => {
+                          setDimensionUnit(e.target.value);
+                        }}
+                        className="uppercase"
+                      >
+                        {lengthUnit &&
+                          lengthUnit?.map((data: any, index: any) => (
+                            <option
+                              className="uppercase"
+                              key={index}
+                              value={data?.id}
+                            >
+                              {data?.value}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+                    <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+                      <FormLabel
+                        htmlFor="currency-select"
+                        className="text-sm text-slate-500 whitespace-nowrap"
+                      >
+                        CURRENCY
+                      </FormLabel>
+                      <FormSelect
+                        id="currency-select"
+                        value={editData?.currency_id || ""}
+                        onChange={(e) => {
+                          setEditData((prev: any) => ({
+                            ...prev,
+                            currency_id: e.target.value,
+                          }));
+                        }}
+                        className="uppercase"
+                      >
+                        {currencyData &&
+                          currencyData?.map((data: any, index: any) => (
+                            <option
+                              className="uppercase"
+                              key={index}
+                              value={data?.id}
+                            >
+                              {data?.currency}
+                            </option>
+                          ))}
+                      </FormSelect>
+                    </div>
+                  </>
+                )}
               </>
-
-
             </div>
             <div className="mb-4">
               <div>
@@ -2720,17 +2913,33 @@ const ReadyToExecute = ({
         </div>
         <div className="text-left">
           <FormLabel>
-            GST {(toggle != 2 && (cargoOverseas?.is_overseas == 1 || importBookingType == 3)) || editGstStatus == 4 ? "(0%) " : ""}(₹)
+            GST{" "}
+            {(toggle != 2 &&
+              (cargoOverseas?.is_overseas == 1 || importBookingType == 3)) ||
+            editGstStatus == 4
+              ? "(0%) "
+              : ""}
+            (₹)
           </FormLabel>
           <FormInput
             disabled
             className="text-right"
             value={
               toggle == 2
-                ? indianFormat(parseFloat(Number(getgsttotal(buycharges, "inr_amount", "buy")).toFixed(3)))
-                : cargoOverseas?.is_overseas == 1 || editGstStatus == 4 || importBookingType == 3
+                ? indianFormat(
+                    parseFloat(
+                      Number(
+                        getgsttotal(buycharges, "inr_amount", "buy"),
+                      ).toFixed(3),
+                    ),
+                  )
+                : cargoOverseas?.is_overseas == 1 ||
+                    editGstStatus == 4 ||
+                    importBookingType == 3
                   ? "0.00"
-                  : indianFormat(getgsttotal(sellingcharges, "inr_amount", "sell"))
+                  : indianFormat(
+                      getgsttotal(sellingcharges, "inr_amount", "sell"),
+                    )
             }
           />
         </div>
@@ -2742,14 +2951,19 @@ const ReadyToExecute = ({
             value={
               toggle == 2
                 ? indianFormat(
-                  parseFloat((Number(totalbuy) + getgsttotal(buycharges, "inr_amount", "buy")).toFixed(3)),
-                )
+                    parseFloat(
+                      (
+                        Number(totalbuy) +
+                        getgsttotal(buycharges, "inr_amount", "buy")
+                      ).toFixed(3),
+                    ),
+                  )
                 : indianFormat(
-                  cargoOverseas?.is_overseas == 1 || importBookingType == 3
-                    ? Number(totalSell)
-                    : Number(totalSell) +
-                    getgsttotal(sellingcharges, "inr_amount", "sell"),
-                )
+                    cargoOverseas?.is_overseas == 1 || importBookingType == 3
+                      ? Number(totalSell)
+                      : Number(totalSell) +
+                          getgsttotal(sellingcharges, "inr_amount", "sell"),
+                  )
             }
           />
         </div>
@@ -2790,19 +3004,66 @@ const ReadyToExecute = ({
     </>
   );
 
+  // on scroll animatil this useffect load a card after one sec delay when you scroll
+
+  useEffect(() => {
+    const items = document.querySelectorAll<HTMLElement>(
+      ".rte-reveal:not(.rte-reveal-visible)",
+    );
+    if (!items.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) =>
+              Number((a.target as HTMLElement).dataset.revealIndex) -
+              Number((b.target as HTMLElement).dataset.revealIndex),
+          )
+          .forEach((entry, i) => {
+            const el = entry.target as HTMLElement;
+            el.style.transitionDelay = `${i * 600}ms`;
+            el.classList.remove("opacity-0", "translate-y-6");
+            el.classList.add(
+              "opacity-100",
+              "translate-y-0",
+              "rte-reveal-visible",
+            );
+            const onEnd = (e: TransitionEvent) => {
+              if (e.propertyName === "transform") {
+                el.classList.remove("translate-y-0");
+                el.removeEventListener("transitionend", onEnd);
+              }
+            };
+            el.addEventListener("transitionend", onEnd);
+            observer.unobserve(entry.target);
+          });
+      },
+      { threshold: 0.1 },
+    );
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [readyToExecute]);
+
+  // end
+
   return (
     <>
-      <div className="  bg-white rounded-md justify-between shadow-blue-900 p-2 h-[100%]">
-        <div className=" p-2 bg-gray-100 flex justify-between items-center ">
-          <h2 className="text-sm font-medium">
-            {/* <button onClick={ToggleClass} className="p-0">
+      <div className=" NewtableBox min-h-auto lg:h-full bg-white rounded-md justify-between shadow-blue-900 border border-[#fff]  ">
+        <div className=" tbaleTittle p-2 bg-[#e9edf2] flex justify-between items-center rounded-t-md  ">
+          <div className="flex items-end gap-2">
+            <h2 className="text-sm font-medium">
+              {/* <button onClick={ToggleClass} className="p-0">
               <ChevronDown className="relative top-1 w-[18px]" />
             </button> */}
-            Ready To Execute
-          </h2>
+              Ready To Execute
+            </h2>
+          </div>
 
           <div className=" relative w-200">
             <FormInput
+              className="h-[30px] w-full rounded-md border border-[#e5e7eb] pl-3 pr-10 text-sm focus:border-[#f0b646] focus:ring-[#f0b646]"
               id="vertical-form-1"
               type="text"
               placeholder="Search "
@@ -2815,8 +3076,8 @@ const ReadyToExecute = ({
               }}
             />
 
-            <button className="searchListTable absolute top-2 right-3 text-stone-300">
-              <Search />
+            <button className=" searchListTable absolute top-[6px] right-2 text-stone-300">
+              <Search className="w-[17px] h-[17px]" />
             </button>
           </div>
         </div>
@@ -2836,7 +3097,8 @@ const ReadyToExecute = ({
               </div>
             ) : (
               <>
-                <div className={`overflow-x-auto`}>
+                {/* Old table UI - commented out in favor of card UI below, functionality unchanged */}
+                {/* <div className={`overflow-x-auto`}>
                   <CommonTable
                     minHeightTable="94%"
                     className="h-[100vh]"
@@ -2846,6 +3108,116 @@ const ReadyToExecute = ({
                     currentPage={page}
                     ops={1}
                   />
+                </div> */}
+
+                <div className="">
+                  {rows?.map((item: any, index: number) => (
+                    <div
+                      key={item?.id || item?.job_id || index}
+                      data-reveal-index={index}
+                      className="rte-reveal w-full border rounded-lg mb-3 group bg-[#fff] border-[#fff1d3] even:bg-[#fff] even:border-[#eaf1f6] hover:bg-[#fff] hover:border-[#E6E6E6] opacity-0 translate-y-6 transition-all duration-700 ease-out"
+                    >
+                      <div className="justify-between border-[#fff1d3] border-b w-full block lg:flex pt-[5px] pb-[3px] px-2 items-center bg-[#fffbf2] group-even:bg-[#f6faff] rounded-t-lg group-even:border-[#eaf1f6] group-hover:bg-[#F8F8F8] group-hover:border-[#E6E6E6]">
+                        <div className="flex relative mb-2 lg:mb-0">
+                          <figure className="bg-[#FFF0CE] group-even:bg-[#E8F2FF] rounded-full p-[2px] w-[30px] h-[30px] justify-between flex items-center group-hover:bg-[#e3e3e3]">
+                            <FileText className="w-[18px] h-[18px] text-[#B68F34] group-even:text-[#5A81B4] m-auto group-hover:text-[#303030]" />
+                          </figure>
+                          <aside className="ml-2 leading-[14px]">
+                            <h2 className="text-[#9099a2] text-[12px] font-medium uppercase leading-[14px]">
+                              {columns?.find((c) => c.field === "airwaybilno")
+                                ?.headerName || "HAWB"}
+                              : {item?.airwaybilno || "-"}
+                            </h2>
+                            <h3 className="text-[12px] font-bold text-[#e1a722] rounded-[10px]">
+                              ENQUIRY NO: {item?.booking_no || "-"}
+                            </h3>
+                          </aside>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-left lg:text-right leading-[16px]">
+                            <h4 className="font-medium text-[13px]">
+                              WEIGHT :<span> {item?.weight}</span>
+                            </h4>
+                            <p className="text-[13px] text-[#797979]">
+                              {item?.created_date || "-"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-3 pt-3 pb-2">
+                        <div className="grid grid-cols-12 gap-2">
+                          <div className="col-span-12 lg:col-span-8">
+                            <div className="w-full">
+                              <div className="w-full font-medium text-[14px]">
+                                Name : {item?.franchisee_name || "-"}
+                              </div>
+                              <div className="w-full block lg:flex gap-x-5 mt-1">
+                                <div className="leading-[16px] mb-2 lg:mb-0">
+                                  <small className="text-[11px] text-[#797979] flex items-center">
+                                    <i className="w-[5px] h-[5px] bg-green-500 group-even:bg-[#6EA8E0] rounded-full mr-1 inline-block group-hover:bg-[#a0a0a0]"></i>
+                                    ORIGIN
+                                  </small>
+                                  <p className="text-[14px] text-[#303030]">
+                                    {countryData?.find(
+                                      (con: any) =>
+                                        con?.country_id == item?.org_country_id,
+                                    )?.country_name || "-"}
+                                  </p>
+                                </div>
+                                <div className="leading-[16px]">
+                                  <small className="text-[11px] text-[#797979] flex items-center">
+                                    <i className="w-[5px] h-[5px] bg-[#efb847] group-even:bg-[#6EA8E0] rounded-full mr-1 inline-block group-hover:bg-[#a0a0a0]"></i>
+                                    DESTINATION
+                                  </small>
+                                  <p className="text-[14px] text-[#303030]">
+                                    {item?.country_name || "-"}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-span-12 lg:col-span-4">
+                            <div className="flex relative gap-2 justify-end items-center">
+                              <div className="flex justify-center items-center">
+                                {item?.action}
+                              </div>
+                            </div>
+                            <div className="w-full text-[13px] mt-2 text-left lg:text-right">
+                              {columns?.find((c) => c.field === "master")
+                                ?.headerName || "MAWB"}
+                              : <span>{item?.master}</span>
+                            </div>
+                          </div>
+
+                          <div className="col-span-12 lg:col-span-12">
+                            <div className=" block lg:flex justify-between  w-full  border-t border-[#f2f2f2] px-[0] pt-[4px]">
+                              <h2 className="flex w-full lg:w-[50%] text-[#9099a2] text-[11px] items-center font-medium   leading-[20px]  ">
+                                <i className="mr-1 bg-[#f1f5f9] border-none p-[2px] w-[24px] h-[24px] rounded-full flex justify-center items-center ">
+                                  <User
+                                    className="w-[14px] h-[14px]  text-[#959595]"
+                                    strokeWidth={3}
+                                  />
+                                </i>
+                                <h3 className="text-[#959595] flex">
+                                  STATUS&nbsp;:&nbsp;
+                                  <span className="text-[14px]">
+                                    {item?.checklist}
+                                  </span>
+                                </h3>
+                              </h2>
+
+                              <div className=" text-[13px] w-full lg:w-[50%] lg:justify-end text-left lg:text-right flex items-center gap-1">
+                                Checklist Docs &nbsp;:&nbsp;
+                                <span className="text-[#959595]">
+                                  {item?.checklist_docs}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 <CommonPagination
@@ -2863,6 +3235,16 @@ const ReadyToExecute = ({
           button[data-headlessui-state="open"] {
             border-color: #f0b646;
             color: #f0b646;
+          }
+          @keyframes rteCardReveal {
+            from {
+              opacity: 0;
+              transform: translateY(24px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
         `}
       </style>
