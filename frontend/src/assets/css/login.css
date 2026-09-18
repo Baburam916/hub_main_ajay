@@ -37,7 +37,7 @@
   top: 0;
   display: block;
   height: auto;
-  animation: run 5s infinite linear;
+  animation: run 8s infinite linear;
   animation-name: run;
   max-width: 370px;
   z-index: 2;
@@ -95,7 +95,7 @@
 
 @keyframes background-scroll {
   from {
-    background-position-x: 500%;
+    background-position-x: -500%;
   }
 }
 
